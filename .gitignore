@@ -35,3 +35,4 @@
 # Don't commit the Asset Store Tools plugin.
 /Assets/AssetStoreTools/
 /Assets/AssetStoreTools.meta
+/Logs/*
