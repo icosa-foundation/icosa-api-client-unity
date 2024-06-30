@@ -1,5 +1,11 @@
 {
   "dependencies": {
+    "com.icosa.icosa-api-client-unity": {
+      "version": "file:icosa-api-client-unity",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.unity.collab-proxy": {
       "version": "1.2.16",
       "depth": 0,
