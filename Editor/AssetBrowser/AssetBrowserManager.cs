@@ -26,8 +26,9 @@ namespace PolyToolkitEditor {
 /// Model and controller for the Asset Browser Window. This class holds the data and handles the actual
 /// work).
 /// </summary>
-public class AssetBrowserManager {
-  private const string PRODUCT_NAME = "PolyToolkit";
+public class AssetBrowserManager
+{
+  private const string BASE_URL = "https://icosa-api-django.ixxy.co.uk";
   private const string CLIENT_SECRET = "49385a554c3274635d6c47327d3a3c557d67793e79267852";
   private const string CLIENT_ID = "3539303a373737363831393b2178617c60227d7f7b7966252a74226e296f2d29174315175" +
     "15716131b1c5a4d1b034f5f40421c545b5a515b5d4c495e4e5e515134242c376a26292a";
@@ -54,7 +55,7 @@ public class AssetBrowserManager {
   private HashSet<PolyAsset> assetsBeingDownloaded = new HashSet<PolyAsset>();
 
   private Action refreshCallback = null;
-  
+
   /// <summary>
   /// The most recent query result that we have. (read only)
   /// </summary>
@@ -66,7 +67,7 @@ public class AssetBrowserManager {
   private PolyAsset assetResult = null;
 
   /// <summary>
-  /// Whether the current response has at least another page of results left that haven't been loaded yet. 
+  /// Whether the current response has at least another page of results left that haven't been loaded yet.
   /// </summary>
   public bool resultHasMorePages = false;
 
@@ -93,6 +94,7 @@ public class AssetBrowserManager {
   private PolyRequest requestToSendAfterAuth = null;
 
   private PolyAuthConfig authConfig = new PolyAuthConfig(
+    baseUrl: BASE_URL,
     apiKey: Deobfuscate(API_KEY),
     clientId: Deobfuscate(CLIENT_ID),
     clientSecret: Deobfuscate(CLIENT_SECRET));
@@ -238,7 +240,7 @@ public class AssetBrowserManager {
    currentRequest.pageToken = CurrentResult.Value.nextPageToken;
    StartRequest(currentRequest, OnNextPageRequestResult);
   }
-  
+
   /// <summary>
   /// Starts a new request. If there is already an existing request in progress, it will be cancelled.
   /// </summary>
@@ -327,7 +329,7 @@ public class AssetBrowserManager {
 
     // If we had a deferred request that was waiting for auth, send it now.
     if (requestToSendAfterAuth != null) {
-      PtDebug.Log("Sending deferred request that was waiting for auth.");  
+      PtDebug.Log("Sending deferred request that was waiting for auth.");
       PolyRequest request = requestToSendAfterAuth;
       requestToSendAfterAuth = null;
       StartRequest(request);
@@ -368,7 +370,7 @@ public class AssetBrowserManager {
     }
     querying = false;
     if (null != refreshCallback) refreshCallback();
-    
+
     if (result.Ok) {
       assetsInUse = GetAssetsInUse();
       FinishFetchingThumbnails(result);
@@ -579,9 +581,9 @@ public class AssetBrowserManager {
     string downloadFullPath = PtUtils.ToAbsolutePath(downloadLocalPath);
 
     if (Directory.Exists(downloadFullPath)) {
-      if (PtSettings.Instance.warnOnSourceOverwrite && 
+      if (PtSettings.Instance.warnOnSourceOverwrite &&
         !EditorUtility.DisplayDialog("Warning: Overwriting asset source folder",
-          string.Format("The asset source folder '{0}' will be deleted and created again. " + 
+          string.Format("The asset source folder '{0}' will be deleted and created again. " +
               "This should be safe *unless* you have manually made changes to its contents, " +
               "in which case you will lose those changes.\n\n" +
               "(You can silence this warning in Poly Toolkit settings)",

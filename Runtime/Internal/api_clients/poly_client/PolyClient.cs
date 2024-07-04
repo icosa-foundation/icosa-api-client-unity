@@ -76,8 +76,6 @@ namespace PolyToolkitInternal.api_clients.poly_client {
     /// assets.
     /// </summary>
     private const long DEFAULT_QUERY_CACHE_MAX_AGE_MILLIS = 60 * 60 * 1000;  // 60 minutes.
-    // The base for API requests to Poly.
-    public static string BASE_URL = "https://poly.googleapis.com";
 
     private static readonly Dictionary<PolyCategory, string> CATEGORIES = new Dictionary<PolyCategory, string>() {
       {PolyCategory.ANIMALS, "animals"},
@@ -91,14 +89,14 @@ namespace PolyToolkitInternal.api_clients.poly_client {
       {PolyCategory.TECH, "tech"},
       {PolyCategory.TRANSPORT, "transport"},
     };
-    
+
     private static readonly Dictionary<PolyOrderBy, string> ORDER_BY = new Dictionary<PolyOrderBy, string>() {
       {PolyOrderBy.BEST, "BEST"},
       {PolyOrderBy.NEWEST, "NEWEST"},
       {PolyOrderBy.OLDEST, "OLDEST"},
       {PolyOrderBy.LIKED_TIME, "LIKED_TIME"},
     };
-    
+
     private static readonly Dictionary<PolyFormatFilter, string> FORMAT_FILTER = new Dictionary<PolyFormatFilter, string>() {
       {PolyFormatFilter.BLOCKS, "BLOCKS"},
       {PolyFormatFilter.FBX, "FBX"},
@@ -107,7 +105,7 @@ namespace PolyToolkitInternal.api_clients.poly_client {
       {PolyFormatFilter.OBJ, "TILT"},
       {PolyFormatFilter.TILT, "TILT"},
     };
-    
+
     private static readonly Dictionary<PolyVisibilityFilter, string> VISIBILITY = new Dictionary<PolyVisibilityFilter, string>() {
       {PolyVisibilityFilter.PRIVATE, "PRIVATE"},
       {PolyVisibilityFilter.PUBLISHED, "PUBLISHED"},
@@ -125,10 +123,10 @@ namespace PolyToolkitInternal.api_clients.poly_client {
     /// </summary>
     private static string MakeSearchUrl(PolyListAssetsRequest listAssetsRequest) {
       StringBuilder sb = new StringBuilder();
-      sb.Append(BASE_URL)
+      sb.Append(GetBaseUrl())
         .Append("/v1/assets")
         .AppendFormat("?key={0}", WWW.EscapeURL(PolyMainInternal.Instance.apiKey));
-      
+
       if (listAssetsRequest.formatFilter != null) {
         sb.AppendFormat("&format={0}", WWW.EscapeURL(FORMAT_FILTER[listAssetsRequest.formatFilter.Value]));
       }
@@ -136,7 +134,7 @@ namespace PolyToolkitInternal.api_clients.poly_client {
       if (listAssetsRequest.keywords != null) {
         sb.AppendFormat("&keywords={0}", WWW.EscapeURL(listAssetsRequest.keywords));
       }
-      
+
       if (listAssetsRequest.category != PolyCategory.UNSPECIFIED) {
         sb.AppendFormat("&category={0}", WWW.EscapeURL(CATEGORIES[listAssetsRequest.category]));
       }
@@ -162,10 +160,10 @@ namespace PolyToolkitInternal.api_clients.poly_client {
     /// </summary>
     private static string MakeSearchUrl(PolyListUserAssetsRequest listUserAssetsRequest) {
       StringBuilder sb = new StringBuilder();
-      sb.Append(BASE_URL)
+      sb.Append(GetBaseUrl())
         .Append("/v1/users/me/assets")
         .AppendFormat("?key={0}", PolyMainInternal.Instance.apiKey);
-        
+
       if (listUserAssetsRequest.formatFilter != null) {
         sb.AppendFormat("&format={0}", WWW.EscapeURL(FORMAT_FILTER[listUserAssetsRequest.formatFilter.Value]));
       }
@@ -187,10 +185,10 @@ namespace PolyToolkitInternal.api_clients.poly_client {
     /// </summary>
     private static string MakeSearchUrl(PolyListLikedAssetsRequest listLikedAssetsRequest) {
       StringBuilder sb = new StringBuilder();
-      sb.Append(BASE_URL)
+      sb.Append(GetBaseUrl())
         .Append("/v1/users/me/likedassets")
         .AppendFormat("?key={0}", PolyMainInternal.Instance.apiKey);
-        
+
       sb.AppendFormat("&order_by={0}", WWW.EscapeURL(ORDER_BY[listLikedAssetsRequest.orderBy]));
       sb.AppendFormat("&page_size={0}", listLikedAssetsRequest.pageSize);
       if (listLikedAssetsRequest.pageToken != null) {
@@ -262,7 +260,7 @@ namespace PolyToolkitInternal.api_clients.poly_client {
     /// </summary>
     public static PolyStatus ParseAsset(JObject asset, out PolyAsset polyAsset) {
       polyAsset = new PolyAsset();
-      
+
       if (asset["visibility"] == null) {
         return PolyStatus.Error("Asset has no visibility set.");
       }
@@ -274,7 +272,7 @@ namespace PolyToolkitInternal.api_clients.poly_client {
         polyAsset.thumbnail = new PolyFile(thumbnailElements["relativePath"].ToString(),
           thumbnailElements["url"].ToString(), thumbnailElements["contentType"].ToString());
       }
-      
+
       if (asset["formats"] == null) {
         Debug.LogError("No formats found");
       } else {
@@ -408,18 +406,18 @@ namespace PolyToolkitInternal.api_clients.poly_client {
     /// <param name="isRecursion">
     ///   If true, this is a recursive call to this function, and no further retries should be attempted.
     /// </param>
-    public void GetAsset(string assetId, Action<PolyStatus,PolyAsset> callback, bool isRecursion = false) {  
+    public void GetAsset(string assetId, Action<PolyStatus,PolyAsset> callback, bool isRecursion = false) {
       // If the user passed in a raw asset ID (no "assets/" prefix), fix it.
       if (!assetId.StartsWith("assets/")) {
         assetId = "assets/" + assetId;
       }
       PolyMainInternal.Instance.webRequestManager.EnqueueRequest(
         () => {
-          string url = String.Format("{0}/v1/{1}?key={2}", BASE_URL, assetId, PolyMainInternal.Instance.apiKey);
+          string url = String.Format("{0}/v1/{1}?{2}", GetBaseUrl(), assetId, PolyMainInternal.Instance.apiKeyUrlParam);
           return GetRequest(url, "text/text");
         },
         (PolyStatus status, int responseCode, byte[] response) => {
-          if (responseCode == 401 || !status.ok) {
+          if (responseCode < 200 || responseCode > 299 || !status.ok) {
             if (isRecursion || !Authenticator.IsInitialized) {
               callback(PolyStatus.Error("Get asset error ({0})", responseCode), null);
               return;
@@ -437,6 +435,11 @@ namespace PolyToolkitInternal.api_clients.poly_client {
               callback));
           }
         }, DEFAULT_QUERY_CACHE_MAX_AGE_MILLIS);
+    }
+
+    private static string GetBaseUrl()
+    {
+      return PtSettings.Instance.authConfig.baseUrl;
     }
 
     /// <summary>

@@ -26,19 +26,24 @@ public struct PolyAuthConfig {
   [HelpText("NOTE: API Key is required for all API calls. Client ID/secret are only needed " +
     "for authenticated API calls.")]
   /// <summary>
-  /// API key used to access the Poly API.
+  /// API key used to access the Icosa API.
   /// </summary>
-  [Tooltip("Your project's API key for the Poly API (required for all API calls).")]
+  [Tooltip("Your project's API key for the Icosa API (Currently unused).")]
   public string apiKey;
+  /// <summary>
+  /// Base URL for the Icosa API.
+  /// </summary>
+  [Tooltip("The base URL the Icosa API")]
+  public string baseUrl;
   /// <summary>
   /// Your project's Client ID as supplied by Google Cloud Console.
   /// </summary>
-  [Tooltip("Your project's client ID for the Poly API (only required for authenticated API calls).")]
+  [Tooltip("Your project's client ID for the Icosa API (only required for authenticated API calls).")]
   public string clientId;
   /// <summary>
   /// Your project's client secret as supplied by Google Cloud Console.
   /// </summary>
-  [Tooltip("Your project's client secret for the Poly API (only required for authenticated API calls).")]
+  [Tooltip("Your project's client secret for the Icosa API (only required for authenticated API calls).")]
   public string clientSecret;
   /// <summary>
   /// Additional scopes required by your project (separated by spaces).
@@ -58,7 +63,8 @@ public struct PolyAuthConfig {
   /// <summary>
   /// Creates a new PolyAuthConfig with the given settings.
   /// </summary>
-  public PolyAuthConfig(string apiKey, string clientId, string clientSecret) {
+  public PolyAuthConfig(string baseUrl, string apiKey, string clientId, string clientSecret) {
+    this.baseUrl = baseUrl;
     this.apiKey = apiKey;
     this.clientId = clientId;
     this.clientSecret = clientSecret;
