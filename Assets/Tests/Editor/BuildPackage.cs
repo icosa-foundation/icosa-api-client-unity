@@ -106,7 +106,7 @@ static class BuildPackage {
 
   // Create a list of files to include in the unity package export.
   static string[] GetFilesToExport() {
-    // Include all files from the PolyToolkit directory EXCEPT for "upgrade.dat", which is responsible for 
+    // Include all files from the PolyToolkit directory EXCEPT for "upgrade.dat", which is responsible for
     // informing PolyToolkit whether or not it has been previously installed or upgraded.
     string path = Application.dataPath;
     IEnumerable<string> files = Directory.GetFiles(path + "/PolyToolkit", "*", SearchOption.AllDirectories)
@@ -142,7 +142,7 @@ static class BuildPackage {
     PolyAuthConfig oldAuthConfig = PtSettings.Instance.authConfig;
     // Replace by a placeholder auth config during export.
     PtSettings.Instance.authConfig = new PolyAuthConfig(
-        apiKey: "** INSERT YOUR API KEY HERE **", clientId: "", clientSecret: "");
+        baseUrl: "", apiKey: "", clientId: "", clientSecret: "");
     EditorUtility.SetDirty(PtSettings.Instance);
     AssetDatabase.SaveAssets();
     return oldAuthConfig;

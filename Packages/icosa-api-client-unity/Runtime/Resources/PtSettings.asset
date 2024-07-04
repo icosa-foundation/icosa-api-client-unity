@@ -43,7 +43,8 @@ MonoBehaviour:
   basePbrBlendDoubleSidedMaterial: {fileID: 2100000, guid: b2b07ce943390e34993803beeb1e8548,
     type: 2}
   authConfig:
-    apiKey: '** INSERT YOUR API KEY HERE **'
+    apiKey: 
+    baseUrl: https://icosa-api-django.ixxy.co.uk/api
     clientId: 
     clientSecret: 
     additionalScopes: []

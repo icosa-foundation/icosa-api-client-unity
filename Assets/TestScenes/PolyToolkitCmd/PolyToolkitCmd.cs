@@ -29,6 +29,7 @@ namespace PolyToolkitDev {
 /// </summary>
 public class PolyToolkitCmd : MonoBehaviour {
   // These credentials are from a test project. Not the Poly Toolkit official project.
+  private string BASE_URL = "https://icosa-api-django.ixxy.co.uk";
   private string API_KEY = "AIzaSyDfWJ9E2Vgee4hHnyNB6zV3WRf5L5unfZs";
   private string CLIENT_ID = "110645446910-8duhhimg4ups5k45vsri2de8ndlnni86.apps.googleusercontent.com";
   private string CLIENT_SECRET = "n0ctCDTVn4xxkws9_BKgnle7";
@@ -159,7 +160,7 @@ public class PolyToolkitCmd : MonoBehaviour {
 
   // The asset we're currently displaying.
   private GameObject currentAsset = null;
-  
+
   private Image userProfileImage = null;
   private Image imageDisplay = null;
 
@@ -188,13 +189,13 @@ public class PolyToolkitCmd : MonoBehaviour {
     // Initialize Poly. We do this explicit initialization rather than have a PolyToolkitManager on the
     // scene because we want to use a specific API key that's not the one that's configured in PtSettings
     // (since we want to keep PtSettings uninitialized for the user to fill in).
-    PolyApi.Init(new PolyAuthConfig(API_KEY, CLIENT_ID, CLIENT_SECRET));
+    PolyApi.Init(new PolyAuthConfig(BASE_URL, API_KEY, CLIENT_ID, CLIENT_SECRET));
   }
 
   private void OnDisable() {
     Application.logMessageReceivedThreaded -= HandleLogThreaded;
   }
-  
+
   private static T ComponentById<T>(string id) where T : Component {
     GameObject obj = GameObject.Find(id);
     if (obj == null) throw new Exception("Can't find object with ID " + id);
@@ -236,7 +237,7 @@ public class PolyToolkitCmd : MonoBehaviour {
     Vector3 mouseDelta = Input.mousePosition - dragAnchor;
     float normDeltaX = -mouseDelta.x / Screen.width;
     float normDeltaY = mouseDelta.y / Screen.height;
-    
+
     currentAsset.transform.rotation = rotationOnDragStart;
     currentAsset.transform.Rotate(normDeltaY * ROTATION_SENSIVITY,
         normDeltaX * ROTATION_SENSIVITY, 0, Space.World);
@@ -267,7 +268,7 @@ public class PolyToolkitCmd : MonoBehaviour {
   private void RunCommand(string command) {
     command = command.Trim();
     if (command.Length < 1) return;
-    
+
     // Find the verb (first word).
     string verb;
     string[] args;
@@ -415,7 +416,7 @@ public class PolyToolkitCmd : MonoBehaviour {
         PrintLn("Requested sign out.");
         break;
       case "cancel":
-        PrintLn("Requesting to cancel auth.");  
+        PrintLn("Requesting to cancel auth.");
         PolyApi.CancelAuthentication();
         break;
       case "status":
@@ -430,7 +431,7 @@ public class PolyToolkitCmd : MonoBehaviour {
 
   private void CmdList(string[] args) {
     PolyListAssetsRequest req;
-    
+
     if (args.Length > 0 && args[0] == "featured") {
       // Default list request (featured).
       req = PolyListAssetsRequest.Featured();
@@ -475,7 +476,7 @@ public class PolyToolkitCmd : MonoBehaviour {
 
   private void CmdListMy(string[] args) {
     PolyListUserAssetsRequest req;
-    
+
     if (args.Length > 0 && args[0] == "newest") {
       // Default list request (newest).
       req = PolyListUserAssetsRequest.MyNewest();
@@ -602,7 +603,7 @@ public class PolyToolkitCmd : MonoBehaviour {
   private void CmdThumb(string[] args) {
     int index;
     if (args.Length == 0 || !int.TryParse(args[0], out index) || index < 0 || index >= currentResults.Count) {
-      PrintLn("*** Invalid index. Please specify the index of the asset whose thumbnail " + 
+      PrintLn("*** Invalid index. Please specify the index of the asset whose thumbnail " +
         "you wish to load (use the 'show' command to show the results).");
       return;
     }

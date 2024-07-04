@@ -28,7 +28,7 @@ public class TestRuntimeImport : MonoBehaviour {
   private const string CLIENT_ID = "3539303a373737363831393b2178617c60227d7f7b7966252a74226e296f2d29174315175" +
     "15716131b1c5a4d1b034f5f40421c545b5a515b5d4c495e4e5e515134242c376a26292a";
   private const string API_KEY = "41487862577c4474616e3b5f4b39466e5161732a4b645d5b495752557276274673196e74496173";
-
+  private const string BASE_URL = "https://icosa-api-django.ixxy.co.uk";
   private const string kAssetId = "15ARMT6StKO";
   private const string kGltf2AssetId = "5eiqgJe4rMb";
 
@@ -36,6 +36,7 @@ public class TestRuntimeImport : MonoBehaviour {
   private const string kAssetIdFromPoly = "aqCWHdQNAiL";
 
   private PolyAuthConfig authConfig = new PolyAuthConfig(
+    baseUrl: BASE_URL,
     apiKey: Deobfuscate(API_KEY),
     clientId: Deobfuscate(CLIENT_ID),
     clientSecret: Deobfuscate(CLIENT_SECRET));
@@ -60,7 +61,7 @@ public class TestRuntimeImport : MonoBehaviour {
 
     TestImport(kAssetIdFromPoly);
   }
-  
+
   public static string Deobfuscate(string input) {
     byte[] data = new byte[input.Length / 2];
     for (int i = 0; i < data.Length; i++) {

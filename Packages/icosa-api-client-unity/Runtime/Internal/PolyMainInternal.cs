@@ -58,6 +58,7 @@ namespace PolyToolkitInternal {
     /// API key for use with the Poly server.
     /// </summary>
     public string apiKey { get; private set; }
+    public string apiKeyUrlParam => string.IsNullOrEmpty(apiKey) ? "" : $"key={apiKey}";
 
     /// <summary>
     /// The web request manager, which handles any Poly web requests we need to make.
@@ -119,12 +120,13 @@ namespace PolyToolkitInternal {
       authConfig = authConfig ?? PtSettings.Instance.authConfig;
       cacheConfig = cacheConfig ?? PtSettings.Instance.cacheConfig;
 
-      // Check that the user actually set up their API key in authConfig, and didn't just leave the default
-      // value in (the placeholder value starts with "**" so that's what we check for).
-      if (string.IsNullOrEmpty(authConfig.Value.apiKey) || authConfig.Value.apiKey.StartsWith("**")) {
-        throw new System.Exception("API Key not configured. Set your API key in in Poly Toolkit " +
-            "Settings ('Runtime' section).");
-      }
+      // Icosa doesn't currently need an API key
+      // // Check that the user actually set up their API key in authConfig, and didn't just leave the default
+      // // value in (the placeholder value starts with "**" so that's what we check for).
+      // if (string.IsNullOrEmpty(authConfig.Value.apiKey) || authConfig.Value.apiKey.StartsWith("**")) {
+      //   throw new System.Exception("API Key not configured. Set your API key in in Poly Toolkit " +
+      //       "Settings ('Runtime' section).");
+      // }
 
       this.apiKey = authConfig.Value.apiKey;
       backgroundMain = gameObject.AddComponent<BackgroundMain>();
