@@ -26,7 +26,7 @@ namespace PolyToolkitEditor {
 /// </summary>
 [CustomEditor(typeof(PtSettings))]
 public class PtSettingsEditor : Editor {
-  private const string TITLE = "Poly Toolkit Settings";
+  private const string TITLE = "Icosa Toolkit Settings";
 
   private TabDescriptor[] tabs;
   private string[] tabTitles;
