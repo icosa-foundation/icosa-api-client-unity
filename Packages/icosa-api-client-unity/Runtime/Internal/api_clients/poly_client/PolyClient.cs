@@ -446,7 +446,6 @@ namespace PolyToolkitInternal.api_clients.poly_client {
     ///   Forms a GET request from a HTTP path.
     /// </summary>
     public UnityWebRequest GetRequest(string path, string contentType) {
-      Debug.Log($"GET: {path}");
       // The default constructor for a UnityWebRequest gives a GET request.
       UnityWebRequest request = new UnityWebRequest(path);
       request.SetRequestHeader("Content-type", contentType);
