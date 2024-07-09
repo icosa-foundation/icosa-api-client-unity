@@ -19,7 +19,7 @@ using PolyToolkit;
 
 /// <summary>
 /// Simple example that loads and displays one asset.
-/// 
+///
 /// This example requests a specific asset and displays it.
 /// </summary>
 public class HelloPoly : MonoBehaviour {
@@ -32,13 +32,15 @@ public class HelloPoly : MonoBehaviour {
   //
   // This example does not use authentication, so there is no need to fill in a Client ID or Client Secret.
 
+  public string assetId = "2Uh3mcX2PHX";  // The asset to load.
+
   // Text where we display the current status.
   public Text statusText;
 
   private void Start() {
     // Request the asset.
     Debug.Log("Requesting asset...");
-    PolyApi.GetAsset("assets/5vbJ5vildOq", GetAssetCallback);
+    PolyApi.GetAsset($"assets/{assetId}", GetAssetCallback);
     statusText.text = "Requesting...";
   }
 
