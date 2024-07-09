@@ -2,9 +2,14 @@
 # Icosa API Client for Unity
 ### based on Google Poly Toolkit for Unity
 
-Copyright (c) 2017 Google Inc. All rights reserved.
+Original Copyright (c) 2017 Google Inc. All rights reserved.
 
-# Original Readme:
+Additional code and modifications by Icosa Foundation 2024
+
+**Install via Unity Package Manager.**
+
+
+# Original Readme: Mostly out of date now
 
 This is the source code for Poly Toolkit, a plugin for the
 [Unity](http://unity3d.com) engine that allows you to
