@@ -20,7 +20,7 @@ using PolyToolkit;
 
 /// <summary>
 /// Example that shows the top 5 featured models.
-/// 
+///
 /// This example requests the list of featured assets from Poly. Then it imports the top 5
 /// into the scene, side by side.
 /// </summary>
@@ -75,7 +75,7 @@ public class ShowFeaturedExample : MonoBehaviour {
 
     // Now let's get the first 5 featured assets and put them on the scene.
     List<PolyAsset> assetsInUse = new List<PolyAsset>();
-    for (int i = 0; i < Mathf.Min(5, result.Value.assets.Count); i++) {
+    for (int i = 0; i < Mathf.Min(10, result.Value.assets.Count); i++) {
       // Import this asset.
       PolyApi.Import(result.Value.assets[i], options, ImportAssetCallback);
       assetsInUse.Add(result.Value.assets[i]);
