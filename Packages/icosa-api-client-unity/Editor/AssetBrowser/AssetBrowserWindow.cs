@@ -38,7 +38,7 @@ public class AssetBrowserWindow : EditorWindow {
   /// <summary>
   /// URL of the user's profile page.
   /// </summary>
-  private const string USER_PROFILE_URL = "https://poly.google.com/user";
+  private const string USER_PROFILE_URL = "https://icosa.gallery/user";
 
   /// <summary>
   /// Width and height of each asset thumbnail image in the grid.
@@ -106,7 +106,7 @@ public class AssetBrowserWindow : EditorWindow {
   /// Texture to use for the title bar.
   /// </summary>
   private const string TITLE_TEX = "Editor/Textures/PolyToolkitTitle.png";
-  
+
   /// <summary>
   /// Texture to use for the back button (back arrow) if the skin is Unity pro.
   /// </summary>
@@ -116,12 +116,12 @@ public class AssetBrowserWindow : EditorWindow {
   /// Texture to use for the back button (back arrow) if the skin is Unity personal.
   /// </summary>
   private const string BACK_ARROW_DARK_TEX = "Editor/Textures/BackArrowDark.png";
-  
+
   /// <summary>
   /// Texture to use for the back button bar background if the skin is Unity pro.
   /// </summary>
   private const string DARK_GREY_TEX = "Editor/Textures/DarkGrey.png";
-  
+
   /// <summary>
   /// Texture to use for the back button bar background if the skin is Unity personal.
   /// </summary>
@@ -202,12 +202,12 @@ public class AssetBrowserWindow : EditorWindow {
   /// The texture to use in place of a thumbnail when loading the thumbnail.
   /// </summary>
   private Texture2D loadingTex = null;
-  
+
   /// <summary>
   /// The texture to use for the back button (back arrow).
   /// </summary>
   private Texture2D backArrowTex = null;
-  
+
   /// <summary>
   /// Texture used for back button bar background.
   /// </summary>
@@ -297,7 +297,7 @@ public class AssetBrowserWindow : EditorWindow {
   /// </summary>
   /// <param name="assetId">The ID of the asset that was just imported.</param>
   public void HandleAssetImported(string assetId) {
-    if (selectedAsset != null && assetId == selectedAsset.name) {
+    if (selectedAsset != null && assetId == selectedAsset.assetId) {
       justImported = true;
     }
   }
@@ -417,8 +417,8 @@ public class AssetBrowserWindow : EditorWindow {
   /// </summary>
   private void DrawTitleBar(bool withSignInUi) {
     GUI.DrawTexture(new Rect(0, 0, position.width, TITLE_BAR_HEIGHT), Texture2D.whiteTexture);
-    
-    GUIStyle titleStyle = new GUIStyle (GUI.skin.label); 
+
+    GUIStyle titleStyle = new GUIStyle (GUI.skin.label);
     titleStyle.margin = new RectOffset(TITLE_IMAGE_PADDING, TITLE_IMAGE_PADDING, TITLE_IMAGE_PADDING,
       TITLE_IMAGE_PADDING);
     if (GUILayout.Button(titleTex, titleStyle,
@@ -505,7 +505,7 @@ public class AssetBrowserWindow : EditorWindow {
       menu.ShowAsContext();
     }
     guiHelper.EndHorizontal();
-    
+
     // Draw the "Asset type" toggles.
     bool showAssetTypeFilter = (CATEGORIES[selectedCategory].key != KEY_YOUR_LIKES);
 
@@ -578,7 +578,7 @@ public class AssetBrowserWindow : EditorWindow {
     if (searchClicked && searchTerms.Trim().Length > 0) {
       // Note: for privacy reasons we don't log the search terms, just the fact that a search was made.
       PtAnalytics.SendEvent(PtAnalytics.Action.BROWSE_SEARCHED);
-      
+
       string assetId;
       if (SearchTermIsAssetPage(searchTerms, out assetId)) {
         manager.StartRequestForSpecificAsset(assetId);
@@ -621,7 +621,7 @@ public class AssetBrowserWindow : EditorWindow {
     }
 
     if (manager.CurrentResult == null) {
-      return; 
+      return;
     }
 
     if (manager.CurrentResult != null && !manager.CurrentResult.Status.ok) {
@@ -641,7 +641,7 @@ public class AssetBrowserWindow : EditorWindow {
 
       return;
     }
-    
+
     if (manager.CurrentResult.Value.assets == null ||
         manager.CurrentResult.Value.assets.Count == 0) {
       GUILayout.Space(30);
@@ -724,7 +724,7 @@ public class AssetBrowserWindow : EditorWindow {
 
     guiHelper.EndHorizontal();
     GUILayout.Space(10);
-    
+
     bool loadMoreClicked = false;
     if (manager.resultHasMorePages) {
       // If the current response has at least another page of results left, show the load more button.
@@ -738,7 +738,7 @@ public class AssetBrowserWindow : EditorWindow {
 
     guiHelper.EndVertical();
     guiHelper.EndScrollView();
-    
+
     if (loadMoreClicked) {
       manager.GetNextPageRequest();
       return;
@@ -859,7 +859,7 @@ public class AssetBrowserWindow : EditorWindow {
     }
    } else if (mode == UiMode.SEARCH) {
     PolyListAssetsRequest request = new PolyListAssetsRequest();
-    request.keywords = searchTerms; 
+    request.keywords = searchTerms;
     manager.StartRequest(request);
    } else {
     throw new System.Exception("Unexpected UI mode for StartQuery: " + mode);
@@ -915,14 +915,14 @@ public class AssetBrowserWindow : EditorWindow {
 
     detailsScrollPos = guiHelper.BeginScrollView(detailsScrollPos);
     const float width = 150;
-    
+
     guiHelper.BeginHorizontal();
     GUILayout.Label(selectedAsset.displayName, detailsTitleStyle);
     guiHelper.EndHorizontal();
 
     guiHelper.BeginHorizontal();
     GUILayout.Label(selectedAsset.authorName, EditorStyles.wordWrappedLabel);
-    
+
     GUILayout.FlexibleSpace();
     if (GUILayout.Button("View on Web", GUILayout.MaxWidth(100))) {
       PtAnalytics.SendEvent(PtAnalytics.Action.BROWSE_VIEW_ON_WEB);
@@ -970,7 +970,7 @@ public class AssetBrowserWindow : EditorWindow {
       guiHelper.EndScrollView();
       return;
     }
-    
+
     GUILayout.Space(5);
     GUILayout.Label("Import Options", EditorStyles.boldLabel);
     GUILayout.Space(5);
@@ -1000,7 +1000,7 @@ public class AssetBrowserWindow : EditorWindow {
       PtSettings.Instance.defaultImportOptions.alsoInstantiate = importOptions.alsoInstantiate;
     }
     SendImportOptionMutationAnalytics(oldOptions, importOptions);
-    
+
     GUILayout.Space(10);
     GUILayout.Box("", GUILayout.ExpandWidth(true), GUILayout.Height(1));
     GUILayout.Space(10);
@@ -1013,7 +1013,7 @@ public class AssetBrowserWindow : EditorWindow {
     GUILayout.FlexibleSpace();
     guiHelper.EndHorizontal();
     GUILayout.Space(5);
-    
+
     if (!File.Exists(PtUtils.ToAbsolutePath(ptAssetLocalPath))) {
       GUILayout.Label(PolyInternalUtils.ATTRIBUTION_NOTICE, EditorStyles.wordWrappedLabel);
     } else {

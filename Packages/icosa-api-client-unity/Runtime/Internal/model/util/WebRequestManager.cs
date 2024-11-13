@@ -26,7 +26,7 @@ namespace PolyToolkitInternal.client.model.util {
   /// <summary>
   /// Manages web requests, limiting how many can happen simultaneously at any given time and re-using
   /// buffers as much as possible to avoid reallocation and garbage collection.
-  /// 
+  ///
   /// Not *all* web requests must be routed through this class. Small, infrequent web requests can be made directly
   /// via UnityWebRequest without using this class. However, larger or frequent requests should use this, since this
   /// will avoid the expensive allocation of numerous download buffers (a typical UnityWebRequest allocates many
@@ -230,6 +230,7 @@ namespace PolyToolkitInternal.client.model.util {
         bool cacheHit = false;
         byte[] cacheData = null;
         bool cacheReadDone = false;
+        Debug.Log(webRequest.url);
         cache.RequestRead(webRequest.url, request.maxAgeMillis, (bool success, byte[] data) => {
           cacheHit = success;
           cacheData = data;

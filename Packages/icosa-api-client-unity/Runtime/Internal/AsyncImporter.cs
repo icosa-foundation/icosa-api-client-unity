@@ -77,7 +77,7 @@ public class AsyncImporter : MonoBehaviour {
 
   private static void BackgroundThreadProc(object userData) {
     ImportOperation operation = (ImportOperation)userData;
-    try {  
+    try {
       using (TextReader reader = new StreamReader(new MemoryStream(operation.format.root.contents), Encoding.UTF8)) {
         operation.importState = ImportGltf.BeginImport(
           operation.format.formatType == PolyFormatType.GLTF ? GltfSchemaVersion.GLTF1 : GltfSchemaVersion.GLTF2,
@@ -105,7 +105,7 @@ public class AsyncImporter : MonoBehaviour {
       if (finishedOperations.Count == 0) return;
       operation = finishedOperations.Dequeue();
     }
-    
+
     if (!operation.status.ok) {
       // Import failed.
       operation.callback(operation.status, root: null, meshCreator: null);

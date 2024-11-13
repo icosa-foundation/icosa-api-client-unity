@@ -64,7 +64,7 @@ namespace PolyToolkitInternal {
       long cacheAgeMaxMillis = asset.IsMutable ? 0 : CACHE_MAX_AGE_MILLIS;
       PolyMainInternal.Instance.webRequestManager.EnqueueRequest(MakeRequest, ProcessResponse, cacheAgeMaxMillis);
     }
-    
+
     private UnityWebRequest MakeRequest() {
       string url = asset.thumbnail.url;
       // If an image size hint was provided, forward it to the server if the server supports it.
@@ -83,7 +83,7 @@ namespace PolyToolkitInternal {
         asset.thumbnailTexture.LoadImage(data);
       } else {
         Debug.LogWarningFormat("Failed to fetch thumbnail for asset {0} ({1}): {2}",
-            asset.name, asset.displayName, status);
+            asset.assetId, asset.displayName, status);
       }
       if (callback != null) {
         callback(asset, status);

@@ -242,7 +242,7 @@ namespace PolyToolkitInternal {
       PolyFormat gltfFormat = asset.GetFormatIfExists(PolyFormatType.GLTF);
       PolyFormat gltf2Format = asset.GetFormatIfExists(PolyFormatType.GLTF_2);
 
-      if (gltf2Format != null && gltfFormat == null) {
+      if (gltf2Format != null) {
         FetchAndImportFormat(asset, gltf2Format, options, callback);
       } else if (gltfFormat != null) {
         FetchAndImportFormat(asset, gltfFormat, options, callback);

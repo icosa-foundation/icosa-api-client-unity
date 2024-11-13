@@ -543,7 +543,7 @@ public class PolyToolkitCmd : MonoBehaviour {
     for (int i = 0; i < currentResults.Count; i++) {
       PolyAsset asset = currentResults[i];
       PrintLn("[{0}]: {1}\n  ID: {2}\n  Author: {3}\n  Formats: {4}\n",
-        i, asset.displayName, asset.name, asset.authorName,
+        i, asset.displayName, asset.assetId, asset.authorName,
         FormatListToString(asset.formats));
     }
   }
@@ -576,10 +576,10 @@ public class PolyToolkitCmd : MonoBehaviour {
     PrintLn("Importing asset... May take a while. Please wait!");
     PolyApi.Import(assetToImport, options, (PolyAsset asset, PolyStatusOr<PolyImportResult> result) => {
       if (!result.Ok) {
-        PrintLn("ERROR: failed to import {0}: {1}", asset.name, result.Status);
+        PrintLn("ERROR: failed to import {0}: {1}", asset.assetId, result.Status);
         return;
       }
-      PrintLn("Successfully imported asset '{0}' ({1})", asset.name, asset.displayName);
+      PrintLn("Successfully imported asset '{0}' ({1})", asset.assetId, asset.displayName);
 
       if (currentAsset != null) {
         Destroy(currentAsset);
@@ -611,13 +611,13 @@ public class PolyToolkitCmd : MonoBehaviour {
     PrintLn("Fetching thumbnail... Please wait.");
     PolyApi.FetchThumbnail(assetToUse, (PolyAsset asset, PolyStatus status) => {
       if (status.ok) {
-        PrintLn("Successfully fetched thumbnail for asset '{0}'", asset.name);
+        PrintLn("Successfully fetched thumbnail for asset '{0}'", asset.assetId);
         imageDisplay.sprite = Sprite.Create(asset.thumbnailTexture,
           new Rect(0, 0, asset.thumbnailTexture.width, asset.thumbnailTexture.height),
           Vector2.zero);
         imageDisplay.gameObject.SetActive(true);
       } else {
-        PrintLn("*** Error loading thumbnail for asset '{0}': {1}", asset.name, status);
+        PrintLn("*** Error loading thumbnail for asset '{0}': {1}", asset.assetId, status);
       }
     });
   }
