@@ -290,9 +290,9 @@ public static class PolyApi {
   /// </summary>
   private static void CheckInitialized() {
     if (!initialized) {
-      throw new Exception("Poly Toolkit runtime API not initialized. You must have a PolyToolkitManager in your " +
+      throw new Exception("Icosa Toolkit runtime API not initialized. You must have a PolyToolkitManager in your " +
         "scene and wait until after its Awake() method runs, or explicitly call PolyApi.Init() before " +
-        "using Poly API methods.");
+        "using Icosa API methods.");
     }
   }
 
