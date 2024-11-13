@@ -137,9 +137,10 @@ public static class PtUtils {
   /// <param name="relativePath">The relative path were the texture is located. For example,
   /// this could be Editor/Textures/PolyToolkitTitle.png.</param>
   /// <returns>The texture.</returns>
-  public static Texture2D LoadTexture2DFromRelativePath(string relativePath) {
-    string basePath = PtUtils.GetPtBaseLocalPath();
-    return AssetDatabase.LoadAssetAtPath<Texture2D>(Path.Combine(basePath, relativePath));
+  public static Texture2D LoadTexture2DFromRelativePath(string relativePath)
+  {
+    var path = $"Packages/com.icosa.icosa-api-client-unity/{relativePath}";
+    return AssetDatabase.LoadAssetAtPath<Texture2D>(path);
   }
 }
 }
