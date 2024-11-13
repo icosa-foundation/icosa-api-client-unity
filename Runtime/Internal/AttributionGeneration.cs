@@ -26,7 +26,7 @@ public static class AttributionGeneration {
   /// File header.
   /// </summary>
   public static readonly string FILE_HEADER =
-    "This project uses the following items from Poly (http://poly.google.com):";
+    "This project uses the following items from Icosa Gallery (http://icosa.gallery):";
   /// <summary>
   /// Information on the Creative Commons license for the attribution file.
   /// </summary>

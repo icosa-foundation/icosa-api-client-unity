@@ -45,7 +45,7 @@ public static class PolyApi {
     Shutdown();
     PtSettings.Init();
     PolyMainInternal.Init(authConfig, cacheConfig);
-    Authenticator.Initialize(authConfig ?? PtSettings.Instance.authConfig);  
+    Authenticator.Initialize(authConfig ?? PtSettings.Instance.authConfig);
     initialized = true;
   }
 
@@ -200,13 +200,13 @@ public static class PolyApi {
   /// <summary>
   /// Gets an asset by name (id).
   /// </summary>
-  /// <param name="name">The name (id) of the asset to get. Note that even though this
+  /// <param name="assetId">The name (id) of the asset to get. Note that even though this
   /// is called 'name', it does not mean the asset's display name, but its unique ID.
   /// Example: "assets/5vbJ5vildOq".</param>
   /// <param name="callback">The callback to call when the request finishes.</param>
-  public static void GetAsset(string name, GetAssetCallback callback) {
+  public static void GetAsset(string assetId, GetAssetCallback callback) {
     CheckInitialized();
-    PolyMainInternal.Instance.GetAsset(name, callback);
+    PolyMainInternal.Instance.GetAsset(assetId, callback);
   }
 
   /// <summary>
@@ -295,7 +295,7 @@ public static class PolyApi {
         "using Poly API methods.");
     }
   }
-  
+
   /// <summary>
   /// Clears the local web cache. This is asynchronous (the cache will be cleared in the background).
   /// </summary>
@@ -313,7 +313,7 @@ public static class PolyApi {
   /// of assets imported at runtime that you are using in your scene or project.</param>
   public static string GenerateAttributions(bool includeStatic = true, List<PolyAsset> runtimeAssets = null) {
     StringBuilder sb = new StringBuilder();
-    
+
     bool hasHeader = false;
     if (includeStatic) {
       // Append static file first, because it includes the header.

@@ -265,12 +265,16 @@ namespace PolyToolkitInternal.api_clients.poly_client {
         return PolyStatus.Error("Asset has no visibility set.");
       }
 
-      polyAsset.name = asset["name"].ToString();
+      polyAsset.assetId = asset["assetId"].ToString();
+      polyAsset.displayName = asset["name"].ToString();
       polyAsset.authorName = asset["authorName"].ToString();
       if (asset["thumbnail"] != null) {
         IJEnumerable<JToken> thumbnailElements = asset["thumbnail"].AsJEnumerable();
-        polyAsset.thumbnail = new PolyFile(thumbnailElements["relativePath"].ToString(),
-          thumbnailElements["url"].ToString(), thumbnailElements["contentType"].ToString());
+        polyAsset.thumbnail = new PolyFile(
+          thumbnailElements["relativePath"]?.ToString(),
+          thumbnailElements["url"]?.ToString(),
+          thumbnailElements["contentType"]?.ToString()
+        );
       }
 
       if (asset["formats"] == null) {
@@ -407,13 +411,10 @@ namespace PolyToolkitInternal.api_clients.poly_client {
     ///   If true, this is a recursive call to this function, and no further retries should be attempted.
     /// </param>
     public void GetAsset(string assetId, Action<PolyStatus,PolyAsset> callback, bool isRecursion = false) {
-      // If the user passed in a raw asset ID (no "assets/" prefix), fix it.
-      if (!assetId.StartsWith("assets/")) {
-        assetId = "assets/" + assetId;
-      }
       PolyMainInternal.Instance.webRequestManager.EnqueueRequest(
         () => {
           string url = String.Format("{0}/v1/{1}?{2}", GetBaseUrl(), assetId, PolyMainInternal.Instance.apiKeyUrlParam);
+          Debug.Log(url);
           return GetRequest(url, "text/text");
         },
         (PolyStatus status, int responseCode, byte[] response) => {

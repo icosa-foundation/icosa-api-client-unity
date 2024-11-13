@@ -209,7 +209,7 @@ public class PolyImporter : AssetPostprocessor {
     // If this is a third-party asset, we need to update the attributions file.
     AttributionFileGenerator.Generate(/* showUi */ false);
 
-    EditorWindow.GetWindow<AssetBrowserWindow>().HandleAssetImported(request.polyAsset.name);
+    EditorWindow.GetWindow<AssetBrowserWindow>().HandleAssetImported(request.polyAsset.assetId);
 
     // Select the prefab in the editor so the user knows where it is.
     AssetDatabase.Refresh();

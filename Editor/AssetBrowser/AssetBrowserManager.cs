@@ -385,7 +385,7 @@ public class AssetBrowserManager
       PtDebug.Log("ABM: get asset request received result.");
       assetResult = result.Value;
 
-      if (!thumbnailCache.TryGet(assetResult.name, out assetResult.thumbnailTexture)) {
+      if (!thumbnailCache.TryGet(assetResult.assetId, out assetResult.thumbnailTexture)) {
         FetchThumbnail(assetResult);
       }
     } else {
@@ -402,7 +402,7 @@ public class AssetBrowserManager
     if (result.Ok) {
       List<PolyAsset> assetsMissingThumbnails = new List<PolyAsset>();
       foreach (PolyAsset asset in listAssetsResult.Value.assets) {
-        if (!thumbnailCache.TryGet(asset.name, out asset.thumbnailTexture)) {
+        if (!thumbnailCache.TryGet(asset.assetId, out asset.thumbnailTexture)) {
           assetsMissingThumbnails.Add(asset);
         }
       }
@@ -423,7 +423,7 @@ public class AssetBrowserManager
   /// </summary>
   private void OnThumbnailFetched(PolyAsset asset, PolyStatus status) {
     if (status.ok) {
-      thumbnailCache.Put(asset.name, asset.thumbnailTexture);
+      thumbnailCache.Put(asset.assetId, asset.thumbnailTexture);
       // Preserve the texture so it survives round-trips to play mode and back.
       asset.thumbnailTexture.hideFlags = HideFlags.HideAndDontSave;
     }
@@ -439,7 +439,7 @@ public class AssetBrowserManager
     HashSet<string> assetsInUse = new HashSet<string>();
     if (listAssetsResult == null || !listAssetsResult.Ok) return assetsInUse;
     foreach (var asset in listAssetsResult.Value.assets) {
-      assetsInUse.Add(asset.name);
+      assetsInUse.Add(asset.assetId);
     }
     return assetsInUse;
   }
@@ -453,7 +453,7 @@ public class AssetBrowserManager
   /// <param name="options">Import options.</param>
   public void StartDownloadAndImport(PolyAsset asset, string ptAssetLocalPath, EditTimeImportOptions options) {
     if (!assetsBeingDownloaded.Add(asset)) return;
-    PtDebug.LogFormat("ABM: starting to fetch asset {0} ({1}) -> {2}", asset.name, asset.displayName,
+    PtDebug.LogFormat("ABM: starting to fetch asset {0} ({1}) -> {2}", asset.assetId, asset.displayName,
       ptAssetLocalPath);
 
     // Prefer glTF1 to glTF2.
@@ -498,7 +498,7 @@ public class AssetBrowserManager
   private void OnFetchFinished(PolyStatus status, PolyAsset asset, bool isGltf2,
       string ptAssetLocalPath, EditTimeImportOptions options) {
     if (!status.ok) {
-      Debug.LogErrorFormat("Error fetching asset {0} ({1}): {2}", asset.name, asset.displayName, status);
+      Debug.LogErrorFormat("Error fetching asset {0} ({1}): {2}", asset.assetId, asset.displayName, status);
       EditorUtility.DisplayDialog("Download Error",
         string.Format("*** Error downloading asset '{0}'. Try again later.", asset.displayName), "OK");
       PtAnalytics.SendEvent(PtAnalytics.Action.IMPORT_FAILED, "Asset fetch failed");

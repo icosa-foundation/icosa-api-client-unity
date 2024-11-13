@@ -96,7 +96,7 @@ public static class PtUtils {
     return string.Format("{0}_{1}_{2}",
       SanitizeToUseAsFileName(asset.displayName),
       SanitizeToUseAsFileName(asset.authorName),
-      SanitizeToUseAsFileName(asset.name).Replace("assets_", ""));
+      SanitizeToUseAsFileName(asset.assetId).Replace("assets_", ""));
   }
 
   public static string GetPtBaseLocalPath() {

@@ -122,8 +122,9 @@ public static class ImportGltf {
 
   private static GltfRootBase DeserializeGltfRoot(GltfSchemaVersion gltfVersion, JsonTextReader reader) {
     switch (gltfVersion) {
-      case GltfSchemaVersion.GLTF1: {
-        var gltf1Root = kSerializer.Deserialize<Gltf1Root>(reader);
+      case GltfSchemaVersion.GLTF1:
+      {
+        Gltf1Root gltf1Root = kSerializer.Deserialize<Gltf1Root>(reader);
         if (gltf1Root == null || gltf1Root.nodes == null) {
           throw new Exception("Failed to parse GLTF1. File is empty or in the wrong format.");
         }
@@ -786,12 +787,12 @@ public static class ImportGltf {
           ChangeBasisAndApplyScale(data, Semantic.UnitlessVector, state.scaleFactor);
           mesh.normals = (Vector3[]) data;
           break;
-        case "COLOR": 
+        case "COLOR":
         case "COLOR_0": {
           Color[] colors = data as Color[];
           if (colors == null) {
             Debug.LogWarningFormat(
-                "Unsupported: color buffer of type {0}", 
+                "Unsupported: color buffer of type {0}",
                 data == null ? "null" : data.GetType().ToString());
             break;
           }

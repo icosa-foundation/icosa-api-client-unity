@@ -31,12 +31,18 @@ namespace PolyToolkit {
     /// <summary>
     /// Format of the URL to a particular asset, given its ID.
     /// </summary>
-    private const string URL_FORMAT = "https://poly.google.com/view/{0}";
+    private const string URL_FORMAT = "https://icosa.gallery/view/{0}";
     /// <summary>
-    /// Identifier for the asset. This is an alphanumeric string that identifies the asset,
-    /// but is not meant for display. For example, "assets/L1o2e3m4I5p6s7u8m".
+    /// For backwards compatibility with Poly API - same as assetId but with "assets/" prefix.
+    /// For example, "assets/L1o2e3m4I5p6s7u8m".
+    /// Not to be confused with displayName which is the human readable name
     /// </summary>
     public string name;
+    /// <summary>
+    /// Identifier for the asset. This is an alphanumeric string that identifies the asset,
+    /// but is not meant for display. For example, "L1o2e3m4I5p6s7u8m".
+    /// </summary>
+    public string assetId;
     /// <summary>
     /// Human-readable name of the asset.
     /// </summary>
@@ -119,7 +125,7 @@ namespace PolyToolkit {
     /// </summary>
     public string Url {
       get {
-        return string.Format(URL_FORMAT, name.Replace("assets/", ""));
+        return string.Format(URL_FORMAT, assetId);
       }
     }
 
@@ -424,7 +430,7 @@ namespace PolyToolkit {
       return AutoStringify.Stringify(this);
     }
   }
-  
+
   /// <summary>
   /// Represents a set of Poly request parameters determining which of the user's assets should be returned.
   /// null values mean "don't filter by this parameter".
@@ -436,11 +442,11 @@ namespace PolyToolkit {
     public PolyFormatFilter? formatFilter = null;
 
     public PolyListUserAssetsRequest() { }
-    
+
     /// <summary>
     /// Returns a ListUserAssetsRequest that requests the user's latest assets.
     /// </summary>
-    public static PolyListUserAssetsRequest MyNewest() { 
+    public static PolyListUserAssetsRequest MyNewest() {
       PolyListUserAssetsRequest myNewest = new PolyListUserAssetsRequest();
       myNewest.orderBy = PolyOrderBy.NEWEST;
       return myNewest;
@@ -466,11 +472,11 @@ namespace PolyToolkit {
     public string name = "me";
 
     public PolyListLikedAssetsRequest() { }
-    
+
     /// <summary>
     /// Returns a ListUserAssetsRequest that requests the user's most recently liked assets.
     /// </summary>
-    public static PolyListLikedAssetsRequest MyLiked() { 
+    public static PolyListLikedAssetsRequest MyLiked() {
       PolyListLikedAssetsRequest myLiked = new PolyListLikedAssetsRequest();
       myLiked.orderBy = PolyOrderBy.LIKED_TIME;
       return myLiked;
