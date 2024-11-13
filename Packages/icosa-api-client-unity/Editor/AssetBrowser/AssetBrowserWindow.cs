@@ -105,7 +105,7 @@ public class AssetBrowserWindow : EditorWindow {
   /// <summary>
   /// Texture to use for the title bar.
   /// </summary>
-  private const string TITLE_TEX = "Editor/Textures/PolyToolkitTitle.png";
+  private const string TITLE_TEX = "Editor/Textures/IcosaToolkitTitle.png";
 
   /// <summary>
   /// Texture to use for the back button (back arrow) if the skin is Unity pro.
@@ -513,7 +513,7 @@ public class AssetBrowserWindow : EditorWindow {
       guiHelper.BeginHorizontal();
       GUILayout.Label("Asset type:", GUILayout.Width(LEFT_COL_WIDTH));
       bool blocksToggle = GUILayout.Toggle(assetTypeFilter == PolyFormatFilter.BLOCKS, "Blocks", "Button");
-      bool tiltBrushToggle = GUILayout.Toggle(assetTypeFilter == PolyFormatFilter.TILT, "Tilt Brush", "Button");
+      bool tiltBrushToggle = GUILayout.Toggle(assetTypeFilter == PolyFormatFilter.TILT, "Open Brush", "Button");
       bool allToggle = GUILayout.Toggle(assetTypeFilter == null, "All", "Button");
       guiHelper.EndHorizontal();
       GUILayout.Space(10);

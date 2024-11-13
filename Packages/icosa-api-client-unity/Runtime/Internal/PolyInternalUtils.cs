@@ -24,7 +24,7 @@ namespace PolyToolkitInternal {
     public const string ATTRIBUTION_NOTICE =
         "IMPORTANT: Third-party assets are licensed through the Creative Commons license. When using any " +
         "third-party assets in your project, you are required to give proper attribution. For more information " +
-        "refer to https://goo.gl/CNVF5Z. By continuing, you agree to use assets in " +
+        "refer to https://creativecommons.org/share-your-work/use-remix/ By continuing, you agree to use assets in " +
         "accordance to their license.";
     /// <summary>
     /// Creates a singleton GameObject in a way that's appropriate for

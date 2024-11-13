@@ -25,17 +25,17 @@ public class WelcomeWindow : EditorWindow {
   /// <summary>
   /// Title of the window (shown in the Unity UI).
   /// </summary>
-  private const string WINDOW_TITLE = "Welcome to Poly Toolkit";
+  private const string WINDOW_TITLE = "Welcome to Icosa Toolkit";
 
   /// <summary>
   /// Texture to use for the welcome image.
   /// </summary>
-  private const string WELCOME_TEX = "Editor/Textures/PolyToolkitWelcome.png";
+  private const string WELCOME_TEX = "Editor/Textures/IcosaToolkitWelcome.png";
 
   /// <summary>
   /// URL for online documentation page.
   /// </summary>
-  private const string ONLINE_DOCUMENTATION_URL = "https://developers.google.com/poly/develop/unity";
+  private const string ONLINE_DOCUMENTATION_URL = "https://api.icosa.gallery/v1/docs";
 
   private const int DEFAULT_WIDTH = 500;
   private const int DEFAULT_HEIGHT = 500;
@@ -87,14 +87,14 @@ public class WelcomeWindow : EditorWindow {
 
     guiHelper.BeginArea(new Rect(PADDING, WELCOME_TEX_HEIGHT + PADDING,
         position.width - 2 * PADDING, position.height - 2 * PADDING));
-    GUILayout.Label("Welcome to Poly Toolkit!", EditorStyles.boldLabel);
+    GUILayout.Label("Welcome to Icosa Toolkit!", EditorStyles.boldLabel);
     GUILayout.Label("Version: " + PtSettings.Version);
     GUILayout.Space(10);
 
     GUILayout.Label(
-        "This toolkit allows you to import assets from Poly into your project " +
+        "This toolkit allows you to import assets from Icosa Gallery into your project " +
         "at edit time and at runtime.\n\n" +
-        "The Poly Toolkit window was added to your editor. You can use it as a separate " +
+        "The Icosa Toolkit window was added to your editor. You can use it as a separate " +
         "window or dock like any tool window. If you close it, you can access it again " +
         "from the Poly menu.\n\n" +
         PolyInternalUtils.ATTRIBUTION_NOTICE + "\n\n" +
