@@ -44,9 +44,9 @@ MonoBehaviour:
     type: 2}
   authConfig:
     apiKey: 
-    baseUrl: https://icosa-api.ixxy.co.uk
     clientId: 
     clientSecret: 
+    baseUrl: https://api.icosa.gallery
     additionalScopes: []
     serviceName: 
   cacheConfig:

@@ -29,7 +29,7 @@ namespace PolyToolkitDev {
 /// </summary>
 public class PolyToolkitCmd : MonoBehaviour {
   // These credentials are from a test project. Not the Poly Toolkit official project.
-  private string BASE_URL = "https://icosa-api-django.ixxy.co.uk";
+  private string BASE_URL = "https://api.icosa.gallery";
   private string API_KEY = "AIzaSyDfWJ9E2Vgee4hHnyNB6zV3WRf5L5unfZs";
   private string CLIENT_ID = "110645446910-8duhhimg4ups5k45vsri2de8ndlnni86.apps.googleusercontent.com";
   private string CLIENT_SECRET = "n0ctCDTVn4xxkws9_BKgnle7";
