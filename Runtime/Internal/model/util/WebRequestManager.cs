@@ -230,7 +230,6 @@ namespace PolyToolkitInternal.client.model.util {
         bool cacheHit = false;
         byte[] cacheData = null;
         bool cacheReadDone = false;
-        Debug.Log(webRequest.url);
         cache.RequestRead(webRequest.url, request.maxAgeMillis, (bool success, byte[] data) => {
           cacheHit = success;
           cacheData = data;
