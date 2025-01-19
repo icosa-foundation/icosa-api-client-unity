@@ -71,7 +71,7 @@ namespace PolyToolkitInternal {
       if (options.requestedImageSize > 0 && url.Contains(".googleusercontent.com/")) {
         url += "=s" + Mathf.Clamp(options.requestedImageSize, MIN_REQUESTED_SIZE, MAX_REQUESTED_SIZE);
       }
-      return PolyMainInternal.Instance.polyClient.GetRequest(url, "image/png");
+      return PolyMainInternal.Instance.polyClient.GetRequest(url);
     }
 
     private void ProcessResponse(PolyStatus status, int responseCode, byte[] data) {
