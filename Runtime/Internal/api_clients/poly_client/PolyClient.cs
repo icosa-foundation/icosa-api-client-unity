@@ -124,8 +124,10 @@ namespace PolyToolkitInternal.api_clients.poly_client {
     private static string MakeSearchUrl(PolyListAssetsRequest listAssetsRequest) {
       StringBuilder sb = new StringBuilder();
       sb.Append(GetBaseUrl())
-        .Append("/v1/assets")
-        .AppendFormat("?key={0}", WWW.EscapeURL(PolyMainInternal.Instance.apiKey));
+        .Append("/v1/assets");
+
+      sb.AppendFormat("?order_by={0}", WWW.EscapeURL(ORDER_BY[listAssetsRequest.orderBy]));
+      sb.AppendFormat("&page_size={0}", listAssetsRequest.pageSize.ToString());
 
       if (listAssetsRequest.formatFilter != null) {
         sb.AppendFormat("&format={0}", WWW.EscapeURL(FORMAT_FILTER[listAssetsRequest.formatFilter.Value]));
@@ -147,8 +149,6 @@ namespace PolyToolkitInternal.api_clients.poly_client {
         sb.AppendFormat("&max_complexity={0}", WWW.EscapeURL(MAX_COMPLEXITY[listAssetsRequest.maxComplexity]));
       }
 
-      sb.AppendFormat("&order_by={0}", WWW.EscapeURL(ORDER_BY[listAssetsRequest.orderBy]));
-      sb.AppendFormat("&page_size={0}", listAssetsRequest.pageSize.ToString());
       if (listAssetsRequest.pageToken != null) {
         sb.AppendFormat("&page_token={0}", WWW.EscapeURL(listAssetsRequest.pageToken));
       }
@@ -378,7 +378,7 @@ namespace PolyToolkitInternal.api_clients.poly_client {
     public void SendRequest(PolyRequest request, Action<PolyStatus, PolyListAssetsResult> callback,
       long maxCacheAge = DEFAULT_QUERY_CACHE_MAX_AGE_MILLIS, bool isRecursion = false) {
       PolyMainInternal.Instance.webRequestManager.EnqueueRequest(
-        () => { return GetRequest(MakeSearchUrl(request), "text/text"); },
+        () => { return GetRequest(MakeSearchUrl(request)); },
         (PolyStatus status, int responseCode, byte[] response) => {
           // Retry the request if this was the first failure. The failure may be a server blip, or may indicate
           // an authentication token has become stale and must be refreshed.
@@ -414,8 +414,7 @@ namespace PolyToolkitInternal.api_clients.poly_client {
       PolyMainInternal.Instance.webRequestManager.EnqueueRequest(
         () => {
           string url = String.Format("{0}/v1/{1}?{2}", GetBaseUrl(), assetId, PolyMainInternal.Instance.apiKeyUrlParam);
-          Debug.Log(url);
-          return GetRequest(url, "text/text");
+          return GetRequest(url);
         },
         (PolyStatus status, int responseCode, byte[] response) => {
           if (responseCode < 200 || responseCode > 299 || !status.ok) {
@@ -446,13 +445,20 @@ namespace PolyToolkitInternal.api_clients.poly_client {
     /// <summary>
     ///   Forms a GET request from a HTTP path.
     /// </summary>
-    public UnityWebRequest GetRequest(string path, string contentType) {
+    public UnityWebRequest GetRequest(string path, string contentType = null, bool requiresAuth = false) {
       // The default constructor for a UnityWebRequest gives a GET request.
       UnityWebRequest request = new UnityWebRequest(path);
-      request.SetRequestHeader("Content-type", contentType);
-      string token = PolyMainInternal.Instance.GetAccessToken();
-      if (token != null) {
-        request.SetRequestHeader("Authorization", string.Format("Bearer {0}", token));
+      if (contentType != null)
+      {
+        request.SetRequestHeader("Content-type", contentType);
+      }
+
+      if (requiresAuth)
+      {
+        string token = PolyMainInternal.Instance.GetAccessToken();
+        if (token != null) {
+          request.SetRequestHeader("Authorization", string.Format("Bearer {0}", token));
+        }
       }
       return request;
     }
@@ -472,7 +478,6 @@ namespace PolyToolkitInternal.api_clients.poly_client {
         result = null;
         return PolyStatus.Error("Failed to parse Poly API response, encountered exception: {0}", ex.Message);
       }
-
     }
   }
 }
