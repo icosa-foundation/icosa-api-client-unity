@@ -190,8 +190,8 @@ public static class ImportGltf {
 
         // Allow the glTF to define the limit of PT's data forward-compatibility
         if (root.asset.extras != null) {
-          string requiredPtVersion;
-          root.asset.extras.TryGetValue("requiredPolyToolkitVersion", out requiredPtVersion);
+          root.asset.extras.TryGetValue("requiredPolyToolkitVersion", out object tempOutVal);
+          string requiredPtVersion = tempOutVal?.ToString() ?? "";
           if (requiredPtVersion != null) {
             Match match = Regex.Match(requiredPtVersion, @"^([0-9]+)\.([0-9]+)");
             if (match.Success) {

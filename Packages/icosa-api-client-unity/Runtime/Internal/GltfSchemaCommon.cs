@@ -120,7 +120,7 @@ public class GltfJsonContractResolver : DefaultContractResolver {
 [Serializable]
 public class GltfAsset {
   public Dictionary<string, string> extensions;
-  public Dictionary<string, string> extras;
+  public Dictionary<string, object> extras;
   public string copyright;
   public string generator;
   public bool premultipliedAlpha;
@@ -252,7 +252,7 @@ public abstract class GltfNodeBase {
 }
 
 public abstract class GltfSceneBase {
-  public Dictionary<string, string> extras;
+  public Dictionary<string, object> extras;
 
   public abstract IEnumerable<GltfNodeBase> Nodes { get; }
 }
