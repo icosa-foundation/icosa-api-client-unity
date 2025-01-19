@@ -395,7 +395,7 @@ public class AssetBrowserWindow : EditorWindow {
   /// <returns>True if the header was successfully drawn and rendering should continue.
   /// False if it was aborted due to a back button press.</returns>
   private bool DrawHeader(out int topMargin) {
-    DrawTitleBar(withSignInUi: true);
+    DrawTitleBar(withSignInUi: false); // TODO Update signin for Icosa device code flow
     bool hasBackButtonBar = HasBackButtonBar();
     topMargin = TOP_MARGIN_BASE;
     if (hasBackButtonBar) {
