@@ -20,6 +20,7 @@ using System.IO;
 using System.Linq;
 
 using PolyToolkit;
+using UnityEngine;
 
 namespace PolyToolkitInternal {
 
@@ -235,8 +236,13 @@ public class FormatLoader : IUriLoader {
   public IBufferReader Load(string uri) {
     // The file loader throws a FileNotFound exception if it's not found
     // Analagously, this throws some sort of linq exception if there is no First()
-    var resource = format.resources.Where(r => r.relativePath == uri).First();
-    return new Reader(resource.contents);
+    // TODO - the url unescaping is a sign that we need to clean our data?
+    var resource = format.resources.FirstOrDefault(r =>
+      Uri.UnescapeDataString(r.relativePath) == uri || r.relativePath == uri);
+    if (resource == null) {
+      Debug.LogError($"No resource found in {format.resources.FirstOrDefault()?.relativePath} or {format.resources.LastOrDefault()?.relativePath} for {uri}");
+    }
+    return resource == null ? null : new Reader(resource.contents);
   }
 
   public bool CanLoadImages() { return false; }
