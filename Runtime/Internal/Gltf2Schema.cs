@@ -216,10 +216,25 @@ public class Gltf2Material : GltfMaterialBase {
   public const string kAlphaModeMask = "MASK";
   public const string kAlphaModeBlend = "BLEND";
 
-  public Dictionary<string,string> extras;
+  public Dictionary<string, object> extras;
   [JsonIgnore] public int gltfIndex;
 
-  public override Dictionary<string,string> TechniqueExtras { get { return extras; } }
+  public override Dictionary<string, string> TechniqueExtras
+  {
+    get
+    {
+      // Convert each dictionary value of extras to a string
+      Dictionary<string, string> outExtras = new Dictionary<string, string>();
+      if (extras != null)
+      {
+        foreach (var kvp in extras)
+        {
+          outExtras[kvp.Key] = kvp.Value.ToString();
+        }
+      }
+      return outExtras;
+    }
+  }
 
   private IEnumerable<TextureInfo> TextureInfos {
     get {
