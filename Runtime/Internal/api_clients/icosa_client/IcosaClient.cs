@@ -421,6 +421,7 @@ namespace IcosaClientInternal.api_clients.icosa_client
 
         private static IcosaAssetLicense ParseIcosaAssetLicense(JToken token)
         {
+            Debug.Log($"token: {token}");
             if (token == null) return IcosaAssetLicense.UNKNOWN;
             var tokenValue = token.ToString();
             Enum.TryParse(tokenValue, out IcosaAssetLicense license);

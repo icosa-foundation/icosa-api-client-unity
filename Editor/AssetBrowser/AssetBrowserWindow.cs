@@ -24,7 +24,7 @@ using System.Text.RegularExpressions;
 namespace IcosaClientEditor
 {
     /// <summary>
-    /// Window that allows the user to browse and import Poly models.
+    /// Window that allows the user to browse and import Icosa models.
     ///
     /// Note that EditorWindow objects are created and deleted when the window is opened or closed, so this
     /// object can't be responsible for any background logic like importing assets, etc. It should only deal
@@ -35,7 +35,7 @@ namespace IcosaClientEditor
         /// <summary>
         /// Title of the window (shown in the Unity UI).
         /// </summary>
-        private const string WINDOW_TITLE = "Poly Toolkit";
+        private const string WINDOW_TITLE = "Icosa Client";
 
         /// <summary>
         /// URL of the user's profile page.
@@ -288,7 +288,6 @@ namespace IcosaClientEditor
         public static void BrowseIcosaAssets()
         {
             GetWindow<AssetBrowserWindow>(WINDOW_TITLE, /* focus */ true);
-            PtAnalytics.SendEvent(PtAnalytics.Action.MENU_BROWSE_ASSETS);
         }
 
         /// <summary>
@@ -376,7 +375,7 @@ namespace IcosaClientEditor
                 Initialize();
             }
 
-            // We have to check if Poly is ready every time (it's cheap to check). This is because Poly can be
+            // We have to check if Icosa is ready every time (it's cheap to check). This is because Poly can be
             // unloaded and wiped every time we enter or exit play mode.
             manager.EnsureIcosaIsReady();
 
@@ -494,7 +493,6 @@ namespace IcosaClientEditor
                 guiHelper.EndHorizontal();
                 if (cancelSignInClicked)
                 {
-                    PtAnalytics.SendEvent(PtAnalytics.Action.ACCOUNT_SIGN_IN_CANCEL);
                     manager.CancelSignIn();
                 }
             }
@@ -506,7 +504,6 @@ namespace IcosaClientEditor
                 GUILayout.FlexibleSpace();
                 if (GUILayout.Button("Sign in"))
                 {
-                    PtAnalytics.SendEvent(PtAnalytics.Action.ACCOUNT_SIGN_IN_START);
                     manager.LaunchSignInFlow();
                 }
 
@@ -530,7 +527,6 @@ namespace IcosaClientEditor
             if (searchClicked)
             {
                 SetUiMode(UiMode.SEARCH);
-                PtAnalytics.SendEvent(PtAnalytics.Action.BROWSE_SEARCH_CLICKED);
                 manager.ClearRequest();
                 return;
             }
@@ -570,21 +566,18 @@ namespace IcosaClientEditor
                 if (blocksToggle && assetTypeFilter != IcosaFormatFilter.BLOCKS)
                 {
                     assetTypeFilter = IcosaFormatFilter.BLOCKS;
-                    PtAnalytics.SendEvent(PtAnalytics.Action.BROWSE_ASSET_TYPE_SELECTED, assetTypeFilter.ToString());
                     StartRequest();
                     return;
                 }
                 else if (tiltBrushToggle && assetTypeFilter != IcosaFormatFilter.TILT)
                 {
                     assetTypeFilter = IcosaFormatFilter.TILT;
-                    PtAnalytics.SendEvent(PtAnalytics.Action.BROWSE_ASSET_TYPE_SELECTED, assetTypeFilter.ToString());
                     StartRequest();
                     return;
                 }
                 else if (allToggle && assetTypeFilter != null)
                 {
                     assetTypeFilter = null;
-                    PtAnalytics.SendEvent(PtAnalytics.Action.BROWSE_ASSET_TYPE_SELECTED, assetTypeFilter.ToString());
                     StartRequest();
                     return;
                 }
@@ -626,7 +619,7 @@ namespace IcosaClientEditor
 
             GUILayout.Space(10);
             GUILayout.Label("Search", EditorStyles.boldLabel);
-            GUILayout.Label("Enter search terms (or a Poly URL) below:", EditorStyles.wordWrappedLabel);
+            GUILayout.Label("Enter search terms (or an Icosa URL) below:", EditorStyles.wordWrappedLabel);
             GUI.SetNextControlName("searchTerms");
             searchTerms = EditorGUILayout.TextField(searchTerms, EditorStyles.textArea);
             guiHelper.BeginHorizontal();
@@ -637,7 +630,6 @@ namespace IcosaClientEditor
             if (searchClicked && searchTerms.Trim().Length > 0)
             {
                 // Note: for privacy reasons we don't log the search terms, just the fact that a search was made.
-                PtAnalytics.SendEvent(PtAnalytics.Action.BROWSE_SEARCHED);
 
                 string assetId;
                 if (SearchTermIsAssetPage(searchTerms, out assetId))
@@ -744,7 +736,6 @@ namespace IcosaClientEditor
 
             if (refreshClicked)
             {
-                PtAnalytics.SendEvent(PtAnalytics.Action.BROWSE_REFRESH_CLICKED);
                 manager.ClearCaches();
                 StartRequest();
                 return;
@@ -784,6 +775,7 @@ namespace IcosaClientEditor
                 }
 
                 GUILayout.Label(asset.displayName, EditorStyles.boldLabel, GUILayout.Width(CELL_WIDTH));
+                GUILayout.Label(asset.license.ToString(), detailsTitleStyle);
                 GUILayout.Label(asset.authorName, GUILayout.Width(CELL_WIDTH));
                 guiHelper.EndVertical();
                 assetsThisRow++;
@@ -831,8 +823,6 @@ namespace IcosaClientEditor
             if (clickedAsset != null)
             {
                 PrepareDetailsUi(clickedAsset);
-                PtAnalytics.SendEvent(PtAnalytics.Action.BROWSE_ASSET_DETAILS_CLICKED,
-                    GetAssetFormatDescription(selectedAsset));
                 SetUiMode(UiMode.DETAILS);
             }
         }
@@ -865,14 +855,12 @@ namespace IcosaClientEditor
             GenericMenu menu = new GenericMenu();
             menu.AddItem(new GUIContent("My Profile (web)"), /* on */ false, () =>
             {
-                PtAnalytics.SendEvent(PtAnalytics.Action.ACCOUNT_VIEW_PROFILE);
                 Application.OpenURL(USER_PROFILE_URL);
             });
             menu.AddSeparator("");
             menu.AddItem(new GUIContent("Sign Out"), /* on */ false, () =>
             {
                 IcosaApi.SignOut();
-                PtAnalytics.SendEvent(PtAnalytics.Action.ACCOUNT_SIGN_OUT);
                 // If the user was viewing a category that requires sign in, reset back to the home page.
                 if (queryRequiresAuth)
                 {
@@ -896,20 +884,18 @@ namespace IcosaClientEditor
             // tell them why they can't view it.
             if (CategoryRequiresAuth(selection) && !IcosaApi.IsAuthenticated)
             {
-                PtAnalytics.SendEvent(PtAnalytics.Action.BROWSE_MISSING_AUTH);
                 EditorUtility.DisplayDialog("Sign in required",
                     "To view your uploads or likes, you must sign in first.", "OK");
                 return;
             }
 
             selectedCategory = (int)userData;
-            PtAnalytics.SendEvent(PtAnalytics.Action.BROWSE_CATEGORY_SELECTED, CATEGORIES[selectedCategory].key);
 
             StartRequest();
         }
 
         /// <summary>
-        /// Builds and returns a PolyRequest from the current state of the AssetBrowswerWindow variables.
+        /// Builds and returns an IcosaRequest from the current state of the AssetBrowswerWindow variables.
         /// </summary>
         private IcosaRequest BuildRequest()
         {
@@ -1015,7 +1001,6 @@ namespace IcosaClientEditor
                 ptAssetLocalPath = (picked != null && picked is PtAsset)
                     ? AssetDatabase.GetAssetPath(picked)
                     : PtUtils.GetDefaultPtAssetPath(selectedAsset);
-                PtAnalytics.SendEvent(PtAnalytics.Action.IMPORT_LOCATION_CHANGED);
             }
 
             if (selectedAsset == null)
@@ -1031,6 +1016,7 @@ namespace IcosaClientEditor
 
             guiHelper.BeginHorizontal();
             GUILayout.Label(selectedAsset.displayName, detailsTitleStyle);
+            GUILayout.Label(selectedAsset.license.ToString(), detailsTitleStyle);
             guiHelper.EndHorizontal();
 
             guiHelper.BeginHorizontal();
@@ -1039,7 +1025,6 @@ namespace IcosaClientEditor
             GUILayout.FlexibleSpace();
             if (GUILayout.Button("View on Web", GUILayout.MaxWidth(100)))
             {
-                PtAnalytics.SendEvent(PtAnalytics.Action.BROWSE_VIEW_ON_WEB);
                 Application.OpenURL(selectedAsset.Url);
             }
 
@@ -1124,8 +1109,6 @@ namespace IcosaClientEditor
                 PtSettings.Instance.defaultImportOptions.alsoInstantiate = importOptions.alsoInstantiate;
             }
 
-            SendImportOptionMutationAnalytics(oldOptions, importOptions);
-
             GUILayout.Space(10);
             GUILayout.Box("", GUILayout.ExpandWidth(true), GUILayout.Height(1));
             GUILayout.Space(10);
@@ -1167,13 +1150,6 @@ namespace IcosaClientEditor
                 {
                     EditorUtility.DisplayDialog("Invalid import options", errorString, "OK");
                     return;
-                }
-
-                PtAnalytics.SendEvent(PtAnalytics.Action.IMPORT_STARTED, GetAssetFormatDescription(selectedAsset));
-                if (previousMode == UiMode.SEARCH)
-                {
-                    PtAnalytics.SendEvent(PtAnalytics.Action.IMPORT_STARTED_FROM_SEARCH,
-                        GetAssetFormatDescription(selectedAsset));
                 }
 
                 manager.StartDownloadAndImport(selectedAsset, ptAssetLocalPath, importOptions);
@@ -1260,43 +1236,6 @@ namespace IcosaClientEditor
 
             formatTypes.Sort();
             return string.Join(",", formatTypes.ToArray());
-        }
-
-        /// <summary>
-        /// Sends Analytics events for mutations in the given import options.
-        /// </summary>
-        /// <param name="before">The options before the mutation.</param>
-        /// <param name="after">The options after the mutation.</param>
-        private void SendImportOptionMutationAnalytics(EditTimeImportOptions before, EditTimeImportOptions after)
-        {
-            if (before.alsoInstantiate != after.alsoInstantiate)
-            {
-                PtAnalytics.SendEvent(PtAnalytics.Action.IMPORT_INSTANTIATE_TOGGLED, after.alsoInstantiate.ToString());
-            }
-
-            if (before.baseOptions.desiredSize != after.baseOptions.desiredSize)
-            {
-                PtAnalytics.SendEvent(PtAnalytics.Action.IMPORT_DESIRED_SIZE_SET,
-                    after.baseOptions.desiredSize.ToString());
-            }
-
-            if (before.baseOptions.recenter != after.baseOptions.recenter)
-            {
-                PtAnalytics.SendEvent(PtAnalytics.Action.IMPORT_RECENTER_TOGGLED,
-                    after.baseOptions.recenter.ToString());
-            }
-
-            if (before.baseOptions.rescalingMode != after.baseOptions.rescalingMode)
-            {
-                PtAnalytics.SendEvent(PtAnalytics.Action.IMPORT_SCALE_MODE_CHANGED,
-                    after.baseOptions.rescalingMode.ToString());
-            }
-
-            if (before.baseOptions.scaleFactor != after.baseOptions.scaleFactor)
-            {
-                PtAnalytics.SendEvent(PtAnalytics.Action.IMPORT_SCALE_FACTOR_CHANGED,
-                    after.baseOptions.scaleFactor.ToString());
-            }
         }
 
         private void OnDestroy()
