@@ -305,7 +305,7 @@ namespace IcosaClientInternal.api_clients.icosa_client
                 return IcosaStatus.Success();
             }
 
-            List<IcosaAsset> polyAssets = new List<IcosaAsset>();
+            List<IcosaAsset> icosaAssets = new List<IcosaAsset>();
             foreach (JToken asset in assets)
             {
                 IcosaAsset icosaAsset;
@@ -326,7 +326,7 @@ namespace IcosaClientInternal.api_clients.icosa_client
                 IcosaStatus parseStatus = ParseAsset(jObjectAsset, out icosaAsset);
                 if (parseStatus.ok)
                 {
-                    polyAssets.Add(icosaAsset);
+                    icosaAssets.Add(icosaAsset);
                 }
                 else
                 {
@@ -337,7 +337,7 @@ namespace IcosaClientInternal.api_clients.icosa_client
             var totalSize = results["totalSize"] != null ? int.Parse(results["totalSize"].ToString()) : 0;
             var nextPageToken = results["nextPageToken"] != null ? results["nextPageToken"].ToString() : null;
             icosaListAssetsResult =
-                new IcosaListAssetsResult(IcosaStatus.Success(), totalSize, polyAssets, nextPageToken);
+                new IcosaListAssetsResult(IcosaStatus.Success(), totalSize, icosaAssets, nextPageToken);
             return IcosaStatus.Success();
         }
 

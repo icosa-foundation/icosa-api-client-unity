@@ -26,7 +26,7 @@ namespace IcosaClientEditor
         /// <summary>
         /// Name of the Poly Toolkit manifest file.
         /// </summary>
-        private const string MANIFEST_FILE_NAME = "poly_toolkit_manifest.dat";
+        private const string MANIFEST_FILE_NAME = "icosa_toolkit_manifest.dat";
 
         /// <summary>
         /// Poly Toolkit base path (normally Assets/PolyToolkit, unless the user moved it).
@@ -118,13 +118,13 @@ namespace IcosaClientEditor
             if (basePath != null) return basePath;
             // Get the root path of the project. Something like C:\Foo\Bar\MyUnityProject
             string rootPath = Path.GetDirectoryName(Application.dataPath);
-            // Find the poly_toolkit_manifest.data file. That marks the installation path of Poly Toolkit.
+            // Find the icosa_toolkit_manifest.data file. That marks the installation path of Poly Toolkit.
             string[] matches = Directory.GetFiles(Path.Combine(Application.dataPath, "../Packages"), MANIFEST_FILE_NAME,
                 SearchOption.AllDirectories);
             if (matches == null || matches.Length == 0)
             {
                 throw new System.Exception(
-                    "Could not find base directory for Poly Toolkit (poly_toolkit_manifest.data missing).");
+                    "Could not find base directory for Icosa API Client (icosa_toolkit_manifest.data missing).");
             }
             else if (matches.Length > 1)
             {
