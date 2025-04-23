@@ -21,7 +21,7 @@ using System.Collections;
 namespace IcosaApiClient
 {
     /// <summary>
-    /// Represents a Poly asset (the information about a 3D object in Poly).
+    /// Represents a Icosa asset (the information about a 3D object in Icosa).
     /// </summary>
     /// <remarks>
     /// This is not the actual object that is added to the scene. This is just a container for
@@ -95,7 +95,7 @@ namespace IcosaApiClient
         public IcosaVisibility visibility;
 
         /// <summary>
-        /// If true, the asset was manually curated by the Poly team.
+        /// If true, the asset was manually curated by the Icosa team.
         /// </summary>
         public bool isCurated;
 
@@ -105,7 +105,7 @@ namespace IcosaApiClient
         public Texture2D thumbnailTexture;
 
         /// <summary>
-        /// Returns a PolyFormat of the given type, if it exists.
+        /// Returns a IcosaFormat of the given type, if it exists.
         /// If the asset has more than one format of the given type, returns the first one seen.
         /// If the asset does not have a format of the given type, returns null.
         /// </summary>
@@ -139,7 +139,7 @@ namespace IcosaApiClient
         }
 
         /// <summary>
-        /// Returns the Poly url of the asset.
+        /// Returns the Icosa url of the asset.
         /// </summary>
         public string Url
         {
@@ -244,7 +244,7 @@ namespace IcosaApiClient
     }
 
     /// <summary>
-    /// Represents a Poly file.
+    /// Represents an Icosa file.
     /// </summary>
     [AutoStringifiable]
     public class IcosaFile
@@ -325,7 +325,7 @@ namespace IcosaApiClient
     }
 
     /// <summary>
-    /// Possible format types that can be returned from the Poly REST API.
+    /// Possible format types that can be returned from the Icosa REST API.
     /// </summary>
     public enum IcosaFormatType
     {
@@ -353,7 +353,7 @@ namespace IcosaApiClient
     }
 
     /// <summary>
-    /// Visibility filters for a PolyListUserAssets request.
+    /// Visibility filters for a IcosaListUserAssets request.
     /// </summary>
     public enum IcosaVisibilityFilter
     {
@@ -374,7 +374,7 @@ namespace IcosaApiClient
     }
 
     /// <summary>
-    /// Visibility of a Poly asset.
+    /// Visibility of a Icosa asset.
     /// </summary>
     public enum IcosaVisibility
     {
@@ -390,7 +390,7 @@ namespace IcosaApiClient
 
         /// <summary>
         /// Read access to anyone who knows the asset ID (link to the asset), but the
-        /// logged-in user's unlisted assets are returned in PolyListUserAssets.
+        /// logged-in user's unlisted assets are returned in IcosaListUserAssets.
         /// </summary>
         UNLISTED = 2,
 
@@ -401,7 +401,7 @@ namespace IcosaApiClient
     }
 
     /// <summary>
-    /// Category of a Poly asset.
+    /// Category of a Icosa asset.
     /// </summary>
     public enum IcosaCategory
     {
@@ -427,7 +427,7 @@ namespace IcosaApiClient
         NEWEST,
         OLDEST,
 
-        // Liked time is only a valid in a PolyListLikedAssetsRequest.
+        // Liked time is only a valid in a IcosaListLikedAssetsRequest.
         LIKED_TIME
     }
 
@@ -477,7 +477,7 @@ namespace IcosaApiClient
     }
 
     /// <summary>
-    /// Represents a set of Poly request parameters determining which assets should be returned.
+    /// Represents a set of Icosa request parameters determining which assets should be returned.
     /// null values mean "don't filter by this parameter".
     /// </summary>
     [AutoStringifiable]
@@ -487,7 +487,7 @@ namespace IcosaApiClient
         public bool curated = false;
 
         /// <summary>
-        /// Category can be any of the PolyCategory object categories (e.g. "PolyCategory.ANIMALS").
+        /// Category can be any of the IcosaCategory object categories (e.g. "IcosaCategory.ANIMALS").
         /// </summary>
         public IcosaCategory category = IcosaCategory.UNSPECIFIED;
 
@@ -500,7 +500,7 @@ namespace IcosaApiClient
 
         /// <summary>
         /// Returns a ListAssetsRequest that requests the featured assets. This approximates what the
-        /// user would see in the Poly main page, but the ordering might be different.
+        /// user would see in the Icosa main page, but the ordering might be different.
         /// </summary>
         public static IcosaListAssetsRequest Featured()
         {
@@ -529,7 +529,7 @@ namespace IcosaApiClient
     }
 
     /// <summary>
-    /// Represents a set of Poly request parameters determining which of the user's assets should be returned.
+    /// Represents a set of Icosa request parameters determining which of the user's assets should be returned.
     /// null values mean "don't filter by this parameter".
     /// </summary>
     [AutoStringifiable]
@@ -560,7 +560,7 @@ namespace IcosaApiClient
     }
 
     /// <summary>
-    /// Represents a set of Poly request parameters determining which liked assets should be returned.
+    /// Represents a set of Icosa request parameters determining which liked assets should be returned.
     /// Currently, only requests for the liked assets of the logged in user are supported.
     /// null values mean "don't filter by this parameter".
     /// </summary>
@@ -788,7 +788,7 @@ namespace IcosaApiClient
     }
 
     /// <summary>
-    /// Represents the result of a PolyListAssetsRequest or PolyListUserAssetsRequest.
+    /// Represents the result of a IcosaListAssetsRequest or IcosaListUserAssetsRequest.
     /// </summary>
     [AutoStringifiable]
     public class IcosaListAssetsResult : IcosaBaseResult
@@ -837,7 +837,7 @@ namespace IcosaApiClient
         /// <summary>
         /// The main thread throttler object, if importing in "throttled" mode. This will be null if not
         /// in throttled mode. Enumerate this on the main thread to gradually perform necessary main
-        /// thread operations like creating meshes, textures, etc (see documentation for PolyImportOptions for
+        /// thread operations like creating meshes, textures, etc (see documentation for IcosaImportOptions for
         /// more details).
         ///
         /// IMPORTANT: this enumerator is not designed to be used across scene (level) loads. Always finish

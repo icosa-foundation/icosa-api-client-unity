@@ -24,7 +24,7 @@ namespace IcosaClientInternal.api_clients.icosa_client
         public delegate void GetRawFileDataBytesCallback(IcosaStatus status, byte[] fileData);
 
         /// <summary>
-        /// Gets raw file data from Poly given a data URL.
+        /// Gets raw file data from Icosa given a data URL.
         /// </summary>
         /// <param name="dataUrl">Data URL to retrieve from.</param>
         /// <param name="accessToken">The access token to use for authentication.</param>
@@ -50,7 +50,7 @@ namespace IcosaClientInternal.api_clients.icosa_client
         }
 
         /// <summary>
-        /// Gets raw file data from Poly given a data URL.
+        /// Gets raw file data from Icosa given a data URL.
         /// </summary>
         /// <param name="dataUrl">Data URL to retrieve from.</param>
         /// <param name="accessToken">The access token to use for authentication.</param>

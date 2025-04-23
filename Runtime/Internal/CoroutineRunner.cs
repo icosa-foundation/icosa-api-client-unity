@@ -137,7 +137,7 @@ namespace IcosaClientInternal
 
 using UnityEngine;
 using System.Collections;
-namespace PolyToolkitInternal {
+namespace IcosaClientInternal {
   public class CoroutineRunner {
     public static void StartCoroutine(MonoBehaviour host, IEnumerator coroutine) {
       host.StartCoroutine(coroutine);

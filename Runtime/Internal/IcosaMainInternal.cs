@@ -57,25 +57,25 @@ namespace IcosaClientInternal
         public delegate void FetchProgressCallback(IcosaAsset asset, float progress0to1);
 
         /// <summary>
-        /// API key for use with the Poly server.
+        /// API key for use with the Icosa server.
         /// </summary>
         public string apiKey { get; private set; }
 
         public string apiKeyUrlParam => string.IsNullOrEmpty(apiKey) ? "" : $"key={apiKey}";
 
         /// <summary>
-        /// The web request manager, which handles any Poly web requests we need to make.
+        /// The web request manager, which handles any Icosa web requests we need to make.
         /// </summary>
         public WebRequestManager webRequestManager { get; private set; }
 
         /// <summary>
-        /// The client we use to communicate with the Poly.
+        /// The client we use to communicate with the Icosa.
         /// </summary>
         public IcosaClient IcosaClient { get; private set; }
 
         /// <summary>
-        /// Access token for Poly API access.
-        /// This can be manually set by the user by calling Poly.SetAccessToken. If unset, we will get access tokens
+        /// Access token for Icosa API access.
+        /// This can be manually set by the user by calling Icosa.SetAccessToken. If unset, we will get access tokens
         /// from Authenticator (default behaviour).
         /// </summary>
         private string manuallyProvidedAccessToken = null;
@@ -108,12 +108,12 @@ namespace IcosaClientInternal
         }
 
         /// <summary>
-        /// Initializes Poly Toolkit runtime. Must be called once, before any other use of the library.
-        /// Call only once in your app's lifetime, not once per scene (Poly Toolkit survives scene loads).
+        /// Initializes Icosa API Client runtime. Must be called once, before any other use of the library.
+        /// Call only once in your app's lifetime, not once per scene (Icosa API Client survives scene loads).
         /// </summary>
         public static void Init(IcosaAuthConfig? authConfig, IcosaCacheConfig? cacheConfig)
         {
-            string objName = Application.isPlaying ? "Poly Main" : "Poly Main (EDITOR)";
+            string objName = Application.isPlaying ? "Icosa Main" : "Icosa Main (EDITOR)";
             IcosaUtils.AssertTrue(instance == null,
                 "IcosaMainInternal.Init() already called. Can only be called once.");
 
@@ -137,7 +137,7 @@ namespace IcosaClientInternal
             // // Check that the user actually set up their API key in authConfig, and didn't just leave the default
             // // value in (the placeholder value starts with "**" so that's what we check for).
             // if (string.IsNullOrEmpty(authConfig.Value.apiKey) || authConfig.Value.apiKey.StartsWith("**")) {
-            //   throw new System.Exception("API Key not configured. Set your API key in in Poly Toolkit " +
+            //   throw new System.Exception("API Key not configured. Set your API key in Icosa API Client " +
             //       "Settings ('Runtime' section).");
             // }
 
@@ -206,7 +206,7 @@ namespace IcosaClientInternal
             IcosaApi.ListAssetsCallback callback)
         {
             // Users expect their own private assets to update quickly once they make a change (one use case
-            // being: I go to Blocks or Tilt Brush, modify my asset, come back to PolyToolkit, I expect it to be updated).
+            // being: I go to Blocks or Tilt Brush, modify my asset, come back to Icosa Client, I expect it to be updated).
             // So we don't use caching for these.
             IcosaClient.SendRequest(listUserAssetsRequest,
                 (IcosaStatus status, IcosaListAssetsResult icosaListResult) =>
@@ -243,7 +243,7 @@ namespace IcosaClientInternal
         }
 
         /// <summary>
-        /// Fetch a specific Poly asset.
+        /// Fetch a specific Icosa asset.
         /// </summary>
         /// <param name="id">The ID of the sought asset.</param>
         /// <param name="callback">The callback.</param>
@@ -263,7 +263,7 @@ namespace IcosaClientInternal
         }
 
         /// <summary>
-        /// As documented in PolyApi.FetchThumbnails.
+        /// As previously documented in PolyApi.FetchThumbnails.
         /// </summary>
         public void FetchThumbnail(IcosaAsset asset, IcosaFetchThumbnailOptions options,
             IcosaApi.FetchThumbnailCallback callback)
@@ -274,7 +274,7 @@ namespace IcosaClientInternal
         }
 
         /// <summary>
-        /// As documented in PolyApi.ClearCache.
+        /// As previously documented in PolyApi.ClearCache.
         /// </summary>
         public void ClearCache()
         {

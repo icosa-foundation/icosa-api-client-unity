@@ -19,12 +19,12 @@ namespace IcosaClientInternal
     public static class PtDebug
     {
         /// <summary>
-        /// Set this to true to have Poly Toolkit print debug logs.
+        /// Set this to true to have Icosa Client print debug logs.
         /// </summary>
         public const bool DEBUG_LOG = false;
 
         /// <summary>
-        /// Set this to true (in addition to DEBUG_LOG) to have Poly Toolkit print very verbose debug logs.
+        /// Set this to true (in addition to DEBUG_LOG) to have Icosa Client print very verbose debug logs.
         /// </summary>
         public const bool DEBUG_LOG_VERBOSE = false;
 

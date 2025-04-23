@@ -276,7 +276,7 @@ namespace IcosaClientInternal
 
     // ----------------------------------------------------------------------
 
-// Load "files" from a PolyFormat
+// Load "files" from a IcosaFormat
     public class FormatLoader : IUriLoader
     {
         private IcosaFormat format;

@@ -174,15 +174,15 @@ namespace IcosaClientInternal
                 options.scaleFactor == 0.0f)
             {
                 // If scaleFactor is exactly zero (not just close), it's PROBABLY because of user error,
-                // because this is what happens when you do "new PolyImportOptions()" and forget to set
-                // scaleFactor. PolyImportOptions is a struct so we can't have a default value.
-                throw new Exception("scaleFactor must be != 0 for PolyImportOptions CONVERT mode. " +
+                // because this is what happens when you do "new IcosaImportOptions()" and forget to set
+                // scaleFactor. IcosaImportOptions is a struct so we can't have a default value.
+                throw new Exception("scaleFactor must be != 0 for IcosaImportOptions CONVERT mode. " +
                                     "Did you forget to set scaleFactor?");
             }
             else if (options.rescalingMode == IcosaImportOptions.RescalingMode.FIT &&
                      options.desiredSize <= 0.0f)
             {
-                throw new Exception("desiredSize must be > 0 for PolyImportOptions FIT mode. " +
+                throw new Exception("desiredSize must be > 0 for IcosaImportOptions FIT mode. " +
                                     "Did you forget to set desiredSize?");
             }
         }
@@ -223,7 +223,7 @@ namespace IcosaClientInternal
                     // Allow the glTF to define the limit of PT's data forward-compatibility
                     if (root.asset.extras != null)
                     {
-                        root.asset.extras.TryGetValue("requiredPolyToolkitVersion", out object tempOutVal);
+                        root.asset.extras.TryGetValue("requiredIcosaClientVersion", out object tempOutVal);
                         string requiredPtVersion = tempOutVal?.ToString() ?? "";
                         if (requiredPtVersion != null)
                         {
@@ -238,7 +238,7 @@ namespace IcosaClientInternal
                                 if (required > PtSettings.Version)
                                 {
                                     Debug.LogWarningFormat(
-                                        "This file requires Poly Toolkit {0}; you are currently using {1}",
+                                        "This file requires Icosa API Client {0}; you are currently using {1}",
                                         required, PtSettings.Version);
                                 }
                             }
@@ -459,7 +459,7 @@ namespace IcosaClientInternal
         {
             var result = new GltfImportResult
             {
-                root = new GameObject("PolyImport"),
+                root = new GameObject("IcosaImport"),
                 meshes = new List<Mesh>(),
             };
             meshCreator = CreateGameObjectsFromNodes(state, result, uriLoader);

@@ -46,11 +46,11 @@ namespace IcosaClientEditor
             {
                 EditorUtility.DisplayDialog("API Compatibility", "Warning: You are building for the IL2CPP script " +
                                                                  "backend (AOT compilation) and have '.NET 2.0 Subset' selected as API compatibility level.\n\n" +
-                                                                 "Poly Toolkit runtime needs '.NET 2.0' (full) when compiling for IL2CPP, or runtime errors " +
+                                                                 "Icosa CLient runtime needs '.NET 2.0' (full) when compiling for IL2CPP, or runtime errors " +
                                                                  "may occur.\n\n" +
                                                                  "If you see problems, go to Player Settings and change your API compatibility level " +
                                                                  "to '.NET 2.0', and try to build again.\n\n" +
-                                                                 "(You can silence this warning in Poly Toolkit settings if it's not useful)",
+                                                                 "(You can silence this warning in Icosa Client settings if it's not useful)",
                     "OK");
             }
         }

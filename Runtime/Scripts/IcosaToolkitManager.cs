@@ -18,15 +18,15 @@ using IcosaClientInternal;
 namespace IcosaApiClient
 {
     [ExecuteInEditMode]
-    /// Manages configuration and initialization of the Poly Toolkit.
-    /// A IcosaToolkitManager should be present in every scene that depends on the Poly Toolkit.
+    /// Manages configuration and initialization of the Icosa API Client.
+    /// A IcosaToolkitManager should be present in every scene that depends on the Icosa API Client.
     public class IcosaToolkitManager : MonoBehaviour
     {
         void Awake()
         {
             if (Application.isPlaying)
             {
-                // Initialize the Poly Toolkit runtime API, if necessary.
+                // Initialize the Icosa API Client runtime API, if necessary.
                 // (This is a no-op if it was already initialized by the developer).
                 IcosaApi.Init();
             }

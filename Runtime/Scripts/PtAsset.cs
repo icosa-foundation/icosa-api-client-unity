@@ -18,9 +18,9 @@ using IcosaClientInternal;
 namespace IcosaApiClient
 {
     /// <summary>
-    /// A Poly Toolkit asset (custom asset type).
+    /// A Icosa API Client asset (custom asset type).
     /// 
-    /// This represents an asset imported from Poly.
+    /// This represents an asset imported from Icosa.
     /// </summary>
     public class PtAsset : ScriptableObject
     {

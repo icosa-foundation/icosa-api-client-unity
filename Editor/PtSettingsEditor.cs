@@ -88,7 +88,7 @@ namespace IcosaClientEditor
             serializedObject.ApplyModifiedProperties();
         }
 
-        [MenuItem("Icosa/Poly Toolkit Settings...", priority = 1000)]
+        [MenuItem("Icosa/Icosa API Client Settings...", priority = 1000)]
         public static void ShowIcosaClientSettings()
         {
             Selection.activeObject = PtSettings.Instance;

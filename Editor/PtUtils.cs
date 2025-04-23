@@ -24,12 +24,12 @@ namespace IcosaClientEditor
     public static class PtUtils
     {
         /// <summary>
-        /// Name of the Poly Toolkit manifest file.
+        /// Name of the Icosa API Client manifest file.
         /// </summary>
         private const string MANIFEST_FILE_NAME = "icosa_toolkit_manifest.dat";
 
         /// <summary>
-        /// Poly Toolkit base path (normally Assets/PolyToolkit, unless the user moved it).
+        /// Icosa API Client base path (normally Assets/PolyToolkit, unless the user moved it).
         /// This is computed lazily.
         /// </summary>
         private static string basePath = null;
@@ -118,7 +118,7 @@ namespace IcosaClientEditor
             if (basePath != null) return basePath;
             // Get the root path of the project. Something like C:\Foo\Bar\MyUnityProject
             string rootPath = Path.GetDirectoryName(Application.dataPath);
-            // Find the icosa_toolkit_manifest.data file. That marks the installation path of Poly Toolkit.
+            // Find the icosa_toolkit_manifest.data file. That marks the installation path of Icosa API Client.
             string[] matches = Directory.GetFiles(Path.Combine(Application.dataPath, "../Packages"), MANIFEST_FILE_NAME,
                 SearchOption.AllDirectories);
             if (matches == null || matches.Length == 0)
@@ -129,7 +129,7 @@ namespace IcosaClientEditor
             else if (matches.Length > 1)
             {
                 Debug.LogError(
-                    "Found more than one Poly Toolkit installation in your project. Make sure there is only one.");
+                    "Found more than one Icosa API Client installation in your project. Make sure there is only one.");
                 // Continue anyway (by "best effort" -- arbitrarily use the first one).
             }
 
@@ -139,8 +139,8 @@ namespace IcosaClientEditor
             if (!rootPath.EndsWith("/")) rootPath += "/";
             string manifestPath = matches[0].Replace('\\', '/').Replace(MANIFEST_FILE_NAME, "");
             // Now rootPath is something like "C:/Foo/Bar/MyUnityProject/"
-            // and manifestPath is something like "C:/Foo/Bar/MyUnityProject/Some/Path/PolyToolkit".
-            // We want to extract the "Some/Path/PolyToolkit" part.
+            // and manifestPath is something like "C:/Foo/Bar/MyUnityProject/Some/Path/IcosaClient".
+            // We want to extract the "Some/Path/IcosaClient" part.
             if (!manifestPath.StartsWith(rootPath))
             {
                 throw new System.Exception(string.Format("Could not find local path from '{0}' (data path is '{1}')",
@@ -154,11 +154,11 @@ namespace IcosaClientEditor
         }
 
         /// <summary>
-        /// Loads a texture file from the Poly Toolkit installation folder given a relative path
+        /// Loads a texture file from the Icosa API Client installation folder given a relative path
         /// from the installation folder to the texture.
         /// </summary>
         /// <param name="relativePath">The relative path were the texture is located. For example,
-        /// this could be Editor/Textures/PolyToolkitTitle.png.</param>
+        /// this could be Editor/Textures/IcosaClientTitle.png.</param>
         /// <returns>The texture.</returns>
         public static Texture2D LoadTexture2DFromRelativePath(string relativePath)
         {
