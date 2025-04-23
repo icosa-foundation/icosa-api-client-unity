@@ -24,10 +24,9 @@ namespace IcosaClientInternal
     public static class IcosaInternalUtils
     {
         public const string ATTRIBUTION_NOTICE =
-            "IMPORTANT: Third-party assets are licensed through the Creative Commons license. When using any " +
-            "third-party assets in your project, you are required to give proper attribution. For more information " +
-            "refer to https://creativecommons.org/share-your-work/use-remix/ By continuing, you agree to use assets in " +
-            "accordance to their license.";
+            "IMPORTANT: Some third-party assets are licensed through the Creative Commons license. When using any " +
+            "third-party assets in your project, you are required to follow the terms of their license. For more information " +
+            "refer to https://creativecommons.org By continuing, you agree to these terms.";
 
         /// <summary>
         /// Creates a singleton GameObject in a way that's appropriate for
