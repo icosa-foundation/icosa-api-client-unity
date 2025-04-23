@@ -292,7 +292,7 @@ namespace IcosaClientEditor
             public EditTimeImportOptions options;
 
             /// <summary>
-            /// The polyAsset that we are importing. This contains the metadata for the imported asset,
+            /// The icosaAsset that we are importing. This contains the metadata for the imported asset,
             /// such as the title and author name.
             /// </summary>
             public IcosaAsset IcosaAsset;
