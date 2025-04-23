@@ -133,10 +133,50 @@ namespace PolyToolkit {
     /// Returns attribution information about the asset.
     /// </summary>
     public string AttributionInfo {
-      get {
-        return AttributionGeneration.GenerateAttributionString(displayName, authorName, Url,
-          license == PolyAssetLicense.CREATIVE_COMMONS_BY ? AttributionGeneration.CC_BY_LICENSE
-          : "All Rights Reserved");
+      get
+      {
+        string licenceText;
+        switch (license)
+        {
+          case PolyAssetLicense.UNKNOWN:
+            licenceText = "Unknown";
+            break;
+          case PolyAssetLicense.CREATIVE_COMMONS_BY:
+            licenceText = "Creative Commons CC-BY\n" +
+                          "https://creativecommons.org/licenses/by/3.0/legalcode";
+            break;
+          case PolyAssetLicense.ALL_RIGHTS_RESERVED:
+            licenceText = "All Rights Reserved";
+            break;
+          case PolyAssetLicense.CREATIVE_COMMONS_BY_ND:
+            licenceText = "Creative Commons CC-BY-ND\n" +
+                          "https://creativecommons.org/licenses/by-nd/3.0/legalcode";
+            break;
+          case PolyAssetLicense.CREATIVE_COMMONS_BY_SA:
+            licenceText = "Creative Commons CC-BY-SA\n" +
+                          "https://creativecommons.org/licenses/by-sa/3.0/legalcode";
+            break;
+          case PolyAssetLicense.CREATIVE_COMMONS_BY_NC:
+            licenceText = "Creative Commons CC-BY-NC\n" +
+                          "https://creativecommons.org/licenses/by-nc/3.0/legalcode";
+            break;
+          case PolyAssetLicense.CREATIVE_COMMONS_BY_NC_ND:
+            licenceText = "Creative Commons CC-BY-NC-ND\n" +
+                          "https://creativecommons.org/licenses/by-nc-nd/3.0/legalcode";
+            break;
+          case PolyAssetLicense.CREATIVE_COMMONS_BY_NC_SA:
+            licenceText = "Creative Commons CC-BY-NC-SA\n" +
+                          "https://creativecommons.org/licenses/by-nc-sa/3.0/legalcode";
+            break;
+          case PolyAssetLicense.CC0:
+            licenceText = "Creative Commons CC0 (Public Domain)\n" +
+                          "https://creativecommons.org/publicdomain/zero/1.0/legalcode";
+            break;
+          default:
+            licenceText = "All Rights Reserved";
+            break;
+        }
+        return AttributionGeneration.GenerateAttributionString(displayName, authorName, Url, licenceText);
       }
     }
 
@@ -264,18 +304,15 @@ namespace PolyToolkit {
  /// Possible asset licenses.
  /// </summary>
  public enum PolyAssetLicense {
-    /// <summary>
-    /// License unknown/unspecified.
-    /// </summary>
     UNKNOWN = 0,
-    /// <summary>
-    /// Creative Commons license.
-    /// </summary>
     CREATIVE_COMMONS_BY = 1,
-    /// <summary>
-    /// All Rights Reserved by author (not licensed).
-    /// </summary>
     ALL_RIGHTS_RESERVED = 2,
+    CREATIVE_COMMONS_BY_ND = 3,
+    CREATIVE_COMMONS_BY_SA = 4,
+    CREATIVE_COMMONS_BY_NC = 5,
+    CREATIVE_COMMONS_BY_NC_ND = 6,
+    CREATIVE_COMMONS_BY_NC_SA = 7,
+    CC0 = 8
   }
 
   /// <summary>

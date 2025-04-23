@@ -18,6 +18,7 @@ using System.IO;
 using System.Text;
 using PolyToolkit;
 using PolyToolkitInternal;
+using PolyToolkitInternal.api_clients.poly_client;
 
 namespace PolyToolkitEditor {
 
@@ -71,7 +72,7 @@ public static class AttributionFileGenerator {
     foreach (PtAsset ptAsset in ccByAssets) {
       sb.AppendLine();
       sb.Append(AttributionGeneration.GenerateAttributionString(ptAsset.title, ptAsset.author,
-        ptAsset.url, AttributionGeneration.CC_BY_LICENSE)).AppendLine();
+        ptAsset.url, PolyClient.LICENCE[ptAsset.license])).AppendLine();
     }
     File.WriteAllText(fileFullPath, sb.ToString());
 
