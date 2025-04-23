@@ -13,54 +13,49 @@
 // limitations under the License.
 
 using UnityEngine;
-using PolyToolkitInternal;
+using IcosaClientInternal;
 
-namespace PolyToolkit { 
+namespace IcosaApiClient
+{
+    /// <summary>
+    /// A Poly Toolkit asset (custom asset type).
+    /// 
+    /// This represents an asset imported from Poly.
+    /// </summary>
+    public class PtAsset : ScriptableObject
+    {
+        /// <summary>
+        /// A reference to the prefab that represents the object.
+        /// </summary>
+        [DisabledProperty] public GameObject assetPrefab;
 
-/// <summary>
-/// A Poly Toolkit asset (custom asset type).
-/// 
-/// This represents an asset imported from Poly.
-/// </summary>
-public class PtAsset : ScriptableObject {
-  /// <summary>
-  /// A reference to the prefab that represents the object.
-  /// </summary>
-  [DisabledProperty]
-  public GameObject assetPrefab;
+        /// <summary>
+        /// Title of the asset.
+        /// </summary>
+        [DisabledProperty] public string title = "";
 
-  /// <summary>
-  /// Title of the asset.
-  /// </summary>
-  [DisabledProperty]
-  public string title = "";
+        /// <summary>
+        /// Author of the asset.
+        /// </summary>
+        [DisabledProperty] public string author = "";
 
-  /// <summary>
-  /// Author of the asset.
-  /// </summary>
-  [DisabledProperty]
-  public string author = "";
+        /// <summary>
+        /// URL to the asset.
+        /// </summary>
+        [DisabledProperty] public string url = "";
 
-  /// <summary>
-  /// URL to the asset.
-  /// </summary>
-  [DisabledProperty]
-  public string url = "";
+        /// <summary>
+        /// The license under which this asset was included in the project.
+        /// </summary>
+        [DisabledProperty] public IcosaAssetLicense license;
 
-  /// <summary>
-  /// The license under which this asset was included in the project.
-  /// </summary>
-  [DisabledProperty]
-  public PolyAssetLicense license;
-
-  /// <summary>
-  /// Convenience method to return a filter string like "t:PtAsset" based on the name
-  /// of this class (so that we are resilient to future renamings of this class).
-  /// </summary>
-  public static string FilterString {
-    get {
-      return "t:" + typeof(PtAsset).Name;
+        /// <summary>
+        /// Convenience method to return a filter string like "t:PtAsset" based on the name
+        /// of this class (so that we are resilient to future renamings of this class).
+        /// </summary>
+        public static string FilterString
+        {
+            get { return "t:" + typeof(PtAsset).Name; }
+        }
     }
-  }
-}
 }

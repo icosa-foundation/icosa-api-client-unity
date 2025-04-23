@@ -15,34 +15,37 @@
 using System;
 using System.Collections.Generic;
 
-namespace PolyToolkitInternal.model.export {
+namespace IcosaClientInternal.model.export
+{
+    public class FormatSaveData
+    {
+        public FormatDataFile root;
+        public List<FormatDataFile> resources;
+        public byte[] zippedFiles;
+        public Int64 triangleCount;
+    }
 
-  public class FormatSaveData {
-    public FormatDataFile root;
-    public List<FormatDataFile> resources;
-    public byte[] zippedFiles;
-    public Int64 triangleCount;
-  }
+    public class FormatDataFile
+    {
+        public String fileName;
+        public String mimeType;
+        public byte[] bytes;
+        public String tag;
+        public byte[] multipartBytes;
+    }
 
-  public class FormatDataFile {
-    public String fileName;
-    public String mimeType;
-    public byte[] bytes;
-    public String tag;
-    public byte[] multipartBytes;
-  }
-
-  /// <summary>
-  ///   A struct containing the serialized bytes of a model.
-  /// </summary>
-  public struct SaveData {
-    public string filenameBase;
-    public byte[] objFile;
-    public byte[] mtlFile;
-    public FormatSaveData GLTFfiles;
-    public byte[] objMtlZip;
-    public byte[] polyFile;
-    public byte[] polyZip;
-    public byte[] thumbnailFile;
-  }
+    /// <summary>
+    ///   A struct containing the serialized bytes of a model.
+    /// </summary>
+    public struct SaveData
+    {
+        public string filenameBase;
+        public byte[] objFile;
+        public byte[] mtlFile;
+        public FormatSaveData GLTFfiles;
+        public byte[] objMtlZip;
+        public byte[] icosaFile;
+        public byte[] icosaZip;
+        public byte[] thumbnailFile;
+    }
 }

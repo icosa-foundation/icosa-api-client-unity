@@ -17,23 +17,26 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace PolyToolkitInternal {
-
-/// <summary>
-/// Annotation that makes a property show up as disabled (read-only) in the Unity Editor inspector.
-/// </summary>
-public class DisabledPropertyAttribute : PropertyAttribute {}
+namespace IcosaClientInternal
+{
+    /// <summary>
+    /// Annotation that makes a property show up as disabled (read-only) in the Unity Editor inspector.
+    /// </summary>
+    public class DisabledPropertyAttribute : PropertyAttribute
+    {
+    }
 
 #if UNITY_EDITOR
-[CustomPropertyDrawer(typeof(DisabledPropertyAttribute))]
-public class DisabledPropertyDrawer : PropertyDrawer {
-  public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
-    bool wasEnabled = GUI.enabled;
-    GUI.enabled = false;
-    EditorGUI.PropertyField(position, property, label);
-    GUI.enabled = wasEnabled;
-  }
-}
+    [CustomPropertyDrawer(typeof(DisabledPropertyAttribute))]
+    public class DisabledPropertyDrawer : PropertyDrawer
+    {
+        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        {
+            bool wasEnabled = GUI.enabled;
+            GUI.enabled = false;
+            EditorGUI.PropertyField(position, property, label);
+            GUI.enabled = wasEnabled;
+        }
+    }
 #endif
-
 }

@@ -12,14 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace PolyToolkitInternal {
-  /// <summary>
-  /// Feature flags and general configuration.
-  ///
-  /// NOTE: we use "static readonly" instead of const to avoid compiler warnings about
-  /// "unreachable code" when feature flags are turned off. It's less cumbersome than sprinkling
-  /// "pragma disable" all over the code.
-  /// </summary>
-  public static class Features {
-  }
+namespace IcosaClientInternal
+{
+    /// <summary>
+    /// Feature flags and general configuration.
+    ///
+    /// NOTE: we use "static readonly" instead of const to avoid compiler warnings about
+    /// "unreachable code" when feature flags are turned off. It's less cumbersome than sprinkling
+    /// "pragma disable" all over the code.
+    /// </summary>
+    public static class Features
+    {
+    }
 }

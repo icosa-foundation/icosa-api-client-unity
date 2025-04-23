@@ -18,7 +18,6 @@ namespace TiltBrush
 {
     public static class ForceReserializeAssets
     {
-
         // Ensures all assets in the project are read in, and reserialized in the most recent format.
         [MenuItem("Icosa/Force reserialization of all assets")]
         public static void ReserializeAll()

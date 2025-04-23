@@ -16,71 +16,84 @@ using System.Collections.Generic;
 using UnityEditor;
 using System.IO;
 using System.Text;
-using PolyToolkit;
-using PolyToolkitInternal;
-using PolyToolkitInternal.api_clients.poly_client;
+using IcosaApiClient;
+using IcosaClientInternal;
+using IcosaClientInternal.api_clients.icosa_client;
 
-namespace PolyToolkitEditor {
+namespace IcosaClientEditor
+{
+    /// <summary>
+    /// Generates the attributions file.
+    /// </summary>
+    public static class AttributionFileGenerator
+    {
+        [MenuItem("Icosa/Update Attributions File")]
+        public static void Generate()
+        {
+            PtAnalytics.SendEvent(PtAnalytics.Action.MENU_UPDATE_ATTRIBUTIONS_FILE);
+            Generate( /* showUi */ true);
+        }
 
-/// <summary>
-/// Generates the attributions file.
-/// </summary>
-public static class AttributionFileGenerator {
-  [MenuItem("Icosa/Update Attributions File")]
-  public static void Generate() {
-    PtAnalytics.SendEvent(PtAnalytics.Action.MENU_UPDATE_ATTRIBUTIONS_FILE);
-    Generate(/* showUi */ true);
-  }
+        /// <summary>
+        /// Scans the project for PtAsset assets marked as third-party and generates an attributions
+        /// file in the user's Resources directory containing a list of those resources, the names
+        /// of the authors and links to the original creations.
+        /// </summary>
+        public static void Generate(bool showUi)
+        {
+            string fileFullPath = Path.Combine(PtUtils.ToAbsolutePath(PtSettings.Instance.resourcesPath),
+                AttributionGeneration.ATTRIB_FILE_NAME);
 
-  /// <summary>
-  /// Scans the project for PtAsset assets marked as third-party and generates an attributions
-  /// file in the user's Resources directory containing a list of those resources, the names
-  /// of the authors and links to the original creations.
-  /// </summary>
-  public static void Generate(bool showUi) {
-    string fileFullPath = Path.Combine(PtUtils.ToAbsolutePath(PtSettings.Instance.resourcesPath),
-      AttributionGeneration.ATTRIB_FILE_NAME);
+            string[] assetGuids = AssetDatabase.FindAssets(PtAsset.FilterString);
+            // List of assets that are licensed under Creative Commons (require attribution).
+            List<PtAsset> ccByAssets = new List<PtAsset>();
+            foreach (string assetGuid in assetGuids)
+            {
+                string localPath = AssetDatabase.GUIDToAssetPath(assetGuid);
+                PtAsset ptAsset = AssetDatabase.LoadAssetAtPath<PtAsset>(localPath);
+                if (ptAsset != null && ptAsset.license == IcosaAssetLicense.CREATIVE_COMMONS_BY)
+                {
+                    ccByAssets.Add(ptAsset);
+                }
+            }
 
-    string[] assetGuids = AssetDatabase.FindAssets(PtAsset.FilterString);
-    // List of assets that are licensed under Creative Commons (require attribution).
-    List<PtAsset> ccByAssets = new List<PtAsset>();
-    foreach (string assetGuid in assetGuids) {
-      string localPath = AssetDatabase.GUIDToAssetPath(assetGuid);
-      PtAsset ptAsset = AssetDatabase.LoadAssetAtPath<PtAsset>(localPath);
-      if (ptAsset != null && ptAsset.license == PolyAssetLicense.CREATIVE_COMMONS_BY) {
-        ccByAssets.Add(ptAsset);
-      }
+            if (ccByAssets.Count == 0)
+            {
+                // No need for an attribution file.
+                if (File.Exists(fileFullPath))
+                {
+                    File.Delete(fileFullPath);
+                }
+
+                if (showUi)
+                {
+                    EditorUtility.DisplayDialog("No Assets Require Attribution",
+                        "No Poly assets were found in the project that require attribution. " +
+                        "No attribution file was generated.", "OK");
+                }
+
+                return;
+            }
+
+            Directory.CreateDirectory(Path.GetDirectoryName(fileFullPath));
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(AttributionGeneration.FILE_HEADER);
+            ccByAssets.Sort((PtAsset a, PtAsset b) => { return a.title.CompareTo(b.title); });
+            foreach (PtAsset ptAsset in ccByAssets)
+            {
+                sb.AppendLine();
+                sb.Append(AttributionGeneration.GenerateAttributionString(ptAsset.title, ptAsset.author,
+                    ptAsset.url, IcosaClient.LICENCE[ptAsset.license])).AppendLine();
+            }
+
+            File.WriteAllText(fileFullPath, sb.ToString());
+
+            if (showUi)
+            {
+                EditorUtility.DisplayDialog("File Generated",
+                    "Attributions file generated at:\n" + fileFullPath + ".\n\nYou can load this file at runtime " +
+                    "and display it with Resources.Load().", "OK");
+            }
+        }
     }
-
-    if (ccByAssets.Count == 0) {
-      // No need for an attribution file.
-      if (File.Exists(fileFullPath)) {
-        File.Delete(fileFullPath);
-      }
-      if (showUi) {
-        EditorUtility.DisplayDialog("No Assets Require Attribution",
-          "No Poly assets were found in the project that require attribution. " +
-          "No attribution file was generated.", "OK");
-      }
-      return;
-    }
-
-    Directory.CreateDirectory(Path.GetDirectoryName(fileFullPath));
-    StringBuilder sb = new StringBuilder();
-    sb.AppendLine(AttributionGeneration.FILE_HEADER);
-    ccByAssets.Sort((PtAsset a, PtAsset b) => { return a.title.CompareTo(b.title); });
-    foreach (PtAsset ptAsset in ccByAssets) {
-      sb.AppendLine();
-      sb.Append(AttributionGeneration.GenerateAttributionString(ptAsset.title, ptAsset.author,
-        ptAsset.url, PolyClient.LICENCE[ptAsset.license])).AppendLine();
-    }
-    File.WriteAllText(fileFullPath, sb.ToString());
-
-    if (showUi) {
-      EditorUtility.DisplayDialog("File Generated",
-        "Attributions file generated at:\n" + fileFullPath + ".\n\nYou can load this file at runtime " +
-        "and display it with Resources.Load().", "OK");
-    }
-  }
-}
 }

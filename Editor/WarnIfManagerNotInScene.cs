@@ -15,32 +15,43 @@
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.Build;
-using PolyToolkit;
+using IcosaApiClient;
 
-namespace PolyToolkitEditor {
-class WarnIfManagerNotInScene : IProcessScene, IPostprocessBuild {
-  bool sawManager;
+namespace IcosaClientEditor
+{
+    class WarnIfManagerNotInScene : IProcessScene, IPostprocessBuild
+    {
+        bool sawManager;
 
-  public int callbackOrder { get { return 0; } }
-
-  public void OnProcessScene(UnityEngine.SceneManagement.Scene scene) {
-    if (! sawManager) {
-      if (scene.isLoaded) {
-        foreach (var gameObject in scene.GetRootGameObjects()) {
-          if (gameObject.GetComponentInChildren<PolyToolkitManager>() != null) {
-            sawManager = true;
-            break;
-          }
+        public int callbackOrder
+        {
+            get { return 0; }
         }
-      }
-    }
-  }
 
-  public void OnPostprocessBuild(BuildTarget target, string path) {
-    if (! sawManager) {
-      Debug.LogWarning("Please add a PolyToolkitManager component to your scene.");
-    }
-  }
-}
+        public void OnProcessScene(UnityEngine.SceneManagement.Scene scene)
+        {
+            if (!sawManager)
+            {
+                if (scene.isLoaded)
+                {
+                    foreach (var gameObject in scene.GetRootGameObjects())
+                    {
+                        if (gameObject.GetComponentInChildren<IcosaToolkitManager>() != null)
+                        {
+                            sawManager = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
 
+        public void OnPostprocessBuild(BuildTarget target, string path)
+        {
+            if (!sawManager)
+            {
+                Debug.LogWarning("Please add a IcosaToolkitManager component to your scene.");
+            }
+        }
+    }
 }

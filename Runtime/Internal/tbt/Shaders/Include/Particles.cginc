@@ -45,12 +45,13 @@ uniform float _GeniusParticlePreviewLifetime;
 
 #define ParticleVertexWithSpread_t ParticleVertex_t
 
-struct ParticleVertex_t {
-  uint vid : SV_VertexID;
-  float4 corner : POSITION;     // pos: corner of randomly-oriented quad
-  float3 center : TEXCOORD1;
-  fixed4 color : COLOR;
-  float4 texcoord : TEXCOORD0;  // xy: texcoord   z: rotation   w: birth time
+struct ParticleVertex_t
+{
+    uint vid : SV_VertexID;
+    float4 corner : POSITION; // pos: corner of randomly-oriented quad
+    float3 center : TEXCOORD1;
+    fixed4 color : COLOR;
+    float4 texcoord : TEXCOORD0; // xy: texcoord   z: rotation   w: birth time
 };
 
 // Rotates the corner of a square quad centered at the origin
@@ -71,22 +72,23 @@ struct ParticleVertex_t {
 //       0 . . . 1
 //
 float3 _RotatedQuadCorner(float3 up, float3 rt, float3 center,
-                          float halfSize, int corner, float rotation) {
-  // The corner's position in the (2D) quad coordinate system
-  float2 pos = halfSize * float2(
-      float(corner == 1 || corner == 3) * 2 - 1,  // +1 for 1 and 3,  -1 for 0 and 2
-      float(corner == 2 || corner == 3) * 2 - 1   // +1 for 2 and 3,  -1 for 0 and 1
-  );
+                          float halfSize, int corner, float rotation)
+{
+    // The corner's position in the (2D) quad coordinate system
+    float2 pos = halfSize * float2(
+        float(corner == 1 || corner == 3) * 2 - 1, // +1 for 1 and 3,  -1 for 0 and 2
+        float(corner == 2 || corner == 3) * 2 - 1 // +1 for 2 and 3,  -1 for 0 and 1
+    );
 
-  // Perform rotation in quad coordinate system
-  float c = cos(rotation);
-  float s = sin(rotation);
-  float2x2 mRotation = float2x2(c, -s,  s, c);
-  float2 rotatedPos = mul(mRotation, pos);
+    // Perform rotation in quad coordinate system
+    float c = cos(rotation);
+    float s = sin(rotation);
+    float2x2 mRotation = float2x2(c, -s, s, c);
+    float2 rotatedPos = mul(mRotation, pos);
 
-  // Change-of-basis to 3D coordinate system.
-  // gles requires square arrays, so do it homogeneous-style.
-  return mul(float3(rotatedPos, 1), float3x3(rt, up,  center));
+    // Change-of-basis to 3D coordinate system.
+    // gles requires square arrays, so do it homogeneous-style.
+    return mul(float3(rotatedPos, 1), float3x3(rt, up, center));
 }
 
 // Returns the position of a camera-oriented quad corner.
@@ -97,51 +99,59 @@ float3 _RotatedQuadCorner(float3 up, float3 rt, float3 center,
 //              In CCW order as seen from front, bottom-left is 0.
 //   rotation - in radians
 //
-float4 OrientParticle(float3 center, float halfSize, int corner, float rotation) {
-  corner = corner & 3;
-  float3 up, rt; {
-    float4x4 cameraToObject = mul(unity_WorldToObject, unity_CameraToWorld);
-    float3 upIsh = mul(cameraToObject, float4(0, 1, 0, 0)).xyz;
-    float3 objSpaceCameraPos = mul(cameraToObject, float4(0, 0, 0, 1));
-    float3 fwd = (center - objSpaceCameraPos);
-    rt = normalize(cross(upIsh, fwd));
-    up = normalize(cross(fwd, rt));
-  }
+float4 OrientParticle(float3 center, float halfSize, int corner, float rotation)
+{
+    corner = corner & 3;
+    float3 up, rt;
+    {
+        float4x4 cameraToObject = mul(unity_WorldToObject, unity_CameraToWorld);
+        float3 upIsh = mul(cameraToObject, float4(0, 1, 0, 0)).xyz;
+        float3 objSpaceCameraPos = mul(cameraToObject, float4(0, 0, 0, 1));
+        float3 fwd = (center - objSpaceCameraPos);
+        rt = normalize(cross(upIsh, fwd));
+        up = normalize(cross(fwd, rt));
+    }
 
-  return float4(_RotatedQuadCorner(up, rt, center, halfSize, corner, rotation).xyz, 1);
+    return float4(_RotatedQuadCorner(up, rt, center, halfSize, corner, rotation).xyz, 1);
 }
 
 // Like OrientParticle, but takes the center in WS
 // Slightly fewer matrix multiplies than the other version,
 // but susceptible to FP inaccuracy when far away from the origin
-float4 OrientParticle_WS(float3 center_WS, float halfSize_OS, int corner, float rotation) {
-  corner = corner & 3;
-  float3 up_WS, rt_WS; {
-    // Trying to write this without using unity_CameraToWorld because some renderers
-    // don't keep around the inverse view matrix. upIsh_WS won't be unit-length, but that's fine.
-    float3 upIsh_WS = UNITY_MATRIX_V[1].xyz;
-    float3 cameraPos_WS = _WorldSpaceCameraPos;
-    float3 fwd_WS = (center_WS - cameraPos_WS);
-    rt_WS = normalize(cross(upIsh_WS, fwd_WS));
-    up_WS = normalize(cross(fwd_WS, rt_WS));
-  }
+float4 OrientParticle_WS(float3 center_WS, float halfSize_OS, int corner, float rotation)
+{
+    corner = corner & 3;
+    float3 up_WS, rt_WS;
+    {
+        // Trying to write this without using unity_CameraToWorld because some renderers
+        // don't keep around the inverse view matrix. upIsh_WS won't be unit-length, but that's fine.
+        float3 upIsh_WS = UNITY_MATRIX_V[1].xyz;
+        float3 cameraPos_WS = _WorldSpaceCameraPos;
+        float3 fwd_WS = (center_WS - cameraPos_WS);
+        rt_WS = normalize(cross(upIsh_WS, fwd_WS));
+        up_WS = normalize(cross(fwd_WS, rt_WS));
+    }
 
-  float halfSize_WS = halfSize_OS * length(unity_ObjectToWorld[0].xyz);
-  return float4(_RotatedQuadCorner(up_WS, rt_WS, center_WS, halfSize_WS, corner, rotation), 1);
+    float halfSize_WS = halfSize_OS * length(unity_ObjectToWorld[0].xyz);
+    return float4(_RotatedQuadCorner(up_WS, rt_WS, center_WS, halfSize_WS, corner, rotation), 1);
 }
 
 // Sign bit of time is used to determine if this is a preview brush or not.
 // Unpack that into a positive time value, and a size adjustment.
-float _ParticleUnpackTime(inout float time) {
-  float sizeAdjust;
-  if (time < 0) {
-    time = -time;
-    float life01 = clamp((_Time.y - time) / _GeniusParticlePreviewLifetime, 0, 1);
-    sizeAdjust = 1 - (life01 * life01);
-  } else {
-    sizeAdjust = 1;
-  }
-  return sizeAdjust;
+float _ParticleUnpackTime(inout float time)
+{
+    float sizeAdjust;
+    if (time < 0)
+    {
+        time = -time;
+        float life01 = clamp((_Time.y - time) / _GeniusParticlePreviewLifetime, 0, 1);
+        sizeAdjust = 1 - (life01 * life01);
+    }
+    else
+    {
+        sizeAdjust = 1;
+    }
+    return sizeAdjust;
 }
 
 // Works out the size of a particle from its corner and center positions,
@@ -151,10 +161,11 @@ float _ParticleUnpackTime(inout float time) {
 //   center     - Object-space position of the center after fully-born
 //   birthTime  - Particle birth time; sign bit indicates preview-ness
 //
-float GetParticleHalfSize(float3 corner, float3 center, float birthTime) {
-  float sizeAdjust = _ParticleUnpackTime(/* inout */ birthTime);
-  float halfSize = length(corner - center) * kRecipSquareRootOfTwo * sizeAdjust;
-  return halfSize;
+float GetParticleHalfSize(float3 corner, float3 center, float birthTime)
+{
+    float sizeAdjust = _ParticleUnpackTime(/* inout */ birthTime);
+    float halfSize = length(corner - center) * kRecipSquareRootOfTwo * sizeAdjust;
+    return halfSize;
 }
 
 // Determines how far a particle halfSize moved from its origin to its resting position.
@@ -164,8 +175,9 @@ float GetParticleHalfSize(float3 corner, float3 center, float birthTime) {
 //   spreadRate - How fast quad moves from origin to center. Units of periods-per-second,
 //                where one period is about 63% (ie, a decay to 1/e)
 //
-float SpreadProgress(float birthTime, float spreadRate) {
-  return 1;
+float SpreadProgress(float birthTime, float spreadRate)
+{
+    return 1;
 }
 
 // Animates a particle position from its origin to its resting position
@@ -174,6 +186,7 @@ float SpreadProgress(float birthTime, float spreadRate) {
 //   origin     - Object-space position of center at birth
 //   progress   - How far between the origin and center to place the particle
 //
-float4 SpreadParticle(ParticleVertexWithSpread_t particle, float progress) {
-  return float4(particle.center.xyz, 1);
+float4 SpreadParticle(ParticleVertexWithSpread_t particle, float progress)
+{
+    return float4(particle.center.xyz, 1);
 }
