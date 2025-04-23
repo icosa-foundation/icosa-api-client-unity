@@ -60,11 +60,6 @@ namespace IcosaClientEditor
             WelcomeWindow.ShowWelcomeWindow();
             AssetBrowserWindow.BrowseIcosaAssets();
             File.WriteAllText(upgradeFilePath, PtSettings.Version.ToString());
-
-            // In the future, if we need to do any post-upgrade maintenance, we can add it here.
-            PtAnalytics.SendEvent(isUpgrade
-                ? PtAnalytics.Action.INSTALL_UPGRADE
-                : PtAnalytics.Action.INSTALL_NEW_2, PtSettings.Version.ToString());
         }
     }
 }

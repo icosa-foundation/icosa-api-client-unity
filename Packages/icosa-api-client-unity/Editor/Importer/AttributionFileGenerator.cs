@@ -30,7 +30,6 @@ namespace IcosaClientEditor
         [MenuItem("Icosa/Update Attributions File")]
         public static void Generate()
         {
-            PtAnalytics.SendEvent(PtAnalytics.Action.MENU_UPDATE_ATTRIBUTIONS_FILE);
             Generate( /* showUi */ true);
         }
 
@@ -68,7 +67,7 @@ namespace IcosaClientEditor
                 if (showUi)
                 {
                     EditorUtility.DisplayDialog("No Assets Require Attribution",
-                        "No Poly assets were found in the project that require attribution. " +
+                        "No Icosa assets were found in the project that require attribution. " +
                         "No attribution file was generated.", "OK");
                 }
 

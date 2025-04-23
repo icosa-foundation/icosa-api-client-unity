@@ -20,7 +20,7 @@ using IcosaClientInternal;
 namespace IcosaClientEditor
 {
     /// <summary>
-    /// Welcome window that shows after the Poly Toolk was just installed.
+    /// Welcome window that shows after the Icosa API Client was just installed.
     /// </summary>
     public class WelcomeWindow : EditorWindow
     {
@@ -63,14 +63,12 @@ namespace IcosaClientEditor
         [MenuItem("Icosa/General Information...")]
         public static void ShowWelcomeWindow()
         {
-            PtAnalytics.SendEvent(PtAnalytics.Action.MENU_GENERAL_INFORMATION);
             GetWindow<WelcomeWindow>().Show();
         }
 
         [MenuItem("Icosa/Online documentation...")]
         public static void ShowOnlineDocumentation()
         {
-            PtAnalytics.SendEvent(PtAnalytics.Action.MENU_ONLINE_DOCUMENTATION);
             Application.OpenURL(ONLINE_DOCUMENTATION_URL);
         }
 
@@ -103,7 +101,7 @@ namespace IcosaClientEditor
                 "at edit time and at runtime.\n\n" +
                 "The Icosa Toolkit window was added to your editor. You can use it as a separate " +
                 "window or dock like any tool window. If you close it, you can access it again " +
-                "from the Poly menu.\n\n" +
+                "from the Icosa menu.\n\n" +
                 IcosaInternalUtils.ATTRIBUTION_NOTICE + "\n\n" +
                 "Have fun!",
                 EditorStyles.wordWrappedLabel);

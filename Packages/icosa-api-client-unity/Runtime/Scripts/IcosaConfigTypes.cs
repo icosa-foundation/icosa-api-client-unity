@@ -25,7 +25,7 @@ namespace IcosaApiClient
     [AutoStringifiable]
     public struct IcosaAuthConfig
     {
-        [HelpText("NOTE: API Key is required for all API calls. Client ID/secret are only needed " +
+        [HelpText("NOTE: An API Key is currently not required. Client ID/secret are only needed " +
                   "for authenticated API calls.")]
         /// <summary>
         /// API key used to access the Icosa API.
@@ -48,13 +48,13 @@ namespace IcosaApiClient
         /// <summary>
         /// Your project's client secret as supplied by Google Cloud Console.
         /// </summary>
-        [Tooltip("Your project's client secret for the Icosa API (only required for authenticated API calls).")]
+        [Tooltip("Your project's client secret (currently unused. Was previously only required for authenticated API calls).")]
         public string clientSecret;
 
         /// <summary>
         /// Additional scopes required by your project (separated by spaces).
         /// </summary>
-        [Tooltip("Additional Google API scopes to request on authentication (optional).")]
+        [Tooltip("Additional oAuth scopes to request on authentication (currently unused).")]
         public string[] additionalScopes;
 
         /// <summary>

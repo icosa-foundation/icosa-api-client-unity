@@ -24,10 +24,10 @@ using IcosaClientInternal;
 namespace IcosaClientEditor
 {
     /// <summary>
-    /// Responsible for importing Poly assets.
+    /// Responsible for importing Icosa assets.
     ///
     /// This class is a custom Unity AssetPostprocessor which detects when new GLTF files are imported into
-    /// the project and processes them to convert them into the appropriate Poly Toolkit objects (PtAsset
+    /// the project and processes them to convert them into the appropriate Icosa Client objects (PtAsset
     /// and prefab).
     /// </summary>
     public class IcosaImporter : AssetPostprocessor
@@ -80,7 +80,6 @@ namespace IcosaClientEditor
             catch (Exception ex)
             {
                 Debug.LogErrorFormat("Import error: {0}", ex);
-                PtAnalytics.SendException(ex, isFatal: false);
                 EditorUtility.DisplayDialog("Error",
                     "There was an error importing the asset. Please check the logs for more information.", "OK");
             }
@@ -108,7 +107,6 @@ namespace IcosaClientEditor
                 if (assetToReplace.assetPrefab == null)
                 {
                     Debug.LogErrorFormat("Couldn't find prefab for asset {0}.", assetToReplace);
-                    PtAnalytics.SendEvent(PtAnalytics.Action.IMPORT_FAILED, "Prefab not found");
                     return;
                 }
 
@@ -202,7 +200,6 @@ namespace IcosaClientEditor
                 if (!prefabLocalPath.EndsWith(".prefab"))
                 {
                     Debug.LogErrorFormat("Error: failed to compute prefab path for {0}", assetLocalPath);
-                    PtAnalytics.SendEvent(PtAnalytics.Action.IMPORT_FAILED, "Prefab path error");
                     return;
                 }
 #if UNITY_2018_3_OR_NEWER
@@ -219,7 +216,6 @@ namespace IcosaClientEditor
             if (newAsset.assetPrefab == null)
             {
                 Debug.LogErrorFormat("Could not get asset prefab reference for asset {0}", newAsset);
-                PtAnalytics.SendEvent(PtAnalytics.Action.IMPORT_FAILED, "Prefab ref error");
             }
 
             GameObject.DestroyImmediate(result.root);
@@ -233,7 +229,6 @@ namespace IcosaClientEditor
 
             PtDebug.LogFormat("GLTF import complete: {0}", request);
 
-            PtAnalytics.SendEvent(PtAnalytics.Action.IMPORT_SUCCESSFUL, isGltf2 ? "GLTF2" : "GLTF1");
 
             // If this is a third-party asset, we need to update the attributions file.
             AttributionFileGenerator.Generate( /* showUi */ false);

@@ -173,7 +173,7 @@ namespace IcosaClientEditor
         }
 
         /// <summary>
-        /// Because Poly doesn't live in the Editor/ space (and couldn't, since it uses GameObjects and
+        /// Because Icosa doesn't live in the Editor/ space (and couldn't, since it uses GameObjects and
         /// MonoBehaviours), it will die every time the user enters or exits play mode. This means
         /// that all of its state and objects will get wiped. So we have to check if it needs initialization
         /// every time we need to use it.
@@ -182,12 +182,12 @@ namespace IcosaClientEditor
         {
             if (!IcosaApi.IsInitialized)
             {
-                PtDebug.Log("ABM: Initializing Poly.");
+                PtDebug.Log("ABM: Initializing Icosa.");
                 // We need to set a service name for our auth config because we want to keep our auth credentials
                 // separate in a different "silo", so they don't get confused with the runtime credentials
                 // the user might be using in their project. Regular users would not set a service name, so they
                 // use the default silo.
-                authConfig.serviceName = "PolyToolkitEditor";
+                authConfig.serviceName = "IcosaClientEditor";
                 IcosaApi.Init(authConfig, cacheConfig);
                 waitingForSilentAuth = true;
                 IcosaApi.Authenticate(interactive: false, callback: (IcosaStatus status) =>
@@ -239,7 +239,7 @@ namespace IcosaClientEditor
         /// Starts a new request. If there is already an existing request in progress, it will be cancelled.
         /// </summary>
         /// <param name="request">The request parameters; can be either a ListAssetsRequest or
-        /// a PolyListUserAssetsRequest.</param>
+        /// a IcosaListUserAssetsRequest.</param>
         public void StartRequest(IcosaRequest request)
         {
             StartRequest(request, OnRequestResult);
@@ -273,7 +273,7 @@ namespace IcosaClientEditor
         /// Starts a new request. If there is already an existing request in progress, it will be cancelled.
         /// </summary>
         /// <param name="request">The request parameters; can be either a ListAssetsRequest or
-        /// a PolyListUserAssetsRequest.</param>
+        /// a IcosaListUserAssetsRequest.</param>
         /// <param name="callback"> The callback to invoke when the request finishes.</param>
         private void StartRequest(IcosaRequest request, Action<IcosaStatusOr<IcosaListAssetsResult>> callback)
         {
@@ -309,7 +309,7 @@ namespace IcosaClientEditor
             }
             else
             {
-                Debug.LogError("Request failed. Must be either a PolyListAssetsRequest or PolyListUserAssetsRequest");
+                Debug.LogError("Request failed. Must be either a IcosaListAssetsRequest or IcosaListUserAssetsRequest");
             }
         }
 
@@ -365,12 +365,9 @@ namespace IcosaClientEditor
                 string tok = IcosaApi.AccessToken;
                 PtDebug.LogFormat("ABM: Sign in success. Access token: {0}",
                     (tok != null && tok.Length > 6) ? tok.Substring(0, 6) + "..." : "INVALID");
-                PtAnalytics.SendEvent(PtAnalytics.Action.ACCOUNT_SIGN_IN_SUCCESS);
             }
             else if (wasInteractive)
             {
-                Debug.LogErrorFormat("Failed to sign in. Please try again: " + status);
-                PtAnalytics.SendEvent(PtAnalytics.Action.ACCOUNT_SIGN_IN_FAILURE, status.ToString());
             }
 
             if (null != refreshCallback) refreshCallback();
@@ -571,7 +568,6 @@ namespace IcosaClientEditor
             else
             {
                 Debug.LogError("Asset not in GLTF_2 or GLTF format. Can't import.");
-                PtAnalytics.SendEvent(PtAnalytics.Action.IMPORT_FAILED, "Unsupported format");
             }
         }
 
@@ -592,7 +588,6 @@ namespace IcosaClientEditor
                 Debug.LogErrorFormat("Error fetching asset {0} ({1}): {2}", asset.assetId, asset.displayName, status);
                 EditorUtility.DisplayDialog("Download Error",
                     string.Format("*** Error downloading asset '{0}'. Try again later.", asset.displayName), "OK");
-                PtAnalytics.SendEvent(PtAnalytics.Action.IMPORT_FAILED, "Asset fetch failed");
                 return;
             }
 
@@ -656,7 +651,7 @@ namespace IcosaClientEditor
             assetsBeingDownloaded.Remove(asset);
             PtDebug.LogFormat("ABM: Preparing to download {0}", asset);
 
-            // basePath is something like Assets/Poly/Sources.
+            // basePath is something like Assets/Icosa/Sources.
             string baseLocalPath = PtUtils.NormalizeLocalPath(PtSettings.Instance.assetSourcesPath);
 
             if (!baseLocalPath.StartsWith("Assets/"))
@@ -666,7 +661,7 @@ namespace IcosaClientEditor
                 return false;
             }
 
-            // basePathAbs is something like C:\Users\foo\bar\MyUnityProject\Assets\Poly\Sources
+            // basePathAbs is something like C:\Users\foo\bar\MyUnityProject\Assets\Icosa\Sources
             string baseFullPath = PtUtils.ToAbsolutePath(baseLocalPath);
 
             if (!Directory.Exists(baseFullPath))
@@ -677,7 +672,7 @@ namespace IcosaClientEditor
             baseName = PtUtils.GetPtAssetBaseName(asset);
             PtDebug.LogFormat("Import name: {0}", baseName);
 
-            // downloadLocalPath is something like Assets/Poly/Sources/assetTitle_assetId
+            // downloadLocalPath is something like Assets/Icosa/Sources/assetTitle_assetId
             downloadLocalPath = baseLocalPath + "/" + baseName;
             string downloadFullPath = PtUtils.ToAbsolutePath(downloadLocalPath);
 
@@ -688,13 +683,13 @@ namespace IcosaClientEditor
                         string.Format("The asset source folder '{0}' will be deleted and created again. " +
                                       "This should be safe *unless* you have manually made changes to its contents, " +
                                       "in which case you will lose those changes.\n\n" +
-                                      "(You can silence this warning in Poly Toolkit settings)",
+                                      "(You can silence this warning in Icosa Client settings)",
                             asset.displayName, downloadLocalPath), "OK", "Cancel")) return false;
                 Directory.Delete(downloadFullPath, /* recursive */ true);
             }
 
             // Create the download folder.
-            // Something like C:\Users\foo\bar\MyUnityProject\Assets\Poly\Sources\assetTitle_assetId
+            // Something like C:\Users\foo\bar\MyUnityProject\Assets\Icosa\Sources\assetTitle_assetId
             Directory.CreateDirectory(downloadFullPath);
             return true;
         }

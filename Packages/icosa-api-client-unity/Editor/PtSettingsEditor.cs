@@ -91,7 +91,6 @@ namespace IcosaClientEditor
         [MenuItem("Icosa/Poly Toolkit Settings...", priority = 1000)]
         public static void ShowIcosaClientSettings()
         {
-            PtAnalytics.SendEvent(PtAnalytics.Action.MENU_SHOW_SETTINGS);
             Selection.activeObject = PtSettings.Instance;
         }
 
