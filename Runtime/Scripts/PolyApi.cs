@@ -332,13 +332,9 @@ public static class PolyApi {
     // Sort the assets so they appear in alphabetical order, by display name.
     runtimeAssets.Sort((PolyAsset a, PolyAsset b) => { return a.displayName.CompareTo(b.displayName); });
     foreach (PolyAsset asset in runtimeAssets) {
-      if (asset.license == PolyAssetLicense.CREATIVE_COMMONS_BY) {
-        // Only include attribution information for third party assets.
-        sb.AppendLine();
-        sb.Append(asset.AttributionInfo).AppendLine();
-      }
+      sb.AppendLine();
+      sb.Append(asset.AttributionInfo).AppendLine();
     }
-
     return sb.ToString();
   }
 

@@ -30,8 +30,6 @@ public static class AttributionGeneration {
   /// <summary>
   /// Information on the Creative Commons license for the attribution file.
   /// </summary>
-  public static readonly string CC_BY_LICENSE = "Creative Commons CC-BY\n" +
-    "https://creativecommons.org/licenses/by/3.0/legalcode";
 
   /// <summary>
   /// Returns a formatted string of the attribution information.

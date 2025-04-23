@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-﻿using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Linq;
 using PolyToolkit;
 using System;
 using System.Collections.Generic;
@@ -21,6 +21,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using PolyToolkitInternal.client.model.util;
 using PolyToolkitInternal.model.util;
+
 namespace PolyToolkitInternal.api_clients.poly_client {
   /// <summary>
   ///   Parses the response of a List Assets request from Poly into a PolyListResult.
@@ -116,6 +117,19 @@ namespace PolyToolkitInternal.api_clients.poly_client {
         {PolyMaxComplexityFilter.SIMPLE, "SIMPLE"},
         {PolyMaxComplexityFilter.MEDIUM, "MEDIUM"},
         {PolyMaxComplexityFilter.COMPLEX, "COMPLEX"},
+    };
+
+    public static readonly Dictionary<PolyAssetLicense, string> LICENCE =
+      new Dictionary<PolyAssetLicense, string>() {
+        {PolyAssetLicense.UNKNOWN, "Unknown License"},
+        {PolyAssetLicense.CREATIVE_COMMONS_BY, "Creative Commons Attribution"},
+        {PolyAssetLicense.ALL_RIGHTS_RESERVED, "All Rights Reserved, No permissions granted beyond viewing"},
+        {PolyAssetLicense.CREATIVE_COMMONS_BY_ND, "Creative Commons Attribution, No Derivatives"},
+        {PolyAssetLicense.CREATIVE_COMMONS_BY_SA, "Creative Commons Attribution, Share-alike"},
+        {PolyAssetLicense.CREATIVE_COMMONS_BY_NC, "Creative Commons Attribution, Non-Commercial"},
+        {PolyAssetLicense.CREATIVE_COMMONS_BY_NC_ND, "Creative Commons Attribution, Non-Commercial, No Derivatives"},
+        {PolyAssetLicense.CREATIVE_COMMONS_BY_NC_SA, "Creative Commons Attribution, Non-Commercial, Share-alike"},
+        {PolyAssetLicense.CC0, "Creative Commons Zero"},
     };
 
     /// <summary>
@@ -321,10 +335,9 @@ namespace PolyToolkitInternal.api_clients.poly_client {
 
     private static PolyAssetLicense ParsePolyAssetLicense(JToken token) {
       if (token == null) return PolyAssetLicense.UNKNOWN;
-      string tokenValue = token.ToString();
-      return tokenValue == "CREATIVE_COMMONS_BY" ? PolyAssetLicense.CREATIVE_COMMONS_BY :
-          tokenValue == "ALL_RIGHTS_RESERVED" ? PolyAssetLicense.ALL_RIGHTS_RESERVED :
-          PolyAssetLicense.UNKNOWN;
+      var tokenValue = token.ToString();
+      Enum.TryParse(tokenValue, out PolyAssetLicense license);
+      return license;
     }
 
     // As above, accepting a string response (such that we can parse on a background thread).
