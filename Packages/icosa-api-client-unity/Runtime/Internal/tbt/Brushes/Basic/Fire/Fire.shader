@@ -12,84 +12,97 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-Shader "Brush/Special/Fire" {
-Properties {
-  _MainTex ("Particle Texture", 2D) = "white" {}
-  _Scroll1 ("Scroll1", Float) = 0
-  _Scroll2 ("Scroll2", Float) = 0
-  _DisplacementIntensity("Displacement", Float) = .1
-    _EmissionGain ("Emission Gain", Range(0, 1)) = 0.5
-}
+Shader "Brush/Special/Fire"
+{
+    Properties
+    {
+        _MainTex ("Particle Texture", 2D) = "white" {}
+        _Scroll1 ("Scroll1", Float) = 0
+        _Scroll2 ("Scroll2", Float) = 0
+        _DisplacementIntensity("Displacement", Float) = .1
+        _EmissionGain ("Emission Gain", Range(0, 1)) = 0.5
+    }
 
-Category {
-  Tags { "Queue"="Transparent" "IgnoreProjector"="True" "RenderType"="Transparent" }
-  Blend One One // SrcAlpha One
-  BlendOp Add, Min
-  ColorMask RGBA
-  Cull Off Lighting Off ZWrite Off Fog { Color (0,0,0,0) }
+    Category
+    {
+        Tags
+        {
+            "Queue"="Transparent" "IgnoreProjector"="True" "RenderType"="Transparent"
+        }
+        Blend One One // SrcAlpha One
+        BlendOp Add, Min
+        ColorMask RGBA
+        Cull Off Lighting Off ZWrite Off Fog
+        {
+            Color (0,0,0,0)
+        }
 
-  SubShader {
-    Pass {
+        SubShader
+        {
+            Pass
+            {
 
-      CGPROGRAM
-      #pragma vertex vert
-      #pragma fragment frag
-      #pragma target 3.0
-      #pragma multi_compile_particles
-      #pragma multi_compile __ AUDIO_REACTIVE
-      #pragma multi_compile __ TBT_LINEAR_TARGET
+                CGPROGRAM
+                #pragma vertex vert
+                #pragma fragment frag
+                #pragma target 3.0
+                #pragma multi_compile_particles
+                #pragma multi_compile __ AUDIO_REACTIVE
+                #pragma multi_compile __ TBT_LINEAR_TARGET
 
-      #include "UnityCG.cginc"
-      #include "../../../Shaders/Include/Brush.cginc"
+                #include "UnityCG.cginc"
+                #include "../../../Shaders/Include/Brush.cginc"
 
-      sampler2D _MainTex;
+                sampler2D _MainTex;
 
-      struct appdata_t {
-        float4 vertex : POSITION;
-        fixed4 color : COLOR;
-        float3 normal : NORMAL;
-#if SHADER_TARGET >= 40
+                struct appdata_t
+                {
+                    float4 vertex : POSITION;
+                    fixed4 color : COLOR;
+                    float3 normal : NORMAL;
+                    #if SHADER_TARGET >= 40
         centroid float2 texcoord : TEXCOORD0;
-#else
-        float2 texcoord : TEXCOORD0;
-#endif
-        float3 worldPos : TEXCOORD1;
-      };
+                    #else
+                    float2 texcoord : TEXCOORD0;
+                    #endif
+                    float3 worldPos : TEXCOORD1;
+                };
 
-      struct v2f {
-        float4 vertex : POSITION;
-        float4 color : COLOR;
-#if SHADER_TARGET >= 40
+                struct v2f
+                {
+                    float4 vertex : POSITION;
+                    float4 color : COLOR;
+                    #if SHADER_TARGET >= 40
         centroid float2 texcoord : TEXCOORD0;
-#else
-        float2 texcoord : TEXCOORD0;
-#endif
-        float3 worldPos : TEXCOORD1;
-      };
+                    #else
+                    float2 texcoord : TEXCOORD0;
+                    #endif
+                    float3 worldPos : TEXCOORD1;
+                };
 
-      float4 _MainTex_ST;
-      fixed _Scroll1;
-      fixed _Scroll2;
-      half _DisplacementIntensity;
-      half _EmissionGain;
+                float4 _MainTex_ST;
+                fixed _Scroll1;
+                fixed _Scroll2;
+                half _DisplacementIntensity;
+                half _EmissionGain;
 
-      v2f vert (appdata_t v)
-      {
-        v.color = TbVertToSrgb(v.color);
-        v2f o;
-        o.texcoord = TRANSFORM_TEX(v.texcoord,_MainTex);
-        o.color = bloomColor(v.color, _EmissionGain);
-        o.vertex = UnityObjectToClipPos(v.vertex);
-        o.worldPos = mul(unity_ObjectToWorld, v.vertex);
-        return o;
-      }
+                v2f vert(appdata_t v)
+                {
+                    v.color = TbVertToSrgb(v.color);
+                    v2f o;
+                    o.texcoord = TRANSFORM_TEX(v.texcoord, _MainTex);
+                    o.color = bloomColor(v.color, _EmissionGain);
+                    o.vertex = UnityObjectToClipPos(v.vertex);
+                    o.worldPos = mul(unity_ObjectToWorld, v.vertex);
+                    return o;
+                }
 
-      // Note: input color is srgb
-      fixed4 frag (v2f i) : COLOR
-      {
-        half2 displacement;
-        float procedural_line = 0;
-#ifdef AUDIO_REACTIVE
+                // Note: input color is srgb
+                fixed4 frag(v2f i) : COLOR
+                {
+                    half2 displacement;
+                    float procedural_line = 0;
+                    #ifdef AUDIO_REACTIVE
         // Envelope
         float envelope = sin(i.texcoord.x * 3.14159);
         float envelopeHalf = sin(i.texcoord.x * 3.14159 * .5);
@@ -107,21 +120,22 @@ Category {
         //procedural_line = saturate(1 - 10*abs(i.texcoord.y - .5 + waveform * envelopeHalf));
         //procedural_line = pow(procedural_line, i.texcoord.x* 10);
 
-#else
-         displacement = tex2D(_MainTex, i.texcoord + half2(-_Time.x * _Scroll1, 0)  ).a;
-#endif
+                    #else
+                    displacement = tex2D(_MainTex, i.texcoord + half2(-_Time.x * _Scroll1, 0)).a;
+                    #endif
 
-         half4 tex = tex2D(_MainTex, i.texcoord + half2(-_Time.x * _Scroll2, 0) - displacement * _DisplacementIntensity);
-#ifdef AUDIO_REACTIVE
+                    half4 tex = tex2D(
+                        _MainTex, i.texcoord + half2(-_Time.x * _Scroll2, 0) - displacement * _DisplacementIntensity);
+                    #ifdef AUDIO_REACTIVE
         tex = tex * .5 + 2 * procedural_line * ( envelope * envelopeHalf);
-#endif
-        float4 color = i.color * tex;
-        color = float4(color.rgb * color.a, 1.0);
-        color = SrgbToNative(color);
-        return color;
-      }
-      ENDCG
+                    #endif
+                    float4 color = i.color * tex;
+                    color = float4(color.rgb * color.a, 1.0);
+                    color = SrgbToNative(color);
+                    return color;
+                }
+                ENDCG
+            }
+        }
     }
-  }
-}
 }

@@ -17,42 +17,48 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace PolyToolkitInternal {
+namespace IcosaClientInternal
+{
+    public class HelpTextAttribute : PropertyAttribute
+    {
+        public string text;
 
-public class HelpTextAttribute : PropertyAttribute {
-  public string text;
-  public HelpTextAttribute(string text) {
-    this.text = text;
-  }
-}
+        public HelpTextAttribute(string text)
+        {
+            this.text = text;
+        }
+    }
 
 #if UNITY_EDITOR
-[CustomPropertyDrawer(typeof(HelpTextAttribute))]
-public class HelpTextDrawer : PropertyDrawer {
-  private const int MARGIN = 8;
+    [CustomPropertyDrawer(typeof(HelpTextAttribute))]
+    public class HelpTextDrawer : PropertyDrawer
+    {
+        private const int MARGIN = 8;
 
-  private float GetHelpHeight() {
-    string text = ((HelpTextAttribute)attribute).text;
-    return EditorStyles.wordWrappedMiniLabel.CalcHeight(
-      new GUIContent(text), EditorGUIUtility.currentViewWidth);
-  }
+        private float GetHelpHeight()
+        {
+            string text = ((HelpTextAttribute)attribute).text;
+            return EditorStyles.wordWrappedMiniLabel.CalcHeight(
+                new GUIContent(text), EditorGUIUtility.currentViewWidth);
+        }
 
-  public override float GetPropertyHeight(SerializedProperty property, GUIContent label) {
-    return base.GetPropertyHeight(property, label) + GetHelpHeight() + 2 * MARGIN;
-  }
+        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        {
+            return base.GetPropertyHeight(property, label) + GetHelpHeight() + 2 * MARGIN;
+        }
 
-  public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
-    EditorGUI.BeginProperty(position, label, property);
-    float helpHeight = GetHelpHeight();
-    EditorGUI.LabelField(
-      new Rect(position.x, position.y + MARGIN, position.width, helpHeight),
-      ((HelpTextAttribute)attribute).text, EditorStyles.wordWrappedMiniLabel);
-    EditorGUI.PropertyField(
-      new Rect(position.x, position.y + helpHeight + 2 * MARGIN,
-        position.width, position.height - helpHeight - 2 * MARGIN), property);
-    EditorGUI.EndProperty();
-  }
-}
+        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        {
+            EditorGUI.BeginProperty(position, label, property);
+            float helpHeight = GetHelpHeight();
+            EditorGUI.LabelField(
+                new Rect(position.x, position.y + MARGIN, position.width, helpHeight),
+                ((HelpTextAttribute)attribute).text, EditorStyles.wordWrappedMiniLabel);
+            EditorGUI.PropertyField(
+                new Rect(position.x, position.y + helpHeight + 2 * MARGIN,
+                    position.width, position.height - helpHeight - 2 * MARGIN), property);
+            EditorGUI.EndProperty();
+        }
+    }
 #endif
-
 }

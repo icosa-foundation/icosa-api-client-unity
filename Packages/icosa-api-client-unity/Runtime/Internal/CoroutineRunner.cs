@@ -20,97 +20,118 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-namespace PolyToolkitInternal {
-  /// <summary>
-  /// Runs coroutines in a way that's compatible with the Unity editor (which normally doesn't
-  /// like Coroutines).
-  /// </summary>
-  public class CoroutineRunner {
+namespace IcosaClientInternal
+{
     /// <summary>
-    /// The stack of coroutine(s) we are running.
-    /// The top element is the one we are currently running. When it ends, we return to the
-    /// previous one, etc, until all of them are done.
+    /// Runs coroutines in a way that's compatible with the Unity editor (which normally doesn't
+    /// like Coroutines).
     /// </summary>
-    private Stack<IEnumerator> coroutineStack = null;
+    public class CoroutineRunner
+    {
+        /// <summary>
+        /// The stack of coroutine(s) we are running.
+        /// The top element is the one we are currently running. When it ends, we return to the
+        /// previous one, etc, until all of them are done.
+        /// </summary>
+        private Stack<IEnumerator> coroutineStack = null;
 
-    /// <summary>
-    /// If not null, the coroutine has yielded the async operation and we're waiting for it to end.
-    /// </summary>
-    private AsyncOperation currentAsyncOperation = null;
+        /// <summary>
+        /// If not null, the coroutine has yielded the async operation and we're waiting for it to end.
+        /// </summary>
+        private AsyncOperation currentAsyncOperation = null;
 
-    /// <summary>
-    /// Starts a coroutine. This host-less variant only works when in edit mode.
-    /// </summary>
-    /// <param name="coroutine">The coroutine to run.</param>
-    public static void StartCoroutine(IEnumerator coroutine) {
-      if (Application.isPlaying) {
-        throw new InvalidOperationException("Cannot be in play mode");
-      }
-      StartCoroutine(null, coroutine);
-    }
+        /// <summary>
+        /// Starts a coroutine. This host-less variant only works when in edit mode.
+        /// </summary>
+        /// <param name="coroutine">The coroutine to run.</param>
+        public static void StartCoroutine(IEnumerator coroutine)
+        {
+            if (Application.isPlaying)
+            {
+                throw new InvalidOperationException("Cannot be in play mode");
+            }
 
-    /// <summary>
-    /// Start a coroutine. This will smartly decide whether to use the regular Unity framework or
-    /// implement it manually, depending on whether we're running in the editor or not.
-    /// </summary>
-    /// <param name="host">The behavior that hosts the coroutine.</param>
-    /// <param name="coroutine">The coroutine to run.</param>
-    public static void StartCoroutine(MonoBehaviour host, IEnumerator coroutine) {
-      if (Application.isPlaying) {
-        // No need for our special logic. Just do it in the regular Unity way.
-        host.StartCoroutine(coroutine);
-        return;
-      }
-      // We are in the editor, so we need to use our custom runner.
-      CoroutineRunner runner = new CoroutineRunner(coroutine);
-      runner.Start();
-    }
-
-    private CoroutineRunner(IEnumerator coroutine) {
-      coroutineStack = new Stack<IEnumerator>();
-      coroutineStack.Push(coroutine);
-    }
-
-    public void Start() {
-      // During the execution of this coroutine, we will have to hook into the Editor's update loop.
-      EditorApplication.update += Tick;
-    }
-
-    private void Tick() {
-      if (currentAsyncOperation != null) {
-        if (!currentAsyncOperation.isDone) {
-          // Async operation isn't done yet. We shouldn't continue the coroutine until it's done.
-          return;
+            StartCoroutine(null, coroutine);
         }
-        currentAsyncOperation = null;
-      }
 
-      // Ok, we are ready to continue the coroutine.
-      IEnumerator topCoroutine = coroutineStack.Peek();
-      if (!topCoroutine.MoveNext()) {
-        // End of coroutine. Pop it and return to previous coroutine on the stack.
-        coroutineStack.Pop();
-        if (coroutineStack.Count == 0) {
-          // The end! Thank you for using CoroutineRunner.
-          EditorApplication.update -= Tick;
+        /// <summary>
+        /// Start a coroutine. This will smartly decide whether to use the regular Unity framework or
+        /// implement it manually, depending on whether we're running in the editor or not.
+        /// </summary>
+        /// <param name="host">The behavior that hosts the coroutine.</param>
+        /// <param name="coroutine">The coroutine to run.</param>
+        public static void StartCoroutine(MonoBehaviour host, IEnumerator coroutine)
+        {
+            if (Application.isPlaying)
+            {
+                // No need for our special logic. Just do it in the regular Unity way.
+                host.StartCoroutine(coroutine);
+                return;
+            }
+
+            // We are in the editor, so we need to use our custom runner.
+            CoroutineRunner runner = new CoroutineRunner(coroutine);
+            runner.Start();
         }
-      } else if (topCoroutine.Current is IEnumerator) {
-        // When a coroutine returns an IEnumerator, it wants to execute a nested coroutine.
-        coroutineStack.Push((IEnumerator)topCoroutine.Current);
-      } else if (topCoroutine.Current == null) {
-        // When a coroutine returns null, it means "I got nothing, but call again later."
-        return;
-      } else if (topCoroutine.Current is AsyncOperation) {
-        // When a coroutine returns an AsyncOperation, it wants us to wait until it's finished
-        // to continue the coroutine.
-        currentAsyncOperation = (AsyncOperation)topCoroutine.Current;
-      }
+
+        private CoroutineRunner(IEnumerator coroutine)
+        {
+            coroutineStack = new Stack<IEnumerator>();
+            coroutineStack.Push(coroutine);
+        }
+
+        public void Start()
+        {
+            // During the execution of this coroutine, we will have to hook into the Editor's update loop.
+            EditorApplication.update += Tick;
+        }
+
+        private void Tick()
+        {
+            if (currentAsyncOperation != null)
+            {
+                if (!currentAsyncOperation.isDone)
+                {
+                    // Async operation isn't done yet. We shouldn't continue the coroutine until it's done.
+                    return;
+                }
+
+                currentAsyncOperation = null;
+            }
+
+            // Ok, we are ready to continue the coroutine.
+            IEnumerator topCoroutine = coroutineStack.Peek();
+            if (!topCoroutine.MoveNext())
+            {
+                // End of coroutine. Pop it and return to previous coroutine on the stack.
+                coroutineStack.Pop();
+                if (coroutineStack.Count == 0)
+                {
+                    // The end! Thank you for using CoroutineRunner.
+                    EditorApplication.update -= Tick;
+                }
+            }
+            else if (topCoroutine.Current is IEnumerator)
+            {
+                // When a coroutine returns an IEnumerator, it wants to execute a nested coroutine.
+                coroutineStack.Push((IEnumerator)topCoroutine.Current);
+            }
+            else if (topCoroutine.Current == null)
+            {
+                // When a coroutine returns null, it means "I got nothing, but call again later."
+                return;
+            }
+            else if (topCoroutine.Current is AsyncOperation)
+            {
+                // When a coroutine returns an AsyncOperation, it wants us to wait until it's finished
+                // to continue the coroutine.
+                currentAsyncOperation = (AsyncOperation)topCoroutine.Current;
+            }
+        }
     }
-  }
 }
 
 #else
-
 // Trivial implementation for non Unity-editor builds (which simply delegates
 // to MonoBehaviour.StartCoroutine.
 

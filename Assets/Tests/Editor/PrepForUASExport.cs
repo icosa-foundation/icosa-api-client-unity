@@ -18,21 +18,22 @@ using UnityEngine;
 
 // PolyToolkitDev namespace is for classes that exist only for developing Poly Toolkit itself,
 // and don't ship out to users in the build.
-namespace PolyToolkitDev {
+namespace IcosaToolkitDev
+{
+    static class PrepForUASExport
+    {
+        [MenuItem("Icosa/Dev/Prep for UAS Export")]
+        public static void DoPrepForUASExport()
+        {
+            // The exported package should have the placeholder credentials, not our credentials.
+            BuildPackage.ResetToPlaceholderCredentials();
 
-static class PrepForUASExport {
-  [MenuItem("Icosa/Dev/Prep for UAS Export")]
-  public static void DoPrepForUASExport() {
-    // The exported package should have the placeholder credentials, not our credentials.
-    BuildPackage.ResetToPlaceholderCredentials();
+            // We used to create upgrade.dat in the editor, so there might be left over copies of it in people's
+            // working copies. To ensure that it's not exported, let's delete it.
+            File.Delete(Application.dataPath + "/Editor/upgrade.dat");
+            File.Delete(Application.dataPath + "/Editor/upgrade.dat.meta");
 
-    // We used to create upgrade.dat in the editor, so there might be left over copies of it in people's
-    // working copies. To ensure that it's not exported, let's delete it.
-    File.Delete(Application.dataPath + "/Editor/upgrade.dat");
-    File.Delete(Application.dataPath + "/Editor/upgrade.dat.meta");
-
-    EditorUtility.DisplayDialog("Ready", "Ready for Unity Asset Store export.", "OK");
-  }
-}
-
+            EditorUtility.DisplayDialog("Ready", "Ready for Unity Asset Store export.", "OK");
+        }
+    }
 }

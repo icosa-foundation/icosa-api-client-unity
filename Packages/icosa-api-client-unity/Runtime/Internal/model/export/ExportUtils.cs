@@ -12,15 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace PolyToolkitInternal.model.export {
-  class ExportUtils {
-    public static readonly string OBJ_FILENAME = "model.obj";
-    public static readonly string MTL_FILENAME = "materials.mtl";
-    public static readonly string THUMBNAIL_FILENAME = "thumbnail.png";
-    public static readonly string POLY_FILENAME = "model.poly";
-    public static readonly string OBJ_MTL_ZIP_FILENAME = "modelobjmtl.zip";
-    public static readonly string GLTF_FILENAME = "model.gltf";
-    public static readonly string GLTF_BIN_FILENAME = "model.bin";
-    public static readonly string POLY_ZIP_FILENAME = "modelpoly.zip";
-  }
+namespace IcosaClientInternal.model.export
+{
+    class ExportUtils
+    {
+        public static readonly string OBJ_FILENAME = "model.obj";
+        public static readonly string MTL_FILENAME = "materials.mtl";
+        public static readonly string THUMBNAIL_FILENAME = "thumbnail.png";
+        public static readonly string ICOSA_FILENAME = "model.poly";
+        public static readonly string OBJ_MTL_ZIP_FILENAME = "modelobjmtl.zip";
+        public static readonly string GLTF_FILENAME = "model.gltf";
+        public static readonly string GLTF_BIN_FILENAME = "model.bin";
+        public static readonly string ICOSA_ZIP_FILENAME = "modelpoly.zip";
+    }
 }

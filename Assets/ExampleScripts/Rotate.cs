@@ -17,10 +17,13 @@ using UnityEngine;
 /// <summary>
 /// Script that rotates an object at a constant speed.
 /// </summary>
-public class Rotate : MonoBehaviour {
-  public Vector3 axis = Vector3.up;
-  public float angularSpeed = 20.0f;
-  private void Update() {
-    gameObject.transform.Rotate(axis, angularSpeed * Time.deltaTime, Space.World);
-  }
+public class Rotate : MonoBehaviour
+{
+    public Vector3 axis = Vector3.up;
+    public float angularSpeed = 20.0f;
+
+    private void Update()
+    {
+        gameObject.transform.Rotate(axis, angularSpeed * Time.deltaTime, Space.World);
+    }
 }

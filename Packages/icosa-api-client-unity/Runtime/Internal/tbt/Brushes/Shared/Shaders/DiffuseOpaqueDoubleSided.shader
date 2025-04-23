@@ -12,38 +12,44 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-Shader "Brush/DiffuseOpaqueDoubleSided" {
-Properties {
-  _Color ("Main Color", Color) = (1,1,1,1)
-}
+Shader "Brush/DiffuseOpaqueDoubleSided"
+{
+    Properties
+    {
+        _Color ("Main Color", Color) = (1,1,1,1)
+    }
 
-SubShader {
+    SubShader
+    {
 
-Cull Off
+        Cull Off
 
-CGPROGRAM
-#pragma surface surf Lambert vertex:vert addshadow
-#pragma multi_compile __ TBT_LINEAR_TARGET
-#pragma target 3.0
-#include "../../../Shaders/Include/Brush.cginc"
+        CGPROGRAM
+        #pragma surface surf Lambert vertex:vert addshadow
+        #pragma multi_compile __ TBT_LINEAR_TARGET
+        #pragma target 3.0
+        #include "../../../Shaders/Include/Brush.cginc"
 
-fixed4 _Color;
+        fixed4 _Color;
 
-struct Input {
-  float4 color : COLOR;
-  fixed vface : VFACE;
-};
+        struct Input
+        {
+            float4 color : COLOR;
+            fixed vface : VFACE;
+        };
 
-void vert(inout appdata_full v) {
-  v.color = TbVertToNative(v.color);
-}
+        void vert(inout appdata_full v)
+        {
+            v.color = TbVertToNative(v.color);
+        }
 
-void surf (Input IN, inout SurfaceOutput o) {
-  o.Albedo = _Color * IN.color.rgb;
-  o.Normal = float3(0,0,IN.vface);
-}
-ENDCG
-}
+        void surf(Input IN, inout SurfaceOutput o)
+        {
+            o.Albedo = _Color * IN.color.rgb;
+            o.Normal = float3(0, 0, IN.vface);
+        }
+        ENDCG
+    }
 
-Fallback "Diffuse"
+    Fallback "Diffuse"
 }

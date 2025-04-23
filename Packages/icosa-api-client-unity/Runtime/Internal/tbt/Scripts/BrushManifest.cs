@@ -17,62 +17,75 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace TiltBrushToolkit {
+namespace TiltBrushToolkit
+{
+    public class BrushManifest : ScriptableObject
+    {
+        // static API
 
-public class BrushManifest : ScriptableObject {
-  // static API
+        private static BrushManifest sm_Instance;
 
-  private static BrushManifest sm_Instance;
-  public static BrushManifest Instance {
-    get {
-      // How can we get a reference to the singleton AllBrushes.asset?
-      // LoadAssetAtPath<>() is fragile, because it bakes in a file path.
-      // Instead, (ab)use the ability for scripts to have default values
-      // (which are stored in the .meta)
-      if (sm_Instance == null) {
-        var dummy = CreateInstance<BrushManifest>();
-        sm_Instance = dummy.m_DefaultManifest;
-        DestroyImmediate(dummy);
-      }
-      Debug.Assert(sm_Instance != null, "Misconfigured singleton");
-      return sm_Instance;
-    }
-  }
+        public static BrushManifest Instance
+        {
+            get
+            {
+                // How can we get a reference to the singleton AllBrushes.asset?
+                // LoadAssetAtPath<>() is fragile, because it bakes in a file path.
+                // Instead, (ab)use the ability for scripts to have default values
+                // (which are stored in the .meta)
+                if (sm_Instance == null)
+                {
+                    var dummy = CreateInstance<BrushManifest>();
+                    sm_Instance = dummy.m_DefaultManifest;
+                    DestroyImmediate(dummy);
+                }
 
-  // instance API
+                Debug.Assert(sm_Instance != null, "Misconfigured singleton");
+                return sm_Instance;
+            }
+        }
 
-  // See Instance.get for an explanation of this
-  #pragma warning disable 0649  // Don't warn about fields that are never assigned to.
-  [HideInInspector]
-  [SerializeField]
-  private BrushManifest m_DefaultManifest;
+        // instance API
 
-  [SerializeField] private BrushDescriptor[] m_Brushes;
-  #pragma warning restore 0649
-  private Dictionary<Guid, BrushDescriptor> m_ByGuid;
-  private ILookup<string, BrushDescriptor> m_ByName;
+        // See Instance.get for an explanation of this
+#pragma warning disable 0649 // Don't warn about fields that are never assigned to.
+        [HideInInspector] [SerializeField] private BrushManifest m_DefaultManifest;
 
-  public IEnumerable<BrushDescriptor> AllBrushes {
-    get { return m_Brushes; }
-  }
+        [SerializeField] private BrushDescriptor[] m_Brushes;
+#pragma warning restore 0649
+        private Dictionary<Guid, BrushDescriptor> m_ByGuid;
+        private ILookup<string, BrushDescriptor> m_ByName;
 
-  public Dictionary<Guid, BrushDescriptor> BrushesByGuid {
-    get {
-      if (m_ByGuid == null) {
-        m_ByGuid = m_Brushes.ToDictionary(desc => (Guid)desc.m_Guid);
-      }
-      return m_ByGuid;
-    }
-  }
+        public IEnumerable<BrushDescriptor> AllBrushes
+        {
+            get { return m_Brushes; }
+        }
 
-  public ILookup<string, BrushDescriptor> BrushesByName {
-    get {
-      if (m_ByName == null) {
-        m_ByName = m_Brushes.ToLookup(desc => desc.m_DurableName);
-      }
-      return m_ByName; 
-    }
-  }
+        public Dictionary<Guid, BrushDescriptor> BrushesByGuid
+        {
+            get
+            {
+                if (m_ByGuid == null)
+                {
+                    m_ByGuid = m_Brushes.ToDictionary(desc => (Guid)desc.m_Guid);
+                }
+
+                return m_ByGuid;
+            }
+        }
+
+        public ILookup<string, BrushDescriptor> BrushesByName
+        {
+            get
+            {
+                if (m_ByName == null)
+                {
+                    m_ByName = m_Brushes.ToLookup(desc => desc.m_DurableName);
+                }
+
+                return m_ByName;
+            }
+        }
 
 #if false
 #if UNITY_EDITOR
@@ -89,6 +102,5 @@ public class BrushManifest : ScriptableObject {
   }
 #endif
 #endif
-}
-
+    }
 }

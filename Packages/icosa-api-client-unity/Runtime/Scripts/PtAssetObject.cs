@@ -12,17 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using PolyToolkitInternal;
+using IcosaClientInternal;
 using UnityEngine;
 
-namespace PolyToolkit { 
-
-/// <summary>
-/// Added to an object to indicate that it's a prefab (or instance) of a Poly Toolkit asset.
-/// </summary>
-public class PtAssetObject : MonoBehaviour {
-  [DisabledProperty]
-  public PtAsset asset;
-}
-
+namespace IcosaApiClient
+{
+    /// <summary>
+    /// Added to an object to indicate that it's a prefab (or instance) of a Poly Toolkit asset.
+    /// </summary>
+    public class PtAssetObject : MonoBehaviour
+    {
+        [DisabledProperty] public PtAsset asset;
+    }
 }

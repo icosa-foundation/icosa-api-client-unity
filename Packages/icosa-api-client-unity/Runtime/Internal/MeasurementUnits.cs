@@ -14,70 +14,78 @@
 
 using System;
 
-namespace PolyToolkitInternal {
-
-/// <summary>
-/// Measurement units.
-/// </summary>
-public enum LengthUnit {
-  METERS,
-  DECIMETERS,
-  CENTIMETERS,
-  MILLIMETERS,
-  FEET,
-  INCHES,
-}
-
-/// <summary>
-/// Represents a length that's composed of an amount and a unit (for example "3 feet").
-/// </summary>
-[Serializable]
-public struct LengthWithUnit {
-  public float amount;
-  public LengthUnit unit;
-
-  public LengthWithUnit(float amount, LengthUnit unit) {
-    this.amount = amount;
-    this.unit = unit;
-  }
-
-  public static LengthWithUnit FromMeters(float meters, LengthUnit unit) {
-    return new LengthWithUnit(meters / MeasurementUnits.ToMeters(unit), unit);
-  }
-
-  public float ToMeters() {
-    return amount * MeasurementUnits.ToMeters(unit);
-  }
-
-  public override string ToString() {
-    return string.Format("{0} {1}", amount, unit);
-  }
-}
-
-public static class MeasurementUnits {
-  /// <summary>
-  /// Converts the given unit of length to meters.
-  /// </summary>
-  /// <param name="unit">The unit of length to convert.</param>
-  /// <returns>The corresponding length in meters.</returns>
-  public static float ToMeters(LengthUnit unit) {
-    switch (unit) {
-      case LengthUnit.METERS:
-        return 1.0f;
-      case LengthUnit.DECIMETERS:
-        return 0.1f;
-      case LengthUnit.CENTIMETERS:
-        return 0.01f;
-      case LengthUnit.MILLIMETERS:
-        return 0.001f;
-      case LengthUnit.FEET:
-        return 0.3048f;
-      case LengthUnit.INCHES:
-        return 0.0254f;
-      default:
-        throw new Exception("Invalid length unit: " + unit);
+namespace IcosaClientInternal
+{
+    /// <summary>
+    /// Measurement units.
+    /// </summary>
+    public enum LengthUnit
+    {
+        METERS,
+        DECIMETERS,
+        CENTIMETERS,
+        MILLIMETERS,
+        FEET,
+        INCHES,
     }
-  }
-}
 
+    /// <summary>
+    /// Represents a length that's composed of an amount and a unit (for example "3 feet").
+    /// </summary>
+    [Serializable]
+    public struct LengthWithUnit
+    {
+        public float amount;
+        public LengthUnit unit;
+
+        public LengthWithUnit(float amount, LengthUnit unit)
+        {
+            this.amount = amount;
+            this.unit = unit;
+        }
+
+        public static LengthWithUnit FromMeters(float meters, LengthUnit unit)
+        {
+            return new LengthWithUnit(meters / MeasurementUnits.ToMeters(unit), unit);
+        }
+
+        public float ToMeters()
+        {
+            return amount * MeasurementUnits.ToMeters(unit);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0} {1}", amount, unit);
+        }
+    }
+
+    public static class MeasurementUnits
+    {
+        /// <summary>
+        /// Converts the given unit of length to meters.
+        /// </summary>
+        /// <param name="unit">The unit of length to convert.</param>
+        /// <returns>The corresponding length in meters.</returns>
+        public static float ToMeters(LengthUnit unit)
+        {
+            switch (unit)
+            {
+                case LengthUnit.METERS:
+                    return 1.0f;
+                case LengthUnit.DECIMETERS:
+                    return 0.1f;
+                case LengthUnit.CENTIMETERS:
+                    return 0.01f;
+                case LengthUnit.MILLIMETERS:
+                    return 0.001f;
+                case LengthUnit.FEET:
+                    return 0.3048f;
+                case LengthUnit.INCHES:
+                    return 0.0254f;
+                default:
+                    throw new Exception("Invalid length unit: " + unit);
+            }
+        }
+    }
 }

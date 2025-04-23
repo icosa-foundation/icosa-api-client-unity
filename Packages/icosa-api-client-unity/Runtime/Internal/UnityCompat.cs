@@ -15,37 +15,42 @@
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace PolyToolkitInternal {
-  /// <summary>
-  /// Utilities for compatibility with multiple Unity versions.
-  /// </summary>
-  public static class UnityCompat {
-    public static UnityWebRequest GetTexture(string url) {
+namespace IcosaClientInternal
+{
+    /// <summary>
+    /// Utilities for compatibility with multiple Unity versions.
+    /// </summary>
+    public static class UnityCompat
+    {
+        public static UnityWebRequest GetTexture(string url)
+        {
 #if UNITY_2017_1_OR_NEWER
-      // New API.
-      return UnityWebRequestTexture.GetTexture(url);
+            // New API.
+            return UnityWebRequestTexture.GetTexture(url);
 #else
       // Old API, removed in Unity 2017.1.
       return UnityWebRequest.GetTexture(url);
 #endif
-    }
+        }
 
-    public static bool IsNetworkError(UnityWebRequest req) {
+        public static bool IsNetworkError(UnityWebRequest req)
+        {
 #if UNITY_2017_1_OR_NEWER
-      // New API.
-      return req.isNetworkError;
+            // New API.
+            return req.isNetworkError;
 #else
       // Old API (Unity 5.6).
       return req.isError;
 #endif
-    }
+        }
 
-    public static AsyncOperation SendWebRequest(UnityWebRequest req) {
+        public static AsyncOperation SendWebRequest(UnityWebRequest req)
+        {
 #if UNITY_2017_2_OR_NEWER
-      return req.SendWebRequest();
+            return req.SendWebRequest();
 #else
       return req.Send();
 #endif
+        }
     }
-  }
 }

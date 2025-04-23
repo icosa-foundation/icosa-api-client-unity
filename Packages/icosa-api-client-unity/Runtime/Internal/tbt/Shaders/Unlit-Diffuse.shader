@@ -17,48 +17,57 @@
 // - no lightmap support
 // - no per-material color
 
-Shader "Unlit/Diffuse" {
-Properties {
-  _Color ("Color", Color) = (1,1,1,1)
-}
+Shader "Unlit/Diffuse"
+{
+    Properties
+    {
+        _Color ("Color", Color) = (1,1,1,1)
+    }
 
-SubShader {
-  Tags { "RenderType"="Opaque" }
-  LOD 100
-  Blend One One, Zero One
+    SubShader
+    {
+        Tags
+        {
+            "RenderType"="Opaque"
+        }
+        LOD 100
+        Blend One One, Zero One
 
 
-  Pass {
-    CGPROGRAM
-      #pragma vertex vert
-      #pragma fragment frag
+        Pass
+        {
+            CGPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
 
-      #include "UnityCG.cginc"
+            #include "UnityCG.cginc"
 
-      struct appdata_t {
-        float4 vertex : POSITION;
-      };
+            struct appdata_t
+            {
+                float4 vertex : POSITION;
+            };
 
-      struct v2f {
-        float4 vertex : SV_POSITION;
-      };
+            struct v2f
+            {
+                float4 vertex : SV_POSITION;
+            };
 
-      uniform float4 _Color;
+            uniform float4 _Color;
 
-      v2f vert (appdata_t v)
-      {
-        v2f o;
-        o.vertex = UnityObjectToClipPos(v.vertex);
-        return o;
-      }
+            v2f vert(appdata_t v)
+            {
+                v2f o;
+                o.vertex = UnityObjectToClipPos(v.vertex);
+                return o;
+            }
 
-      fixed4 frag (v2f i) : SV_Target
-      {
-        _Color.rgb *= _Color.a;
-        return _Color;
-      }
-    ENDCG
-  }
-}
+            fixed4 frag(v2f i) : SV_Target
+            {
+                _Color.rgb *= _Color.a;
+                return _Color;
+            }
+            ENDCG
+        }
+    }
 
 }

@@ -12,41 +12,47 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-Shader "Blocks/Basic" {
-Properties {
-  _Color ("Main Color", Color) = (1,1,1,1)
-  _Shininess ("Shininess", Range (0.01, 1)) = 0.078125
-  _SpecColor ("Specular Color", Color) = (0.5, 0.5, 0.5, 0)
+Shader "Blocks/Basic"
+{
+    Properties
+    {
+        _Color ("Main Color", Color) = (1,1,1,1)
+        _Shininess ("Shininess", Range (0.01, 1)) = 0.078125
+        _SpecColor ("Specular Color", Color) = (0.5, 0.5, 0.5, 0)
 
-}
-    SubShader {
-    Cull Back
+    }
+    SubShader
+    {
+        Cull Back
 
-    CGPROGRAM
-    #pragma target 3.0
-    #pragma surface surf StandardSpecular vertex:vert
-    #pragma multi_compile __ TBT_LINEAR_TARGET
+        CGPROGRAM
+        #pragma target 3.0
+        #pragma surface surf StandardSpecular vertex:vert
+        #pragma multi_compile __ TBT_LINEAR_TARGET
 
-    #include "../../../Shaders/Include/Brush.cginc"
+        #include "../../../Shaders/Include/Brush.cginc"
 
-    struct Input {
-      float4 color : Color;
-    };
+        struct Input
+        {
+            float4 color : Color;
+        };
 
-    fixed4 _Color;
-    half _Shininess;
+        fixed4 _Color;
+        half _Shininess;
 
-    void vert (inout appdata_full i /*, out Input o*/) {
-      i.color = TbVertToNative(i.color);
+        void vert(inout appdata_full i /*, out Input o*/)
+        {
+            i.color = TbVertToNative(i.color);
+        }
+
+        void surf(Input IN, inout SurfaceOutputStandardSpecular o)
+        {
+            o.Albedo = _Color.rgb * IN.color.rgb;
+            o.Smoothness = _Shininess;
+            o.Specular = _SpecColor;
+        }
+        ENDCG
     }
 
-    void surf (Input IN, inout SurfaceOutputStandardSpecular o) {
-      o.Albedo = _Color.rgb * IN.color.rgb;
-      o.Smoothness = _Shininess;
-      o.Specular = _SpecColor;
-    }
-      ENDCG
-  }
-
-  FallBack "Diffuse"
+    FallBack "Diffuse"
 }
