@@ -22,7 +22,7 @@ namespace IcosaClientInternal
         /// <summary>
         /// Name of the static attribution file.
         /// </summary>
-        public static readonly string ATTRIB_FILE_NAME = "PolyAttributions.txt";
+        public static readonly string ATTRIB_FILE_NAME = "IcosaAttributions.txt";
 
         /// <summary>
         /// File header.

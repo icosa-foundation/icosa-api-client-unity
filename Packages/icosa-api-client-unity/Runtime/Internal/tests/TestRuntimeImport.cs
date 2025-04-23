@@ -33,7 +33,7 @@ public class TestRuntimeImport : MonoBehaviour
     private const string kAssetId = "15ARMT6StKO";
     private const string kGltf2AssetId = "5eiqgJe4rMb";
 
-    // Asset id specifically from Poly autopush, without which GetAsset wouldn't work.
+    // Asset id specifically from Icosa autopush, without which GetAsset wouldn't work.
     private const string kAssetIdFromIcosa = "aqCWHdQNAiL";
 
     private IcosaAuthConfig authConfig = new IcosaAuthConfig(

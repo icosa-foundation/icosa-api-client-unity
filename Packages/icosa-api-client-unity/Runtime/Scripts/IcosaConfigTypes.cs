@@ -58,16 +58,16 @@ namespace IcosaApiClient
         public string[] additionalScopes;
 
         /// <summary>
-        /// (For internal Poly Toolkit use only). Leave this as null.
+        /// (For internal Icosa API Client use only). Leave this as null.
         /// </summary>
         [HideInInspector] public string serviceName;
 
-        // NOTE: serviceName is set by Poly Toolkit in editor mode so that it can have an independent
+        // NOTE: serviceName is set by Icosa API Client in editor mode so that it can have an independent
         // auth "silo" that's separate from the runtime project. See OAuth2Identity for how this
-        // variable is used. Users of Poly Toolkit should leave it as null.
+        // variable is used. Users of Icosa API Client should leave it as null.
 
         /// <summary>
-        /// Creates a new PolyAuthConfig with the given settings.
+        /// Creates a new IcosaAuthConfig with the given settings.
         /// </summary>
         public IcosaAuthConfig(string baseUrl, string apiKey, string clientId, string clientSecret)
         {
@@ -86,7 +86,7 @@ namespace IcosaApiClient
     }
 
     /// <summary>
-    /// Indicates how to configure the Poly Toolkit cache.
+    /// Indicates how to configure the Icosa API Client cache.
     /// </summary>
     [Serializable]
     [AutoStringifiable]

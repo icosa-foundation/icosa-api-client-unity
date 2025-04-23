@@ -117,7 +117,7 @@ namespace IcosaClientInternal
                 }
                 else if (gltfFormat != null)
                 {
-                    // Runtime import case; the uris refer to resource files in the PolyFormat.
+                    // Runtime import case; the uris refer to resource files in the IcosaFormat.
                     foreach (IcosaFile resource in gltfFormat.resources)
                     {
                         if (resource.relativePath == buffer.uri)

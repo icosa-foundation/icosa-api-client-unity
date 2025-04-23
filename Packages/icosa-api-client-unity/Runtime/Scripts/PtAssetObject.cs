@@ -18,7 +18,7 @@ using UnityEngine;
 namespace IcosaApiClient
 {
     /// <summary>
-    /// Added to an object to indicate that it's a prefab (or instance) of a Poly Toolkit asset.
+    /// Added to an object to indicate that it's a prefab (or instance) of a Icosa API Client asset.
     /// </summary>
     public class PtAssetObject : MonoBehaviour
     {

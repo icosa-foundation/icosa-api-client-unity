@@ -121,7 +121,7 @@ namespace IcosaClientInternal
                 }
                 else if (gltfFormat != null)
                 {
-                    // Runtime import case; the uris refer to resource files in the PolyFormat.
+                    // Runtime import case; the uris refer to resource files in the IcosaFormat.
                     Debug.Assert(buffer.type == "arraybuffer");
                     foreach (IcosaFile resource in gltfFormat.resources)
                     {

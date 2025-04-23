@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4059514712971238}
   - component: {fileID: 114797153153435936}
   m_Layer: 0
-  m_Name: PolyToolkitManager
+  m_Name: IcosaClientManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

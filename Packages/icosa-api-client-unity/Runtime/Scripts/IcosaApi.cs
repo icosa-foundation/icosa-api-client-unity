@@ -23,10 +23,10 @@ using UnityEngine;
 namespace IcosaApiClient
 {
     /// <summary>
-    /// This is the main entry point for the Poly Toolkit Runtime API.
+    /// This is the main entry point for the Icosa API Client Runtime API.
     /// This class covers:
     /// - Authentication and properties of the signed-in user.
-    /// - Wrappers around the Poly REST API endpoints.
+    /// - Wrappers around the Icosa REST API endpoints.
     /// - Importing assets and thumbnails.
     /// - Managing the cache of assets.
     /// </summary>
@@ -36,14 +36,14 @@ namespace IcosaApiClient
         private static bool initialized = false;
 
         /// <summary>
-        /// Initializes the Poly Toolkit runtime API. This will be called by IcosaToolkitManager on its Awake method,
+        /// Initializes the Icosa API Client runtime API. This will be called by IcosaToolkitManager on its Awake method,
         /// you shouldn't need to call this method directly.
         /// </summary>
         public static void Init(IcosaAuthConfig? authConfig = null, IcosaCacheConfig? cacheConfig = null)
         {
-            // NOTE: although it might seem strange, we have to support the use case of re-initializing PolyApi
+            // NOTE: although it might seem strange, we have to support the use case of re-initializing IcosaApi
             // (with possibly different config) because that's what happens when the project goes from play
-            // mode back to edit mode -- the Poly Toolkit editor code will call PolyApi.Init with the editor
+            // mode back to edit mode -- the Icosa API Client editor code will call IcosaApi.Init with the editor
             // config, and in that case we should wipe out our previous state and initialize again.
             Shutdown();
             PtSettings.Init();
@@ -70,7 +70,7 @@ namespace IcosaApiClient
         /// </summary>
         /// <remarks>
         /// Use this method only if you are implementing your own authentication/authorization flow, and need to provide
-        /// Poly Toolkit with tokens to use. This method should be used INSTEAD of Authenticate() and will have
+        /// Icosa API Client with tokens to use. This method should be used INSTEAD of Authenticate() and will have
         /// the same effect, except that instead of launching the auth flow, the provided tokens will be used instead.
         /// </remarks>
         /// <param name="accessToken">The access token to use with API requests.</param>
@@ -299,7 +299,7 @@ namespace IcosaApiClient
         }
 
         /// <summary>
-        /// The Poly class is not valid until it has been explicitly initialized. This method checks that initialization has
+        /// The Icosa class is not valid until it has been explicitly initialized. This method checks that initialization has
         /// completed, and throws an exception if not. This method should be called before any operation that depends on the
         /// runtime API being initialized.
         /// </summary>
@@ -309,7 +309,7 @@ namespace IcosaApiClient
             {
                 throw new Exception(
                     "Icosa Toolkit runtime API not initialized. You must have a IcosaToolkitManager in your " +
-                    "scene and wait until after its Awake() method runs, or explicitly call PolyApi.Init() before " +
+                    "scene and wait until after its Awake() method runs, or explicitly call IcosaApi.Init() before " +
                     "using Icosa API methods.");
             }
         }
@@ -364,7 +364,7 @@ namespace IcosaApiClient
         }
 
         /// <summary>
-        /// Shuts down the Poly Toolkit runtime API. Calling this method should not normally be necessary
+        /// Shuts down the Icosa API Client runtime API. Calling this method should not normally be necessary
         /// for most applications. It exists for some very specific use cases, such as writing an editor
         /// extension that needs to have precise control over initialization and deinitialization of
         /// components.

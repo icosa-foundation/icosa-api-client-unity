@@ -24,7 +24,7 @@ namespace IcosaClientInternal
 {
     /// <summary>
     /// Options that indicate how the user wants to import a given asset at edit time.
-    /// This includes the options normally available for run-time importing (PolyImportOptions),
+    /// This includes the options normally available for run-time importing (IcosaImportOptions),
     /// but adds some parameters that are only relevant to edit-time importing.
     /// </summary>
     [Serializable]

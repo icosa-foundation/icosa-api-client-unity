@@ -375,7 +375,7 @@ namespace IcosaClientEditor
                 Initialize();
             }
 
-            // We have to check if Icosa is ready every time (it's cheap to check). This is because Poly can be
+            // We have to check if Icosa is ready every time (it's cheap to check). This is because the Icosa Client can be
             // unloaded and wiped every time we enter or exit play mode.
             manager.EnsureIcosaIsReady();
 

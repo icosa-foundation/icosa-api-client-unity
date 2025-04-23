@@ -24,7 +24,7 @@ namespace IcosaClientInternal
 {
     /// <summary>
     /// Basic authentication module.
-    /// This is exposed in the Poly Toolkit API through the Poly class. This is just the implementation.
+    /// This is exposed in the Icosa API Client through the Icosa class. This is just the implementation.
     /// </summary>
     [ExecuteInEditMode]
     public class Authenticator : MonoBehaviour
@@ -138,7 +138,7 @@ namespace IcosaClientInternal
         {
             IcosaUtils.AssertTrue(instance == null, "Authenticator.Initialize called twice.");
 
-            GameObject hostObject = IcosaInternalUtils.CreateSingletonGameObject("PolyToolkit Authenticator");
+            GameObject hostObject = IcosaInternalUtils.CreateSingletonGameObject("IcosaClient Authenticator");
             instance = hostObject.AddComponent<Authenticator>();
 
             // Currently, authentication is only supported on Windows/Mac for now.

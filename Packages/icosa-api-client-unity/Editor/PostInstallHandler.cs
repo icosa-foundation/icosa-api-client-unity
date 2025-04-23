@@ -27,12 +27,12 @@ namespace IcosaClientEditor
         {
             if (Application.isPlaying) return;
 
-            // Don't run the upgrade logic in the Poly Toolkit source project. We only want it to run
+            // Don't run the upgrade logic in the source project. We only want it to run
             // when users have installed it.
-            if (Application.companyName == "Google" && Application.productName == "PolyToolkitUnity") return;
+            if (Application.companyName == "Icosa Foundation" && Application.productName == "Icosa API Client Unity") return;
 
             // Add HandlePostInstall method to the Editor update loop so it runs after the rest of
-            // PolyToolkit has been initialized.
+            // Icosa Client has been initialized.
             EditorApplication.update += HandlePostInstall;
         }
 
@@ -41,7 +41,7 @@ namespace IcosaClientEditor
             // Remove from the Editor update loop; we only need this to run once.
             EditorApplication.update -= HandlePostInstall;
 
-            // Check if user just installed or upgraded Poly Toolkit.
+            // Check if user just installed or upgraded Icosa Client.
             string basePath = PtUtils.GetPtBaseLocalPath();
             string upgradeFilePath = PtUtils.ToAbsolutePath(basePath + "/upgrade.dat");
             string currentVersion = "";

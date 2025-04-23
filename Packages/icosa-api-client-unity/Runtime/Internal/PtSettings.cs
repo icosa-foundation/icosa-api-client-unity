@@ -22,14 +22,14 @@ using IcosaApiClient;
 namespace IcosaClientInternal
 {
 // There should be only one instance of this asset in the project:
-// the one that comes with the Poly Toolkit.
+// the one that comes with the Icosa API Client.
 #if UNITY_EDITOR
     [UnityEditor.InitializeOnLoad]
 #endif
     public class PtSettings : ScriptableObject
     {
         /// <summary>
-        /// Poly Toolkit version number.
+        /// Icosa API Client version number.
         /// </summary>
         public static Version Version
         {
@@ -49,8 +49,8 @@ namespace IcosaClientInternal
                         // We can't lazy-initialize because we don't know if we are on the main thread, and we'd need
                         // to call Resoures.Load to find the PtSettings instance, which can only be called on
                         // the main thread. So we must insist that the developer initialize the API properly.
-                        throw new Exception("Poly Toolkit not initialized (failed to get PtSettings). " +
-                                            "Add a IcosaToolkitManager to your scene, or manually call PolyApi.Init from main thread.");
+                        throw new Exception("Icosa API Client not initialized (failed to get PtSettings). " +
+                                            "Add a IcosaToolkitManager to your scene, or manually call IcosaApi.Init from main thread.");
                     }
                     else
                     {
@@ -109,7 +109,7 @@ namespace IcosaClientInternal
                 PtSettings ptSettings = Resources.Load<PtSettings>("PtSettings");
                 if (ptSettings == null)
                 {
-                    Debug.LogError("PtSettings not found in Resources. Re-import Poly Toolkit.");
+                    Debug.LogError("PtSettings not found in Resources. Re-import Icosa API Client.");
                 }
 
                 return ptSettings;
@@ -120,7 +120,7 @@ namespace IcosaClientInternal
                 .Select(UnityEditor.AssetDatabase.GUIDToAssetPath).ToArray();
             if (foundPaths.Length == 0)
             {
-                Debug.LogError("Found no PtSettings assets. Re-import Poly Toolkit");
+                Debug.LogError("Found no PtSettings assets. Re-import Icosa API Client");
                 return null;
             }
             else
@@ -128,7 +128,7 @@ namespace IcosaClientInternal
                 if (foundPaths.Length > 1)
                 {
                     Debug.LogErrorFormat(
-                        "Found multiple PtSettings assets; delete them and re-import Poly Toolkit\n{0}",
+                        "Found multiple PtSettings assets; delete them and re-import Icosa API Client\n{0}",
                         string.Join("\n", foundPaths));
                 }
 

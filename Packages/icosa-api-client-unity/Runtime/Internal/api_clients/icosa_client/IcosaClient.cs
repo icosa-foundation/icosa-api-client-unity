@@ -25,7 +25,7 @@ using IcosaClientInternal.client.model.util;
 namespace IcosaClientInternal.api_clients.icosa_client
 {
     /// <summary>
-    ///   Parses the response of a List Assets request from Poly into a PolyListResult.
+    ///   Parses the response of a List Assets request from Icosa into a IcosaListResult.
     /// </summary>
     public class ParseAssetsBackgroundWork : BackgroundWork
     {
@@ -57,7 +57,7 @@ namespace IcosaClientInternal.api_clients.icosa_client
     }
 
     /// <summary>
-    ///   Parses an asset from Poly into a PolyAsset.
+    ///   Parses an asset from Icosa into a IcosaAsset.
     /// </summary>
     public class ParseAssetBackgroundWork : BackgroundWork
     {
@@ -167,7 +167,7 @@ namespace IcosaClientInternal.api_clients.icosa_client
             };
 
         /// <summary>
-        /// Return a Poly search URL representing a ListAssetsRequest.
+        /// Return a Icosa search URL representing a ListAssetsRequest.
         /// </summary>
         private static string MakeSearchUrl(IcosaListAssetsRequest listAssetsRequest)
         {
@@ -212,7 +212,7 @@ namespace IcosaClientInternal.api_clients.icosa_client
         }
 
         /// <summary>
-        /// Return a Poly search URL representing a ListUserAssetsRequest.
+        /// Return a Icosa search URL representing a ListUserAssetsRequest.
         /// </summary>
         private static string MakeSearchUrl(IcosaListUserAssetsRequest listUserAssetsRequest)
         {
@@ -242,7 +242,7 @@ namespace IcosaClientInternal.api_clients.icosa_client
         }
 
         /// <summary>
-        /// Return a Poly search URL representing a ListLikedAssetsRequest.
+        /// Return a Icosa search URL representing a ListLikedAssetsRequest.
         /// </summary>
         private static string MakeSearchUrl(IcosaListLikedAssetsRequest listLikedAssetsRequest)
         {
@@ -481,7 +481,7 @@ namespace IcosaClientInternal.api_clients.icosa_client
         }
 
         /// <summary>
-        /// Fetches a list of Poly assets together with metadata, using the given request params.
+        /// Fetches a list of Icosa assets together with metadata, using the given request params.
         /// </summary>
         /// <param name="request">The request to send; can be either a ListAssetsRequest, a ListUserAssetsRequest, or
         /// a ListLikedAssetsRequest.</param>
@@ -629,7 +629,7 @@ namespace IcosaClientInternal.api_clients.icosa_client
             catch (Exception ex)
             {
                 result = null;
-                return IcosaStatus.Error("Failed to parse Poly API response, encountered exception: {0}", ex.Message);
+                return IcosaStatus.Error("Failed to parse Icosa API response, encountered exception: {0}", ex.Message);
             }
         }
     }
