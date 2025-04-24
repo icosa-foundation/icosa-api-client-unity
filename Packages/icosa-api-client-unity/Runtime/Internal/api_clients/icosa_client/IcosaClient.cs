@@ -100,16 +100,16 @@ namespace IcosaClientInternal.api_clients.icosa_client
 
         private static readonly Dictionary<IcosaCategory, string> CATEGORIES = new Dictionary<IcosaCategory, string>()
         {
-            { IcosaCategory.ANIMALS, "animals" },
-            { IcosaCategory.ARCHITECTURE, "architecture" },
-            { IcosaCategory.ART, "art" },
-            { IcosaCategory.FOOD, "food" },
-            { IcosaCategory.NATURE, "nature" },
-            { IcosaCategory.OBJECTS, "objects" },
-            { IcosaCategory.PEOPLE, "people" },
-            { IcosaCategory.PLACES, "scenes" },
-            { IcosaCategory.TECH, "tech" },
-            { IcosaCategory.TRANSPORT, "transport" },
+            { IcosaCategory.ANIMALS, "ANIMALS" },
+            { IcosaCategory.ARCHITECTURE, "ARCHITECTURE" },
+            { IcosaCategory.ART, "ART" },
+            { IcosaCategory.FOOD, "FOOD" },
+            { IcosaCategory.NATURE, "NATURE" },
+            { IcosaCategory.OBJECTS, "OBJECTS" },
+            { IcosaCategory.PEOPLE, "PEOPLE" },
+            { IcosaCategory.PLACES, "SCENES" },
+            { IcosaCategory.TECH, "TECH" },
+            { IcosaCategory.TRANSPORT, "TRANSPORT" },
         };
 
         private static readonly Dictionary<IcosaOrderBy, string> ORDER_BY = new Dictionary<IcosaOrderBy, string>()
