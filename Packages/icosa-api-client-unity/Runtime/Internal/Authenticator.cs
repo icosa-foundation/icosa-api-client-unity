@@ -52,7 +52,7 @@ namespace IcosaClientInternal
         /// </summary>
         public bool IsAuthenticated
         {
-            get { return oauth2Identity != null && oauth2Identity.LoggedIn; }
+            get { return icosaIdentity != null && icosaIdentity.LoggedIn; }
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace IcosaClientInternal
         /// </summary>
         public bool IsAuthenticating
         {
-            get { return oauth2Identity != null && oauth2Identity.WaitingOnAuthorization; }
+            get { return icosaIdentity != null && icosaIdentity.WaitingOnAuthorization; }
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace IcosaClientInternal
         /// </summary>
         public string AccessToken
         {
-            get { return oauth2Identity != null ? oauth2Identity.AccessToken : null; }
+            get { return icosaIdentity != null ? icosaIdentity.AccessToken : null; }
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace IcosaClientInternal
         /// </summary>
         public string RefreshToken
         {
-            get { return oauth2Identity != null ? oauth2Identity.RefreshToken : null; }
+            get { return icosaIdentity != null ? icosaIdentity.RefreshToken : null; }
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace IcosaClientInternal
         {
             get
             {
-                return (oauth2Identity == null || oauth2Identity.Profile == null) ? null : oauth2Identity.Profile.name;
+                return (icosaIdentity == null || icosaIdentity.Profile == null) ? null : icosaIdentity.Profile.name;
             }
         }
 
@@ -112,7 +112,7 @@ namespace IcosaClientInternal
         {
             get
             {
-                return (oauth2Identity == null || oauth2Identity.Profile == null) ? null : oauth2Identity.Profile.icon;
+                return (icosaIdentity == null || icosaIdentity.Profile == null) ? null : icosaIdentity.Profile.icon;
             }
         }
 
@@ -122,7 +122,7 @@ namespace IcosaClientInternal
         /// OAuth2Identity we use for authentication. This will be null in platforms that don't
         /// support authentication.
         /// </summary>
-        private OAuth2Identity oauth2Identity;
+        private IcosaIdentity icosaIdentity;
 
         /// <summary>
         /// Initializes the authenticator.
@@ -153,8 +153,8 @@ namespace IcosaClientInternal
 
         private void Setup(IcosaAuthConfig config)
         {
-            oauth2Identity = gameObject.AddComponent<OAuth2Identity>();
-            oauth2Identity.Setup(config.serviceName, config.clientId, config.clientSecret,
+            icosaIdentity = gameObject.AddComponent<IcosaIdentity>();
+            icosaIdentity.Setup(config.serviceName, config.clientId, config.clientSecret,
                 config.additionalScopes != null ? string.Join(" ", config.additionalScopes) : "");
         }
 
@@ -177,7 +177,7 @@ namespace IcosaClientInternal
                 callback(IcosaStatus.Error("Authentication is not supported on this platform."));
             }
 
-            oauth2Identity.Login(
+            icosaIdentity.Login(
                 () => { callback(IcosaStatus.Success()); },
                 () => { callback(IcosaStatus.Error("Authentication failed.")); },
                 interactive);
@@ -197,7 +197,7 @@ namespace IcosaClientInternal
                 callback(IcosaStatus.Error("Authentication is not supported on this platform."));
             }
 
-            oauth2Identity.LoginWithTokens(
+            icosaIdentity.LoginWithTokens(
                 () => { callback(IcosaStatus.Success()); },
                 () => { callback(IcosaStatus.Error("Authentication failed (with tokens).")); },
                 accessToken, refreshToken);
@@ -210,7 +210,7 @@ namespace IcosaClientInternal
         public void CancelAuthentication()
         {
             if (!instance.IsAuthenticationSupported) return;
-            oauth2Identity.CancelLogin();
+            icosaIdentity.CancelLogin();
         }
 
         /// <summary>
@@ -220,7 +220,7 @@ namespace IcosaClientInternal
         public void SignOut()
         {
             if (!instance.IsAuthenticationSupported) return;
-            oauth2Identity.Logout();
+            icosaIdentity.Logout();
             // When signing out, we should clear the cache too since the cache might have data that
             // belongs to the signed-in user.
             IcosaApi.ClearCache();
@@ -265,7 +265,7 @@ namespace IcosaClientInternal
                 callback(IcosaStatus.Error("Authentication is not supported on this platform."));
             }
 
-            CoroutineRunner.StartCoroutine(this, oauth2Identity.Reauthorize(
+            CoroutineRunner.StartCoroutine(this, icosaIdentity.Reauthorize(
                 successCallback: () => { callback(IcosaStatus.Success()); },
                 failureCallback: (string error) => { callback(IcosaStatus.Error(error)); }
             ));

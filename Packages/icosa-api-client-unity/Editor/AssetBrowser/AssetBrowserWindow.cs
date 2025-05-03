@@ -418,7 +418,7 @@ namespace IcosaClientEditor
         /// False if it was aborted due to a back button press.</returns>
         private bool DrawHeader(out int topMargin)
         {
-            DrawTitleBar(withSignInUi: false); // TODO Update signin for Icosa device code flow
+            DrawTitleBar(withSignInUi: true);
             bool hasBackButtonBar = HasBackButtonBar();
             topMargin = TOP_MARGIN_BASE;
             if (hasBackButtonBar)
@@ -483,17 +483,16 @@ namespace IcosaClientEditor
             }
             else if (IcosaApi.IsAuthenticating)
             {
+                // Not signed in. Show "Sign In" button.
+                GUILayout.Space(30);
                 guiHelper.BeginHorizontal();
                 GUILayout.FlexibleSpace();
-                GUILayout.Label("Signing in... Please wait.");
-                guiHelper.EndHorizontal();
-                guiHelper.BeginHorizontal();
-                GUILayout.FlexibleSpace();
-                bool cancelSignInClicked = GUILayout.Button("Cancel", EditorStyles.miniButton);
-                guiHelper.EndHorizontal();
-                if (cancelSignInClicked)
+                GUILayout.Label("Enter Device Code");
+                var deviceCodeValue = GUILayout.TextField("", EditorStyles.textField);
+                if (GUILayout.Button("Go"))
                 {
-                    manager.CancelSignIn();
+                    // authenticator
+                    // manager.HandleDeviceCode(deviceCodeValue);
                 }
             }
             else
@@ -950,6 +949,7 @@ namespace IcosaClientEditor
             {
                 IcosaListAssetsRequest request = new IcosaListAssetsRequest();
                 request.keywords = searchTerms;
+                request.orderBy = IcosaOrderBy.BEST;
                 manager.StartRequest(request);
             }
             else

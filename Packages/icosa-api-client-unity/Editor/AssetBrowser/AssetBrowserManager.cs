@@ -358,7 +358,7 @@ namespace IcosaClientEditor
         /// </summary>
         /// <param name="wasInteractive">If true, this was the interactive (browser-based) sign-in flow.</param>
         /// <param name="status">The result of the sign in process.</param>
-        private void OnSignInFinished(bool wasInteractive, IcosaStatus status)
+        public void OnSignInFinished(bool wasInteractive, IcosaStatus status)
         {
             if (status.ok)
             {
