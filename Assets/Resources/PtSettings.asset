@@ -23,9 +23,9 @@ MonoBehaviour:
   - shaderUrl: https://vr.google.com/shaders/w/gvrss/glass.json
     material: {fileID: 2100000, guid: 537db0387b31e004888533b91562f23d, type: 2}
     descriptor: {fileID: 11400000, guid: 185ca6407d6d6095e95d6695d994a12b, type: 2}
-  assetObjectsPath: Assets/Poly/Assets
-  assetSourcesPath: Assets/Poly/Sources
-  resourcesPath: Assets/Poly/Resources
+  assetObjectsPath: Assets/Icosa/Assets
+  assetSourcesPath: Assets/Icosa/Sources
+  resourcesPath: Assets/Icosa/Resources
   sceneUnit:
     amount: 1
     unit: 0
@@ -44,9 +44,9 @@ MonoBehaviour:
     type: 2}
   authConfig:
     apiKey: 
+    baseUrl: https://api.icosa.gallery
     clientId: 
     clientSecret: 
-    baseUrl: https://api.icosa.gallery
     additionalScopes: []
     serviceName: 
   cacheConfig:
@@ -54,6 +54,6 @@ MonoBehaviour:
     maxCacheSizeMb: 512
     maxCacheEntries: 2048
     cachePathOverride: 
-  sendEditorAnalytics: 1
+  sendEditorAnalytics: 0
   warnOnSourceOverwrite: 1
   warnOfApiCompatibility: 1
