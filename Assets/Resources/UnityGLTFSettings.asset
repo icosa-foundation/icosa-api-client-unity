@@ -209,7 +209,6 @@ MonoBehaviour:
     stripPassesFromAllShaders: 0
     stripPasses: 0
   ImportPlugins:
-  - {fileID: 7880186698705831984}
   - {fileID: 1474717465522239435}
   - {fileID: 153069372583427161}
   - {fileID: -1830961187444003967}
@@ -222,6 +221,7 @@ MonoBehaviour:
   - {fileID: 4188829337468718597}
   - {fileID: 8480423903054919385}
   - {fileID: -8825915454441283500}
+  - {fileID: 8336742608048153589}
   ExportPlugins:
   - {fileID: 4314753018013048129}
   - {fileID: -3336659042675486699}
@@ -419,6 +419,19 @@ MonoBehaviour:
   m_Name: BakeParticleSystem
   m_EditorClassIdentifier: 
   enabled: 0
+--- !u!114 &8336742608048153589
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 351d41db2c654dba8e36e59b79f47ea8, type: 3}
+  m_Name: ObImportPlugin
+  m_EditorClassIdentifier: 
+  enabled: 1
 --- !u!114 &8480423903054919385
 MonoBehaviour:
   m_ObjectHideFlags: 3
