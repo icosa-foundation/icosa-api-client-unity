@@ -1,3 +1,6 @@
+> [!WARNING]
+> This is the legacy version. You probably want to use the [Icosa Toolkit for Unity](https://github.com/icosa-foundation/icosa-toolkit-unity) which is actively being developed.
+
 
 # Icosa API Client for Unity
 ### based on Google Poly Toolkit for Unity
